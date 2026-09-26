@@ -37,7 +37,7 @@ def content_left(s, layer, label=None, body=None, outs=()):
 
 def scene_band(s, x, y, w, h, scene, role, scene_label='工程场景', role_label='本层作用', split=0.6):
     """场景条：左为实际工程场景（现状与问题），右为本页要做什么。放在研究内容页顶部。"""
-    rect(s, x, y, w, h, fill=GRAYBG)
+    rect(s, x, y, w, h, fill=WHITE, line=LINE)
     rect(s, x, y, STYLE['concl_bar'], h, fill=RED)
     lw = round(w * split)
     tag(s, x + 24, y + 12, scene_label, fill=RED, size=16, h=28, padx=10)

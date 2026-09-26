@@ -135,7 +135,7 @@ def s03_intro(d):
         ['牵头单位', '**********', '项目负责人', '***'],
         ['主管部门', '********部（***）', '产业领域', '轨道交通装备'],
         ['项目目的', '基础前瞻共性技术研究', '研究周期', '2027.01—2028.12（24个月）'],
-        ['总预算', '<r>100万元</r>', '当年预算', '50万元'],
+        ['总预算', '<b>100万元</b>', '当年预算', '50万元'],
     ], size=19, lh=27, pad_x=10, pad_y=8, col_styles={0: lab, 1: val, 2: lab, 3: val})
     # ---- 左：主要成果物（3×2）
     y1 = yy + 22
@@ -149,25 +149,25 @@ def s03_intro(d):
         ('发明专利／论文／<br>企业标准草案', '4项／2篇／2项', M4, 'certificate'),
     ]
     cw, gx, gy = (LW - 24) / 3.0, 12, 12
-    ch = (990 - 122 - 22 - 46 - gy - (y1)) / 2.0   # 使经费块底边落在 990
+    ch = (990 - 102 - 22 - 46 - gy - (y1)) / 2.0   # 使经费块底边落在 990（细条 20 + 说明 28）
     for i, (name, form, th, ic) in enumerate(items):
         cx = L + (i % 3) * (cw + gx)
         cy = y1 + 46 + (i // 3) * (ch + gy)
         rect(s, cx, cy, cw, ch, fill=WHITE, line=LINE)
         rect(s, cx, cy, cw, min(4, BAR), fill=th.main)
-        icon(s, ic, th.main, cx + 16, cy + 18, 30)
-        tag(s, cx + cw - 16 - (text_width(form, 16, True) + 20), cy + 18, form, fill=th.bg, color=th.text, size=16,
-            h=28, padx=10)
+        icon(s, ic, SUB, cx + 16, cy + 18, 30)
+        tag(s, cx + cw - 16 - (text_width(form, 16, True) + 20), cy + 18, form, fill=STYLE['badge_fill'] or GRAYBG,
+            color=SUB, size=16, h=28, padx=10)
         text(s, cx + 16, cy + 56, cw - 28, 52, name, size=18, bold=True, color=INK, lh=25)
     # ---- 左：经费概览（堆叠条）
     y2 = y1 + 46 + 2 * ch + gy + 22
     header(s, L, y2, '预计经费', note='总预算 100 万元', w=LW)
     by = y2 + 48
-    stacked_bar(s, L, by, LW, 40, [(v, c, lab, WHITE) for _, _, v, _, c, lab in BUDGET])
+    stacked_bar(s, L, by, LW, 20, [(v, c, None, WHITE) for _, _, v, _, c, lab in BUDGET])
     unit = (LW - 2 * 5) / 100.0
-    text(s, L, by + 46, 50 * unit, 28, 'GPU+NPU 异构算力服务器 40 · 一体化工作站 10', size=16, color=SUB, lh=28,
+    text(s, L, by + 26, 50 * unit, 28, '<b>直接投入 50</b>：算力服务器 40 · 一体化工作站 10', size=16, color=SUB, lh=28,
          wrap=False)
-    text(s, L + 440, by + 46, LW - 440, 28, '人员 30 · 折旧 · 外协 · 成果 · 其他 各 5', size=16, color=SUB,
+    text(s, L + 440, by + 26, LW - 440, 28, '<b>人员 30</b> · 折旧／外协／成果／其他 各 5', size=16, color=SUB,
          align='r', lh=28, wrap=False)
 
     # ---- 右：在项目7中的位置与边界
@@ -195,7 +195,7 @@ def s03_intro(d):
             line(s, R, y + 5, R + RW, y + 5, RULE, 1.5, dash='dash')
             y += ext_gap
         me = (kind == 'me')
-        rect(s, R, y, RW, h, fill=RED_BG if me else WHITE, line=RED if me else LINE, lw=2 if me else 1,
+        rect(s, R, y, RW, h, fill=RED_BG if me else WHITE, line=None if me else LINE,
              dash='dash' if kind == 'ext' else None)
         shp = rect(s, R, y, nb, h, fill=RED if me else WHITE)
         if not me:
@@ -279,7 +279,8 @@ def s05_value(d):
     ew = (1792 - 2 * 40) / 3.0
     for i, (t, ic, b) in enumerate(effs):
         x = 64 + i * (ew + 40)
-        rect(s, x, 798, ew, 110, fill=M3.bg)
+        rect(s, x, 798, ew, 110, fill=WHITE, line=LINE)
+        rect(s, x, 798, BAR, 110, fill=M3.main)
         icon(s, ic, M3.main, x + 24, 822, 32)
         text(s, x + 72, 812, 200, 30, t + '效益', size=20, bold=True, color=M3.text, lh=28, wrap=False)
         text(s, x + 72, 846, ew - 96, 54, b, size=18, color=BODY, lh=27)
@@ -703,7 +704,7 @@ def s12_scenario(d):
     s = d.new_slide()
     frame(d, s, '典型应用场景：FXN5C 临哈线控速＋能耗验证，全流程交给智能体', '输入一句话需求 → 引擎自动完成五步 → 验证报告 ＋ 全要素留痕', '典型应用场景')
     y0 = 214
-    shp = rect(s, 64, y0, 250, 84, fill=INK)
+    shp = rect(s, 64, y0, 250, 84, fill=ARCH)
     text(s, 64, y0, 250, 84, '输入 · 一句话需求', size=22, bold=True, color=WHITE, align='c', anchor='m', lh=30, shp=shp, wrap=False)
     rect(s, 314, y0, 1542, 84, fill=PANEL)
     icon(s, 'quote', MUTED, 340, y0 + 24, 36)
@@ -907,7 +908,7 @@ def s17_budget(d):
     tw_ = (RW - 16) / 2.0
     for i, (yr, amt) in enumerate([('2027 年', '50'), ('2028 年', '50')]):
         x = R + i * (tw_ + 16)
-        rect(s, x, 256, tw_, 96, fill=GRAYBG)
+        rect(s, x, 256, tw_, 96, fill=WHITE, line=LINE)
         text(s, x + 22, 256, 140, 96, yr, size=22, bold=True, color=SUB, anchor='m', lh=30, wrap=False)
         text(s, x + 140, 256, tw_ - 160, 96, '%s<s=20><n><c=%s> 万元</c></n></s>' % (amt, SUB), size=44, bold=True,
              color=INK, font=MONO, align='r', anchor='m', lh=56, wrap=False)
@@ -928,7 +929,7 @@ def s18_management(d):
     # 任务分配：组织架构
     header(s, 64, 212, '组织架构与任务分配', w=900)
     bx, bw = 960 - 170, 340
-    rect(s, bx, 214, bw, 58, fill=INK)
+    rect(s, bx, 214, bw, 58, fill=ARCH)
     icon(s, 'user-star', WHITE, bx + 70, 214 + 14, 30)
     text(s, bx + 110, 214, bw - 130, 58, '项目负责人', size=23, bold=True, color=WHITE, anchor='m', lh=30, wrap=False)
     groups = [
@@ -965,7 +966,7 @@ def s18_management(d):
         x = L + i * (cw + 24)
         hh = 226 + i * 40
         top = 990 - hh
-        rect(s, x, top, cw, hh, fill=M1.bg if i == 3 else PANEL, line=LINE)
+        rect(s, x, top, cw, hh, fill=WHITE, line=LINE)
         rect(s, x, top, cw, STYLE['concl_bar'], fill=M1.main)
         oval(s, x + 22, top + 24, 60, 60, fill=M1.soft)
         text(s, x + 22, top + 24, 60, 60, f, size=18, bold=True, color=M1.text, align='c', anchor='m', lh=24,
