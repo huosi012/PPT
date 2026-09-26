@@ -15,8 +15,9 @@ FIG_NOTE = ('说明：“工程场景”可替换为本单位的实际案例；�
 
 
 # ---------------------------------------------------------------- 左栏 / 场景条 / 要点卡
-def content_left(s, layer, label=None, body=None, outs=()):
-    """研究内容页左栏：四层导航 +（可选）补充说明 + 产出结论条。返回底部 y。"""
+def content_left(s, layer, label=None, body=None, outs=(), outs_bottom=None):
+    """研究内容页左栏：四层导航 +（可选）补充说明 + 产出结论条。返回底部 y。
+    outs_bottom 给定时产出块贴底，底边与右侧附图对齐（左栏只放导航和产出时用）。"""
     th = LAYER[layer]
     y = layer_nav(s, 64, 214, 260, layer) + 22
     if label:
@@ -26,10 +27,12 @@ def content_left(s, layer, label=None, body=None, outs=()):
         text(s, 64, y + 46, 260, bh + 4, body, size=19, color=SUB, lh=30)
         y += 46 + bh + 28
     if outs:
+        hs = [wrap_lines('✓ ' + o, 260 - STYLE['concl_bar'] - 24, 18, True) * 26 + 22 for o in outs]
+        if outs_bottom:
+            y = max(y, outs_bottom - 44 - sum(hs) - 8 * (len(hs) - 1))
         text(s, 64, y, 260, 34, '产出', size=22, bold=True, color=INK, lh=32, wrap=False)
         y += 44
-        for o in outs:
-            h = wrap_lines('✓ ' + o, 260 - STYLE['concl_bar'] - 24, 18, True) * 26 + 22
+        for o, h in zip(outs, hs):
             concl(s, 64, y, 260, h, o, th, size=18, check=True, pad=12)
             y += h + 8
     return y

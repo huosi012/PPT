@@ -796,21 +796,26 @@ def dashed_zone(s, x, y, w, h, label=None, label_fill=ARCH, color=ZONE_LINE, fil
              lh=round(label_size * 1.3), shp=shp, wrap=False, check=False)
 
 
-def layer_nav(s, x, y, w, current, bar_h=62, gap=10):
-    """四层架构导航条：当前层实心高亮，其余描边弱化。返回底部 y。"""
+def layer_nav(s, x, y, w, current, bar_h=60, gap=10, off_h=130 / 3.0):
+    """四层架构导航条：当前层实心高亮并写层名；其余层只写“③ 执行层”，描边弱化（避免每页重复四个层名）。返回底部 y。
+    默认尺寸下（y=214）导航条占 260—480：底边与研究内容页要点卡（y=330，高 150）底边对齐；
+    当前层在最上时，其底边 320 与场景条（y=214，高 106）底边对齐。"""
     text(s, x, y, w, 32, '四层架构 · 当前位置', size=18, bold=True, color=MUTED, anchor='m', lh=32, cs=1)
-    yy = y + 44
+    yy = y + 46
     for i in (4, 3, 2, 1):
         th = LAYER[i]
         on = (i == current)
-        rect(s, x, yy, w, bar_h, fill=th.main if on else WHITE, line=None if on else LINE)
-        if not on:
-            rect(s, x, yy, STYLE['card_bar'], bar_h, fill=th.main)
-        text(s, x + 20, yy + 7, w - 30, 26, LAYER_NO[i] + ' ' + LAYER_KIND[i], size=19, bold=True,
-             color=WHITE if on else INK, lh=26, wrap=False)
-        text(s, x + 20, yy + 33, w - 30, 24, LAYER_NAME[i], size=16, color=WHITE if on else SUB, lh=24,
-             wrap=False)
-        yy += bar_h + gap
+        h = bar_h if on else off_h
+        rect(s, x, yy, w, h, fill=th.main if on else WHITE, line=None if on else LINE)
+        if on:
+            text(s, x + 20, yy + 7, w - 30, 26, LAYER_NO[i] + ' ' + LAYER_KIND[i], size=19, bold=True, color=WHITE,
+                 lh=26, wrap=False)
+            text(s, x + 20, yy + 33, w - 30, 24, LAYER_NAME[i], size=16, color=WHITE, lh=24, wrap=False)
+        else:
+            rect(s, x, yy, STYLE['card_bar'], h, fill=th.main)
+            text(s, x + 20, yy, w - 30, h, LAYER_NO[i] + ' ' + LAYER_KIND[i], size=19, bold=True, color=SUB,
+                 anchor='m', lh=26, wrap=False)
+        yy += h + gap
     return yy
 
 
