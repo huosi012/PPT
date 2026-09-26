@@ -51,8 +51,6 @@ RULER = 'A8B4C6'      # 标尺线
 WHITE = 'FFFFFF'
 RED = 'C00000'
 RED_BG = 'FDF2F2'
-ARCH = '7030A0'       # 架构图分区标签
-STAGE = ['92C34D', 'FFC000', '00B0F0', '7030A0']  # 一/二/三/四阶段
 
 
 class Theme:
@@ -60,15 +58,90 @@ class Theme:
         self.main, self.bg, self.soft, self.num, self.text = main, bg, soft, num, text
 
 
-BLUE = Theme('0A4CFF', 'F4F7FF', 'EAF0FF', 'D6E1FD', '0A4CFF')
-GREEN = Theme('00A37A', 'EFF9F6', 'DDF3EC', 'C6EADF', '0B8A67')
-PURPLE = Theme('7C5CF0', 'F5F2FE', 'ECE6FD', 'DDD4FB', '6A4ADE')
-ORANGE = Theme('D97706', 'FEF5EA', 'FCEBD3', 'F7DDBA', 'B45F04')
+# ---------------------------------------------------------------- 配色方案
+# 颜色按“用途”取用：M1–M5 模块序号色；LAYER 四层架构色；OK 正向（目标/回流/已解决）；PH 待填占位；
+# STAGE 四个阶段；ARCH 架构分区标签；KPI 重点数字；BUDGET2 经费“人员”段；LOCO 机车插画。
+# 通过环境变量 PPT_PALETTE 切换：vivid（初版，参考页原色）/ formal（稳重蓝）/ muted（低饱和多色）。
+T = Theme
+_VIVID = dict(
+    M=[T('0A4CFF', 'F4F7FF', 'EAF0FF', 'D6E1FD', '0A4CFF'), T('7C5CF0', 'F5F2FE', 'ECE6FD', 'DDD4FB', '6A4ADE'),
+       T('00A37A', 'EFF9F6', 'DDF3EC', 'C6EADF', '0B8A67'), T('D97706', 'FEF5EA', 'FCEBD3', 'F7DDBA', 'B45F04'),
+       T('0098D4', 'EEF8FD', 'DDF1FB', 'C4E8F7', '0284C7')],
+    LAYER=('M4', 'M1', 'M2', 'M3'),
+    OK='M3', PH='M4',
+    STAGE=['92C34D', 'FFC000', '00B0F0', '7030A0'],
+    STAGE_ON=[WHITE, INK, WHITE, WHITE], STAGE_BULLET=['92C34D', 'D9A300', '00B0F0', '7030A0'],
+    ARCH='7030A0', KPI=RED, BUDGET2='4A78FF', LOCO='locomotive',
+)
+_NAVY = T('1F4E79', 'F3F6FA', 'E3EAF3', 'D3DDE9', '1F4E79')
+_FORMAL = dict(
+    M=[_NAVY] * 5,
+    LAYER=(T('5F7EA5', 'F4F7FA', 'E5ECF4', 'D7E0EC', '4F6C90'), T('3F6A9E', 'F2F6FA', 'E2EAF4', 'D2DDEB', '355D8E'),
+           T('2A5486', 'F1F5F9', 'E0E8F1', 'D0DBE8', '2A5486'), T('1B3B63', 'F0F3F7', 'DDE4ED', 'CDD6E2', '1B3B63')),
+    OK=T('2E7263', 'F1F7F5', 'DFEDE9', 'CFE3DD', '2A6658'),
+    PH=T('A36A1E', 'FBF5EC', 'F5E8D2', 'EEDCBD', '8F5C18'),
+    STAGE=['9DB2CC', '6D8CB3', '3F6A9E', '1F4371'],
+    ARCH='1F4E79', KPI='1F4E79', BUDGET2='5B7FAE', LOCO='locomotive_formal',
+)
+_MUTED = dict(
+    M=[T('2F5D8A', 'F2F6FA', 'E2EAF3', 'D2DDEA', '2F5D8A'), T('5B5E91', 'F5F5F9', 'E7E7F0', 'D9DAE8', '4F5285'),
+       T('2F7564', 'F1F7F5', 'DEEDE8', 'CCE2DC', '2A6859'), T('9A6A2E', 'FBF6EE', 'F3E8D6', 'EBDBC2', '85591F'),
+       T('2F7892', 'F0F6F9', 'DDEBF1', 'CCE0E9', '296A81')],
+    LAYER=('M4', 'M1', 'M2', 'M3'),
+    OK='M3', PH=T('A36A1E', 'FBF5EC', 'F5E8D2', 'EEDCBD', '8F5C18'),
+    STAGE=['7E9A5E', 'C3A04A', '4F8AA6', '6A5A8C'],
+    ARCH='5B5E91', KPI='2F5D8A', BUDGET2='6A8BB2', LOCO='locomotive_formal',
+)
+PALETTES = {'vivid': _VIVID, 'formal': _FORMAL, 'muted': _MUTED}
+PALETTE = os.environ.get('PPT_PALETTE', 'vivid')
+_P = PALETTES[PALETTE]
+
+
+def _pick(v):
+    return _P['M'][int(v[1]) - 1] if isinstance(v, str) else v
+
+
+M1, M2, M3, M4, M5 = _P['M']
+OK = _pick(_P['OK'])
+PH = _pick(_P['PH'])
+STAGE = list(_P['STAGE'])
+STAGE_ON = _P.get('STAGE_ON')          # 阶段色块上的文字色（缺省按亮度自动取）
+STAGE_BULLET = _P.get('STAGE_BULLET')  # 阶段卡片项目符号色（缺省自动加深）
+ARCH = _P['ARCH']
+KPI_COLOR = _P['KPI']
+BUDGET2 = _P['BUDGET2']
+LOCO_NAME = _P['LOCO']
+# 兼容旧名称
+BLUE, PURPLE, GREEN, ORANGE, CYAN = M1, M2, M3, M4, M5
 REDT = Theme('C00000', 'FDF2F2', 'F9E1E1', 'F1CACA', 'C00000')
 GRAY = Theme('9AA6B8', 'F3F5F7', 'E9EDF2', 'DCE2EA', '6B7785')
 
 # 四层架构的固定配色：①基础层 ②决策层 ③执行层 ④集成层
-LAYER = {1: ORANGE, 2: BLUE, 3: PURPLE, 4: GREEN}
+LAYER = {i + 1: _pick(v) for i, v in enumerate(_P['LAYER'])}
+
+
+def luminance(hexcol):
+    def ch(c):
+        c = c / 255.0
+        return c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4
+    r, g, b = (int(hexcol[i:i + 2], 16) for i in (0, 2, 4))
+    return 0.2126 * ch(r) + 0.7152 * ch(g) + 0.0722 * ch(b)
+
+
+def on_color(hexcol):
+    """色块上的文字颜色：深色底用白字，浅色底用深墨字。"""
+    return WHITE if 1.05 / (luminance(hexcol) + 0.05) >= 3.8 else INK
+
+
+def ink_safe(hexcol):
+    """白底上作为线条/符号时可辨的颜色：过浅则向深墨色混合加深。"""
+    if luminance(hexcol) <= 0.3:
+        return hexcol
+    a = [int(hexcol[i:i + 2], 16) for i in (0, 2, 4)]
+    b = [int(INK[i:i + 2], 16) for i in (0, 2, 4)]
+    return '%02X%02X%02X' % tuple(round(x * 0.62 + y * 0.38) for x, y in zip(a, b))
+
+
 LAYER_NO = {1: '①', 2: '②', 3: '③', 4: '④'}
 LAYER_KIND = {1: '基础层', 2: '决策层', 3: '执行层', 4: '集成层'}
 LAYER_NAME = {1: '测试知识库与任务工作流', 2: '任务理解与智能编排调度', 3: '智能体执行', 4: '架构融合与协同运行'}
@@ -798,8 +871,6 @@ def table(s, x, y, cols, rows, header=None, size=20, lh=None, pad_x=16, pad_y=11
         line(s, x, yy, x + tw, yy, line_color, 1)
     return yy
 
-
-CYAN = Theme('0098D4', 'EEF8FD', 'DDF1FB', 'C4E8F7', '0284C7')
 
 
 def _font_xml(rPr, size, color, bold):
