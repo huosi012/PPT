@@ -148,7 +148,8 @@ def s03_intro(d):
         ('示范应用与验证报告', '报告1份', M4, 'report-analytics'),
         ('发明专利／论文／<br>企业标准草案', '4项／2篇／2项', M4, 'certificate'),
     ]
-    cw, ch, gx, gy = (LW - 24) / 3.0, 116, 12, 12
+    cw, gx, gy = (LW - 24) / 3.0, 12, 12
+    ch = (990 - 122 - 22 - 46 - gy - (y1)) / 2.0   # 使经费块底边落在 990
     for i, (name, form, th, ic) in enumerate(items):
         cx = L + (i % 3) * (cw + gx)
         cy = y1 + 46 + (i // 3) * (ch + gy)
@@ -186,7 +187,7 @@ def s03_intro(d):
     tw_ = RW - nb - tgap - 22
     ext_gap = 20
     groups = [34 + 8 + wrap_lines(desc, tw_, 19) * 29 for _, _, desc, _ in rows]
-    pad = (996 - 256 - 10 * (len(rows) - 1) - ext_gap - sum(groups)) / float(len(rows))
+    pad = (990 - 256 - 10 * (len(rows) - 1) - ext_gap - sum(groups)) / float(len(rows))
     y = 256
     for (no, name, desc, kind), g in zip(rows, groups):
         h = g + pad
@@ -227,10 +228,10 @@ def s04_background(d):
     header(s, L, 346, '验证现状', w=LW)
     text(s, L, 390, LW, 64, '控制软件每次迭代：HIL 台架＋经验数据模拟运用工况，重点工况再到现场验证。', size=20, color=BODY, lh=31)
     header(s, L, 470, '即便如此，问题还是在现场才暴露', w=LW)
-    rect(s, L, 514, LW, 196, fill=RED_BG)
-    rect(s, L, 514, STYLE['concl_bar'], 196, fill=RED)
+    rect(s, L, 514, LW, 184, fill=RED_BG)
+    rect(s, L, 514, STYLE['concl_bar'], 184, fill=RED)
     icon(s, 'quote', MUTED, L + 24, 536, 32)
-    text(s, L + 72, 514, LW - 100, 196,
+    text(s, L + 72, 514, LW - 100, 184,
          '2024 年 12 月，FXN5C 在临哈线长大下坡、约 −10℃：回手柄后风扇仍以 40Hz 运行，低温水 25℃ → 0℃，高温水 78℃，'
          '<b>散热器冻结</b>。多系统耦合的长时序问题，台架没有复现出来。', size=20, color=INK, anchor='m', lh=32)
     R, RW = 976, 880
@@ -255,9 +256,9 @@ def s05_value(d):
     steps = [('输入', '“验证新版软件在临哈线全工况下的速度跟踪与牵引能耗”', 'message'),
              ('引擎自动', '生成工况 → 装配智能体 → 分配精度与算力 → 协同求解 → 对标判据', 'settings-automation'),
              ('输出', '验证报告与异常定位，全程可回放；工程师只看异常项', 'report-analytics')]
-    cw = (1792 - 2 * 60) / 3.0
+    cw = (1792 - 2 * 40) / 3.0
     for i, (t, b, ic) in enumerate(steps):
-        x = 64 + i * (cw + 60)
+        x = 64 + i * (cw + 40)
         rect(s, x, 256, cw, 158, fill=WHITE, line=LINE)
         rect(s, x, 256, cw, BAR, fill=M1.main)
         icon_badge(s, ic, M1, x + 24, 280, 56)
@@ -265,7 +266,7 @@ def s05_value(d):
              anchor='m', lh=30, wrap=False)
         text(s, x + 24, 346, cw - 48, 60, b, size=18, color=BODY, lh=27)
         if i < 2:
-            tri(s, x + cw + 30, 331, 18, 24, TRI)
+            tri(s, x + cw + 20, 335, 16, 22, TRI)
     header(s, 64, 440, '用在三个环节', w=1792)
     rows = [['<b>研发：软件迭代</b>', '台架＋现场验证', '全工况在数字样机上自动回归，减少现场验证'],
             ['<b>试验：上线前预试验</b>', '低温等工况受季节与线路限制', '按试验大纲先在数字样机上预演，缩减上线项目'],
@@ -275,9 +276,9 @@ def s05_value(d):
     header(s, 64, 754, '社会经济效益', w=1792)
     effs = [('经济', 'coins', '减少现场验证与线路试验投入，缩短迭代周期'), ('社会', 'shield-check', '复杂工况覆盖度与可信度提升，减少运用故障'),
             ('产业', 'building-factory-2', '方法体系可向制动、辅助系统扩展，在**内主机企业推广')]
-    ew = (1792 - 2 * 24) / 3.0
+    ew = (1792 - 2 * 40) / 3.0
     for i, (t, ic, b) in enumerate(effs):
-        x = 64 + i * (ew + 24)
+        x = 64 + i * (ew + 40)
         rect(s, x, 798, ew, 110, fill=M3.bg)
         icon(s, ic, M3.main, x + 24, 822, 32)
         text(s, x + 72, 812, 200, 30, t + '效益', size=20, bold=True, color=M3.text, lh=28, wrap=False)
@@ -312,14 +313,14 @@ def s07_route(d):
     header(s, L, 212, '四层架构与分工', note='第 8—11 页逐层展开', w=LW)
     roles = {1: '标准、大纲、案例 → 可自动比对的判据、可复用的流程', 2: '一句话需求 → 任务；自动装配智能体，按工况分配精度与算力',
              3: '跑工况、自动判读、生成报告、结果回流', 4: '多系统智能体在可复现沙箱中协同运行，形成列车级数字样机'}
-    y, bh, gap = 256, 116, 10
+    y, bh, gap = 256, 100, 10
     for i in (4, 3, 2, 1):
         th = LAYER[i]
         rect(s, L, y, LW, bh, fill=WHITE, line=LINE)
         rect(s, L, y, 250, bh, fill=th.bg)
         rect(s, L, y, BAR, bh, fill=th.main)
-        text(s, L + 26, y + 22, 214, 34, LAYER_NO[i] + ' ' + LAYER_KIND[i], size=24, bold=True, color=th.text, lh=34, wrap=False)
-        text(s, L + 26, y + 62, 218, 30, LAYER_NAME[i], size=17, bold=True, color=INK, lh=26, wrap=False)
+        text(s, L + 26, y + 16, 214, 34, LAYER_NO[i] + ' ' + LAYER_KIND[i], size=24, bold=True, color=th.text, lh=34, wrap=False)
+        text(s, L + 26, y + 54, 218, 30, LAYER_NAME[i], size=17, bold=True, color=INK, lh=26, wrap=False)
         text(s, L + 276, y, LW - 300, bh, roles[i], size=20, color=BODY, anchor='m', lh=31)
         y += bh + gap
     R, RW = 1056, 800
@@ -328,10 +329,10 @@ def s07_route(d):
             ['型式试验、线路试验与运用数据', '智能体自动标定与结果可信性评判（③）'], ['设计评审、软件放行、故障分析', '验证报告与复现结论直接作为依据']]
     yy = table(s, R, 256, [360, 440], rows, header=['现有资源与环节', '衔接方式'], size=18, lh=27, pad_y=13,
                col_styles={0: dict(color=INK, bold=True)})
-    header(s, R, yy + 34, '闭环', note='全程留痕，可回放、可回归', w=RW)
-    chips_row(s, R, yy + 80, ['判据与流程', '分解与调度', '协同执行与判读', '报告', '数据回归'], gap=26, arrow=True, arrow_color=TRI,
+    header(s, R, 600, '闭环', note='全程留痕，可回放、可回归', w=RW)
+    chips_row(s, R, 646, ['判据与流程', '分解与调度', '协同执行与判读', '报告', '数据回归'], gap=26, arrow=True, arrow_color=TRI,
               size=16, h=40, padx=12, color=INK, line=LINE, bold=True)
-    summary(s, 64, 800, 1792, 150, '怎么算成功：阶段三，数字样机复现临哈线散热器冻结工况并定位原因；阶段四，一次软件迭代完成全工况回归',
+    summary(s, 64, 760, 1792, 150, '怎么算成功：阶段三，数字样机复现临哈线散热器冻结工况并定位原因；阶段四，一次软件迭代完成全工况回归',
             '验证周期由约 2 个月缩短至<bc=%s>【待填】</bc>；各阶段检验见第 14 页。' % PH.text, title_size=25, desc_size=21, gap=8)
     notes(s, '备注（讲稿）：与课题要求的对应——高效实时协同运行 → ③④；调度引擎 → ②；列车级数字样机及构建方法体系 → ④；支持关键性能验证与智能运维 → ④。'
              '对接项目7总体目标——模型自动标定 → ③；指标实时推演 → ④；性能自动评估 → ③。')
@@ -345,7 +346,7 @@ def s08_layer1(d):
     content_left(s, 1, '与上层的关系', '知识库与工作流是②“任务理解与编排调度”的<b>知识与规则来源</b>。',
                  outs=['验证判据知识库', '任务工作流定义<br>与配置规范'])
     X, XW = 356, 1500
-    scene_band(s, X, 214, XW, 112,
+    scene_band(s, X, 214, XW, 106,
                '判定一个工况是否合格，依据分散在国标、行标、企标、试验大纲和专家经验里，查找比对靠人工。<bc=%s>【可替换为实际案例】</bc>' % PH.text,
                '<b>知识工程</b>——标准规范形式化、领域知识建模、工作流建模；难点是判据多以经验和文档形式存在。',
                scene_label='现状与问题', role_label='研究方法')
@@ -356,9 +357,9 @@ def s08_layer1(d):
         ('知识与流程迭代', '验证结果与新问题回流，持续补充判据、修订流程'),
     ]
     for i, (t, desc) in enumerate(cards):
-        point_card(s, X + i * (cw + 24), 342, cw, 148, '0%d' % (i + 1), t, desc, th, desc_size=18)
+        point_card(s, X + i * (cw + 24), 330, cw, 148, '0%d' % (i + 1), t, desc, th, desc_size=18)
     # 附图：判据知识化（上）→ 任务工作流（下）→ 结果回流（右）
-    f, py = fig_area(s, X, 494, XW, 496, '从规范到判据、从判据到工作流')
+    f, py = fig_area(s, X, 496, XW, 494, '从规范到判据、从判据到工作流')
     fx = X + 24
     step = 204                                   # 工作流节点间距（节点宽 150）
     tag(f, fx, py + 26, '01 判据知识化', fill=th.bg, color=th.text, size=16, h=28, padx=10)
@@ -432,7 +433,7 @@ def s09_layer2(d):
     content_left(s, 2, '上下游关系', '向下承接①的<b>知识与规则</b>，向③下发<b>执行方案</b>（智能体组合、工况、算力）。',
                  outs=['多智能体协同运行与调度引擎（软件1套）'])
     X, XW = 356, 1500
-    scene_band(s, X, 214, XW, 112,
+    scene_band(s, X, 214, XW, 106,
                '工况是区段 × 温度 × 轨面 × 载重 × 手柄序列的组合，全用高精度模型算不完，全用简化模型关键工况又不可信。<bc=%s>【可替换为实际案例】</bc>' % PH.text,
                '<b>智能调度</b>——任务分解与匹配、多目标寻优、保真度—算力协同配置；难点是在线权衡精度与效率，极端工况不能外推。',
                scene_label='现状与问题', role_label='研究方法')
@@ -444,9 +445,9 @@ def s09_layer2(d):
         ('执行监控与失败重规划', '异常中断后自动重规划，支撑指标实时推演'),
     ]
     for i, (t, desc) in enumerate(cards):
-        point_card(s, X + i * (cw + 20), 342, cw, 150, '0%d' % (i + 1), t, desc, th)
+        point_card(s, X + i * (cw + 20), 330, cw, 150, '0%d' % (i + 1), t, desc, th)
     # 附图：一次验证任务中的调度过程
-    f, py = fig_area(s, X, 508, XW, 482, '一次验证中的调度过程：按工况切换保真度、分配算力，异常时重规划')
+    f, py = fig_area(s, X, 496, XW, 494, '一次验证中的调度过程：按工况切换保真度、分配算力，异常时重规划')
     fx = X + 24
     chips_row(f, fx, py + 18, ['<k>验证任务</k>　速度跟踪 ＋ 牵引能耗', '<k>01 任务分解</k>　对象 · 性能 · 判据',
                                '<k>02 环境装配</k>　控制系统 · 车辆动力学 · 线路智能体', '<k>03—04 调度执行与监控</k>'],
@@ -510,12 +511,12 @@ def s10_layer3(d):
     content_left(s, 3, '对接项目7总体目标', [{'t': '<b>模型自动标定</b> → 仿真智能体', 'sa': 8}, {'t': '<b>性能自动评估</b> → 测试识别'}],
                  outs=['关键系统仿真智能体／<br>智能孪生模型', '用例与线路数据集', '验证报告与追溯记录'])
     X, XW = 356, 1500
-    scene_band(s, X, 214, XW, 112,
+    scene_band(s, X, 214, XW, 106,
                '仿真结果靠人看曲线，多系统、长时序问题（如临哈线散热器冻结）难发现、难定位。',
                '<b>实时协同与可信评判</b>——分布式协同仿真、时序同步、自动标定与不确定度量化；难点是步长差异大、极端工况数据少。',
                scene_label='现状与问题', role_label='研究方法')
     gap = 24
-    cw, ch, y0 = (XW - 3 * gap) / 4.0, 200, 342
+    cw, ch, y0 = (XW - 3 * gap) / 4.0, 206, 330
     steps = [
         ('仿真智能体', '研制与接入', '控制系统、车辆动力学、线路等智能体与孪生模型，标准化接入、时序同步，用试验与运用数据<b>自动标定</b>'),
         ('用例生成', '按需自生成', '按线路资料与覆盖要求生成用例与线路数据（平纵断面、曲线、超高、坡度、不平顺谱）'),
@@ -537,7 +538,7 @@ def s10_layer3(d):
     rect(s, lx_, yb + 10, lw_, 24, fill=WHITE)
     text(s, lx_, yb + 10, lw_, 24, lab, size=16, bold=True, color=OK.text, align='c', anchor='m', lh=22, wrap=False)
     # 附图：用现场案例说明测试识别
-    f, py = fig_area(s, X, 588, XW, 402, '以临哈线散热器冻结为例：逐工况对标判据，识别异常并定位原因', note='示意图 · 数据据现场记录 · 防冻限值【待填】')
+    f, py = fig_area(s, X, 584, XW, 406, '以临哈线散热器冻结为例：逐工况对标判据，识别异常并定位原因', note='示意图 · 数据据现场记录 · 防冻限值【待填】')
     fx = X + 24
     px0, px1, pt, pb = fx + 70, fx + 900, py + 44, py + 226
 
@@ -624,7 +625,7 @@ def s11_layer4(d):
     content_left(s, 4, '对接项目7总体目标', '<b>指标实时推演</b> → 协同运行',
                  outs=['列车级数字样机', '列车级数字样机构建方法体系与集成技术规范'])
     X, XW = 356, 1500
-    scene_band(s, X, 214, XW, 112,
+    scene_band(s, X, 214, XW, 106,
                '台架以控制器为核心，其他系统靠经验数据近似，控制、冷却、动力、线路等系统难以在同一环境中协同运行，复杂场景无法模拟。',
                '<b>系统集成</b>——标准化接口、服务化封装、沙箱化运行与全程留痕；难点是异构模型实时协同下的稳定性与可复现。',
                scene_label='现状与问题', role_label='研究方法')
@@ -636,9 +637,9 @@ def s11_layer4(d):
         ('列车级数字样机', '以 <b>FXN5C</b> 为示范对象集成关键系统智能体，支持性能验证与智能运维'),
     ]
     for i, (t, desc) in enumerate(cards):
-        point_card(s, X + i * (cw + 20), 342, cw, 150, '0%d' % (i + 1), t, desc, th)
+        point_card(s, X + i * (cw + 20), 330, cw, 150, '0%d' % (i + 1), t, desc, th)
     # 附图：数字样机构成
-    f, py = fig_area(s, X, 508, XW, 482, '列车级数字样机构成：关键系统智能体经标准化接口接入引擎，在沙箱中协同运行')
+    f, py = fig_area(s, X, 496, XW, 494, '列车级数字样机构成：关键系统智能体经标准化接口接入引擎，在沙箱中协同运行')
     fx = X + 24
     zx, zy, zw, zh = fx, py + 34, 1072, 384
     dashed_zone(f, zx, zy, zw, zh, '03 可复现沙箱：隔离 · 记录 · 回放', label_fill=ARCH, label_x=zx + 24, label_size=16)
@@ -845,7 +846,7 @@ def s16_metrics(d):
     rows = [['一次软件迭代的验证周期', '约 2 个月', '缩短 ≥ ' + ph + '%'], ['现场验证人员投入', '10 人', '减少 ≥ ' + ph + '%'],
             ['工况覆盖度', '受台架与现场条件限制', '提升 ≥ ' + ph + '%'], ['接入异构仿真智能体', '—', '≥ ' + ph + ' 类'],
             ['协同验证典型工况', '—', '≥ ' + ph + ' 个']]
-    table(s, L, 256, [330, 250, 292], rows, header=['指标', '现状', '目标'], size=19, lh=29, pad_y=18,
+    table(s, L, 256, [330, 250, 292], rows, header=['指标', '现状', '目标'], size=19, lh=30, pad_y=29,
           col_styles={0: dict(color=INK, bold=True), 2: dict(color=INK, bold=True)})
     R, RW = 976, 880
     header(s, R, 212, '效益评估', note='成果交付 ＋ 示范验证 ＋ 与现状对比', w=RW)
@@ -854,7 +855,7 @@ def s16_metrics(d):
             ('管理与推广效益', 'world', M2, '验证流程标准化，经验沉淀为判据库；可向制动、辅助系统扩展，在**内推广', None)]
     y = 256
     for t, ic, th, txt, tg in bens:
-        bh = 178 if tg else 140
+        bh = 180 if tg else 138
         rect(s, R, y, RW, bh, fill=WHITE, line=LINE)
         rect(s, R, y, BAR, bh, fill=th.main)
         icon(s, ic, th.main, R + 26, y + 22, 32)
@@ -952,30 +953,30 @@ def s18_management(d):
         text(s, x + 22, gy + 60, gw - 44, 32, LAYER_NAME[k], size=22, bold=True, color=INK, lh=30, wrap=False)
         text(s, x + 22, gy + 104, 120, 24, '主要任务', size=16, bold=True, color=MUTED, lh=22, wrap=False)
         text(s, x + 22, gy + 128, gw - 44, 28, task, size=17, color=BODY, lh=26)
-        concl(s, x + 16, gy + gh - 16 - 46, gw - 32, 46, '交付：' + deli, th, size=17, pad=12)
+        concl(s, x + 22, gy + gh - 18 - 46, gw - 44, 46, '交付：' + deli, th, size=17, pad=12)
     y1 = gy + gh + 28
     # 项目流程：管理节奏（阶梯）
-    L, LW = 64, 876
+    L, LW = 64, 2 * gw + 24
     header(s, L, y1, '项目管理流程', note='双周 → 月度 → 季度 → 年度', w=LW)
     cad = [('双周', '双周例会', '子任务进展同步与问题协调'), ('月度', '月度节点检查', '对照里程碑核查交付物'),
            ('季度', '季度评审', '技术方案评审与阶段成果确认'), ('年度', '年度总结', '目标达成评估与下年度计划调整')]
-    cw = (LW - 3 * 12) / 4.0
+    cw = (LW - 3 * 24) / 4.0
     for i, (f, n, t) in enumerate(cad):
-        x = L + i * (cw + 12)
+        x = L + i * (cw + 24)
         hh = 226 + i * 40
         top = 990 - hh
         rect(s, x, top, cw, hh, fill=M1.bg if i == 3 else PANEL, line=LINE)
         rect(s, x, top, cw, STYLE['concl_bar'], fill=M1.main)
-        oval(s, x + 20, top + 24, 60, 60, fill=M1.soft)
-        text(s, x + 20, top + 24, 60, 60, f, size=18, bold=True, color=M1.text, align='c', anchor='m', lh=24,
+        oval(s, x + 22, top + 24, 60, 60, fill=M1.soft)
+        text(s, x + 22, top + 24, 60, 60, f, size=18, bold=True, color=M1.text, align='c', anchor='m', lh=24,
              wrap=False)
-        text(s, x + 20, top + 98, cw - 40, 34, n, size=22, bold=True, color=INK, lh=30, wrap=False)
-        text(s, x + 20, top + 138, cw - 36, 80, t, size=19, color=BODY, lh=28)
+        text(s, x + 22, top + 98, cw - 44, 34, n, size=22, bold=True, color=INK, lh=30, wrap=False)
+        text(s, x + 22, top + 138, cw - 40, 80, t, size=19, color=BODY, lh=28)
     # 时间安排：按实际月数等比例的阶段条 + 里程碑
-    R, RW = 980, 876
+    R, RW = 64 + 2 * (gw + 24), 2 * gw + 24
     header(s, R, y1, '时间安排与执行保障', note='里程碑绑定阶段交付物，按节点考核', w=RW)
     mw = RW / 24.0
-    sy, sh_ = y1 + 50, 58
+    sy, sh_ = y1 + 62, 58
     for name, short, a, b, col, per, goal, deli, mk, mdate, mtext in STAGES:
         x = R + a * mw + (1 if a else 0)
         w = (b - a) * mw - (1 if a else 0) - (1 if b < 24 else 0)
@@ -1025,7 +1026,7 @@ def s19_team(d):
         ('在研项目', 'clipboard-list', '【待填：**级****项目数量与名称】'),
         ('人才队伍', 'users-group', '【待填：参研人员规模与职称结构】'),
     ]
-    cw, ch = (1792 - 2 * 24) / 3.0, 300
+    cw, ch = (1792 - 2 * 24) / 3.0, 313
     for i, (t, ic, ph) in enumerate(items):
         x = 64 + (i % 3) * (cw + 24)
         y = 340 + (i // 3) * (ch + 24)
@@ -1073,7 +1074,7 @@ def s20_results(d):
     small = [('成果4', '1套', '列车级数字样机构建方法体系与技术规范', M4, 'file-certificate',
               '构建方法、集成流程与接口规范，可在**内推广、后续课题复用'),
              ('成果5', '1份', '示范应用与验证报告', M5, 'report-analytics', 'FXN5C 临哈线典型区段关键性能协同验证与效能评估')]
-    sh = (996 - y1 - 14) / 2.0
+    sh = (990 - y1 - 14) / 2.0
     for i, (no, form, name, th, ic, txt) in enumerate(small):
         y = y1 + i * (sh + 14)
         rect(s, 64, y, LW, sh, fill=WHITE, line=LINE)
@@ -1093,7 +1094,7 @@ def s20_results(d):
     kw_ = (RW - 2 * 12) / 3.0
     for i, (v, u, lab_, sub) in enumerate(ip):
         x = R + i * (kw_ + 12)
-        kpi(s, x, y1 + 40, kw_, 996 - y1 - 40, '%s<s=20><n><c=%s> %s</c></n></s>' % (v, SUB, u), lab_, sub, color=KPI_COLOR,
+        kpi(s, x, y1 + 40, kw_, 990 - y1 - 40, '%s<s=20><n><c=%s> %s</c></n></s>' % (v, SUB, u), lab_, sub, color=KPI_COLOR,
             value_size=46, label_size=20, sub_size=16, pad=18)
     notes(s, '备注（讲稿）：成果 1—3 中的虚线框为附图预留位置（形状组合）；选中该组合删除后插入实际图片即可。')
 

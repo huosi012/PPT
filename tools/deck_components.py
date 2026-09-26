@@ -40,11 +40,11 @@ def scene_band(s, x, y, w, h, scene, role, scene_label='工程场景', role_labe
     rect(s, x, y, w, h, fill=GRAYBG)
     rect(s, x, y, STYLE['concl_bar'], h, fill=RED)
     lw = round(w * split)
-    tag(s, x + 24, y + 14, scene_label, fill=RED, size=16, h=28, padx=10)
-    text(s, x + 24, y + 50, lw - 52, h - 54, scene, size=18, color=INK, lh=27)
-    line(s, x + lw, y + 18, x + lw, y + h - 18, RULE, 1)
-    text(s, x + lw + 28, y + 14, 240, 28, role_label, size=16, bold=True, color=MUTED, anchor='m', lh=22, wrap=False)
-    text(s, x + lw + 28, y + 50, w - lw - 56, h - 54, role, size=18, color=BODY, lh=27)
+    tag(s, x + 24, y + 12, scene_label, fill=RED, size=16, h=28, padx=10)
+    text(s, x + 24, y + 46, lw - 52, h - 50, scene, size=18, color=INK, lh=27)
+    line(s, x + lw, y + 16, x + lw, y + h - 16, RULE, 1)
+    text(s, x + lw + 28, y + 12, 240, 28, role_label, size=16, bold=True, color=MUTED, anchor='m', lh=22, wrap=False)
+    text(s, x + lw + 28, y + 46, w - lw - 56, h - 50, role, size=18, color=BODY, lh=27)
 
 
 def card_title(s, x, y, w, title, th, size=25, uw=None):
