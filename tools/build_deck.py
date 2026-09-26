@@ -424,23 +424,39 @@ def s07_core(d):
         icon(s, ic, LAYER[k].main, gx + 18, gy + 26, 30)
         text(s, gx + 58, gy + 22, gw - 66, 38, g, size=21, bold=True, color=INK, anchor='m', lh=30, wrap=False)
         text(s, gx + 18, gy + 68, gw - 24, 30, '→ ' + t, size=18, bold=True, color=LAYER[k].text, lh=26, wrap=False)
-    # 价值锚点
-    summary(s, L, 848, 1792, 140, '价值锚点：设计改一次，全工况列车关键性能验证自动重跑一遍',
-            '全流程跑在<b>可复现沙箱</b>中——验证可回放、可追溯；于是<b>设计改一次，全工况列车关键性能验证自动重跑一遍</b>，支撑研发验证由“实物试验为主”转向“数字样机为主”。',
-            title_size=28, desc_size=21)
+    # 工程现状 → 价值锚点
+    by, bw = 846, 872
+    rect(s, L, by, bw, 144, fill=GRAYBG)
+    tag(s, L + 24, by + 16, '工程现状', fill=RED, size=16, h=28, padx=10)
+    text(s, L + 124, by + 16, bw - 148, 28, '一次控制软件迭代的投入；复杂场景 HIL 模拟不了，只能靠现场验证', size=16, color=SUB,
+         anchor='m', lh=22, wrap=False)
+    tw_ = (bw - 48 - 3 * 12) / 4.0
+    for i, (v, u, lab_) in enumerate([('20', '人', '研发'), ('10', '人', '测试'), ('10', '人', '现场'), ('<s=18><n>约</n></s>2', '个月', '周期')]):
+        x = L + 24 + i * (tw_ + 12)
+        rect(s, x, by + 58, tw_, 68, fill=WHITE, line=LINE)
+        text(s, x + 16, by + 58, tw_ - 32, 68, '%s<s=16><n><c=%s> %s</c></n></s>' % (v, SUB, u), size=32, bold=True,
+             color=INK, font=MONO, anchor='m', lh=40, wrap=False)
+        text(s, x + tw_ - 16 - 70, by + 58, 70, 68, lab_, size=16, bold=True, color=MUTED, align='r', anchor='m', lh=22,
+             wrap=False)
+    tri(s, L + bw + 24, by + 72, 20, 26, TRI)
+    summary(s, L + bw + 48, by, 1792 - bw - 48, 144, '价值锚点：设计改一次，全工况自动重跑一遍',
+            '全流程跑在<b>可复现沙箱</b>中，验证可回放、可追溯，研发验证转向“数字样机为主”。', title_size=26,
+            desc_size=19)
+    notes(s, '说明：“工程现状”数据为一次控制软件迭代的实际投入（研发 20 人＋测试 10 人＋现场 10 人，约 2 个月）。')
 
 
 
-# =====================================================================  研究内容 ①—④ 共用：左栏、要点卡、附图
-def content_left(s, layer, label, body, outs=()):
-    """左栏：四层导航 + 定位说明 + 产出。"""
+# =====================================================================  研究内容 ①—④ 共用：左栏、场景条、要点卡、附图
+def content_left(s, layer, label=None, body=None, outs=()):
+    """左栏：四层导航 +（可选）补充说明 + 产出。"""
     th = LAYER[layer]
     y = layer_nav(s, 64, 214, 260, layer) + 22
-    text(s, 64, y, 260, 34, label, size=22, bold=True, color=INK, lh=32, wrap=False)
-    paras = body if isinstance(body, list) else [{'t': body}]
-    bh = sum(wrap_lines(p['t'], 260, 19) * 30 + p.get('sa', 0) for p in paras)
-    text(s, 64, y + 46, 260, bh + 4, body, size=19, color=SUB, lh=30)
-    y += 46 + bh + 28
+    if label:
+        text(s, 64, y, 260, 34, label, size=22, bold=True, color=INK, lh=32, wrap=False)
+        paras = body if isinstance(body, list) else [{'t': body}]
+        bh = sum(wrap_lines(p['t'], 260, 19) * 30 + p.get('sa', 0) for p in paras)
+        text(s, 64, y + 46, 260, bh + 4, body, size=19, color=SUB, lh=30)
+        y += 46 + bh + 28
     if outs:
         text(s, 64, y, 260, 34, '产出', size=22, bold=True, color=INK, lh=32, wrap=False)
         y += 44
@@ -451,6 +467,18 @@ def content_left(s, layer, label, body, outs=()):
     return y
 
 
+def scene_band(s, x, y, w, h, scene, role, role_label='本层作用', split=0.6):
+    """工程场景条：左为实际工程场景（遇到的问题），右为本层作用（怎么解决）。"""
+    rect(s, x, y, w, h, fill=GRAYBG)
+    rect(s, x, y, STYLE['concl_bar'], h, fill=RED)
+    lw = round(w * split)
+    tag(s, x + 24, y + 14, '工程场景', fill=RED, size=16, h=28, padx=10)
+    text(s, x + 24, y + 50, lw - 52, h - 54, scene, size=18, color=INK, lh=27)
+    line(s, x + lw, y + 18, x + lw, y + h - 18, RULE, 1)
+    text(s, x + lw + 28, y + 14, 240, 28, role_label, size=16, bold=True, color=MUTED, anchor='m', lh=22, wrap=False)
+    text(s, x + lw + 28, y + 50, w - lw - 56, h - 54, role, size=18, color=BODY, lh=27)
+
+
 def card_title(s, x, y, w, title, th, size=25, uw=None):
     """居中标题 + 同色下划线（参考页四栏卡片）。"""
     text(s, x, y, w, 40, title, size=size, bold=True, color=INK, align='c', anchor='m', lh=round(size * 1.3),
@@ -459,23 +487,17 @@ def card_title(s, x, y, w, title, th, size=25, uw=None):
     rect(s, x + (w - uw) / 2.0, y + 48, uw, 3, fill=th.main)
 
 
-def point_card(s, x, y, w, h, no, title, icon_name, desc, th, stack=False, sub=None, desc_size=19):
-    """研究要点卡：顶部色条 + 图标 + 编号 + 标题（+ 副标题）+ 说明；stack=True 时标题在图标下方另起一行。"""
+def point_card(s, x, y, w, h, no, title, desc, th, sub=None, title_size=20, desc_size=17):
+    """研究要点卡：顶部色条 + 编号标题（+ 副标题）+ 说明。"""
     rect(s, x, y, w, h, fill=WHITE, line=LINE)
     rect(s, x, y, w, BAR, fill=th.main)
-    num_mark(s, x + w - 22 - 80, y + 16, 80, no, th.num, size=34)
-    if stack:
-        icon_badge(s, icon_name, th, x + 22, y + 22, 48)
-        text(s, x + 22, y + 80, w - 44, 34, title, size=22, bold=True, color=INK, anchor='m', lh=30, wrap=False)
-        ty = y + 120
-    else:
-        icon_badge(s, icon_name, th, x + 24, y + 24, 52)
-        text(s, x + 90, y + 24, w - 190, 52, title, size=24, bold=True, color=INK, anchor='m', lh=32, wrap=False)
-        ty = y + 94
+    text(s, x + 22, y + 16, w - 44, 32, '<c=%s><m>%s</m></c>  %s' % (th.text, no, title), size=title_size, bold=True,
+         color=INK, anchor='m', lh=round(title_size * 1.3), wrap=False)
+    ty = y + 58
     if sub:
-        text(s, x + 22, ty - 2, w - 44, 26, sub, size=16, bold=True, color=th.text, lh=24, wrap=False)
-        ty += 30
-    text(s, x + 22, ty, w - 44, y + h - ty - 10, desc, size=desc_size, color=BODY, lh=round(desc_size * 1.52))
+        text(s, x + 22, ty - 4, w - 44, 24, sub, size=15, bold=True, color=th.text, lh=22, wrap=False)
+        ty += 26
+    text(s, x + 22, ty, w - 44, y + h - ty - 8, desc, size=desc_size, color=BODY, lh=round(desc_size * 1.52))
 
 
 class Fig:
@@ -534,7 +556,8 @@ def smooth(pts, n=8):
     return out
 
 
-FIG_NOTE = '说明：本页“示意图”为临时附图（形状组合，可直接编辑）；如有实际图片，选中该组合删除后插入即可。'
+FIG_NOTE = ('说明：“工程场景”可替换为本单位的实际案例；“示意图”为临时附图（形状组合，可直接编辑），'
+            '如有实际图片，选中该组合删除后插入即可。')
 
 
 # =====================================================================  08 研究内容① 基础层
@@ -542,49 +565,51 @@ def s08_layer1(d):
     s = d.new_slide()
     th = LAYER[1]
     frame(d, s, '研究内容① 测试知识库与任务工作流：为上层提供知识与规则', '研究什么：验证判据知识化 · 任务工作流建模 · 知识与流程的迭代机制', '研究内容① 基础层')
-    content_left(s, 1, '定位', '为上层提供<b>知识与规则</b>——没有判据知识库，任务理解只能靠通用大模型“猜”；没有任务工作流，编排调度无章可循。',
+    content_left(s, 1, '与上层的关系', '知识库与工作流是“任务理解与编排调度”的<b>知识与规则来源</b>。',
                  outs=['验证判据知识库', '任务工作流定义<br>与配置规范'])
     X, XW = 356, 1500
+    scene_band(s, X, 214, XW, 112,
+               '判定一个工况是否合格，依据分散在国标、行标、企业标准、试验大纲和专家经验中，查找与比对主要靠人工，判定口径不易统一。',
+               '为上层提供<b>知识与规则</b>——没有判据知识库，任务理解只能靠通用大模型“猜”；没有任务工作流，编排调度无章可循。')
     cw = (XW - 48) / 3.0
     cards = [
-        ('验证判据知识化', 'list-check', '从设计规范、运用要求与历史案例中提取判据，形式化为<b>可自动比对</b>的判据条目，构建验证判据知识库'),
-        ('任务工作流建模', 'hierarchy-3', '定义验证任务的分解规则、执行顺序、流转条件与异常分支，形成<b>可配置、可复用</b>的任务工作流'),
-        ('知识与流程的迭代机制', 'refresh', '依据验证结果回流，持续更新判据条目与工作流定义'),
+        ('验证判据知识化', '从设计规范、运用要求与历史案例中提取判据，形式化为<b>可自动比对</b>的判据条目，构建验证判据知识库'),
+        ('任务工作流建模', '定义验证任务的分解规则、执行顺序、流转条件与异常分支，形成<b>可配置、可复用</b>的任务工作流'),
+        ('知识与流程的迭代机制', '依据验证结果回流，持续更新判据条目与工作流定义'),
     ]
-    for i, (t, ic, desc) in enumerate(cards):
-        point_card(s, X + i * (cw + 24), 214, cw, 200, '0%d' % (i + 1), t, ic, desc, th)
+    for i, (t, desc) in enumerate(cards):
+        point_card(s, X + i * (cw + 24), 342, cw, 136, '0%d' % (i + 1), t, desc, th, desc_size=18)
     # 附图：判据知识化（上）→ 任务工作流（下）→ 结果回流（右）
-    f, py = fig_area(s, X, 438, XW, 552, '从规范到判据、从判据到工作流')
-    py += 14
+    f, py = fig_area(s, X, 494, XW, 496, '从规范到判据、从判据到工作流')
     fx = X + 24
     step = 204                                   # 工作流节点间距（节点宽 150）
-    tag(f, fx, py + 28, '01 判据知识化', fill=th.bg, color=th.text, size=16, h=28, padx=10)
-    sy = py + 72
+    tag(f, fx, py + 26, '01 判据知识化', fill=th.bg, color=th.text, size=16, h=28, padx=10)
+    sy = py + 66
     for k, (a, b) in enumerate([('设计规范', '条款与限值要求'), ('运用要求', '运用条件与指标'), ('历史案例', '故障与异常记录')]):
-        yy = sy + k * 62
+        yy = sy + k * 60
         rect(f, fx, yy, 210, 52, fill=WHITE, line=LINE)
         icon(f, 'file-text', MUTED, fx + 12, yy + 12, 28)
         text(f, fx + 50, yy + 5, 150, 22, a, size=17, bold=True, color=INK, lh=22, wrap=False)
         text(f, fx + 50, yy + 28, 150, 20, b, size=14, color=MUTED, lh=20, wrap=False)
-    cy = sy + 88
+    cy = sy + 86
     arrow(f, fx + 220, cy, fx + 314, cy)
     text(f, fx + 210, cy - 30, 114, 22, '提取 · 形式化', size=15, bold=True, color=SUB, align='c', lh=20, wrap=False)
     rx, rw = fx + 326, 392
-    rect(f, rx, sy, rw, 176, fill=WHITE, line=th.soft, lw=1.2)
+    rect(f, rx, sy, rw, 172, fill=WHITE, line=th.soft, lw=1.2)
     rect(f, rx, sy, rw, 36, fill=th.bg)
     text(f, rx + 14, sy, rw - 28, 36, '判据条目（结构化，可自动比对）', size=16, bold=True, color=th.text, anchor='m', lh=22,
          wrap=False)
     rows = [('验证对象', '牵引控制系统'), ('关键性能', '速度跟踪偏差'), ('适用工况', '长大下坡 · 湿轨'),
             ('判定规则', '|实测 − 目标| ≤ 允许偏差'), ('来源', '设计规范条款')]
     for k, (a, b) in enumerate(rows):
-        ry = sy + 40 + k * 26
-        text(f, rx + 14, ry, 84, 26, a, size=15, color=MUTED, anchor='m', lh=20, wrap=False)
-        text(f, rx + 104, ry, rw - 118, 26, b, size=16, bold=(k == 3), color=INK, anchor='m', lh=22, wrap=False)
+        ry = sy + 40 + k * 25
+        text(f, rx + 14, ry, 84, 25, a, size=15, color=MUTED, anchor='m', lh=20, wrap=False)
+        text(f, rx + 104, ry, rw - 118, 25, b, size=16, bold=(k == 3), color=INK, anchor='m', lh=22, wrap=False)
     arrow(f, rx + rw + 10, cy, rx + rw + 80, cy)
     text(f, rx + rw + 10, cy - 30, 70, 22, '入库', size=15, bold=True, color=SUB, align='c', lh=20, wrap=False)
     kx = fx + 4 * step                           # 知识库与下方“结果比对”节点对齐
-    shape(f, MSO_SHAPE.CAN, kx, sy + 4, 150, 168, fill=th.bg, line=th.main, lw=1.2)
-    text(f, kx, sy + 44, 150, 116, '判据<br>知识库', size=20, bold=True, color=th.text, align='c', anchor='m', lh=28,
+    shape(f, MSO_SHAPE.CAN, kx, sy + 4, 150, 164, fill=th.bg, line=th.main, lw=1.2)
+    text(f, kx, sy + 44, 150, 112, '判据<br>知识库', size=20, bold=True, color=th.text, align='c', anchor='m', lh=28,
          wrap=False)
     ex = kx + 180
     for k, t in enumerate(['速度跟踪偏差', '牵引能耗', '运行平稳性']):
@@ -594,28 +619,28 @@ def s08_layer1(d):
         text(f, ex + 18, yy, 320, 42, '<n><c=%s>判据</c></n>　%s' % (MUTED, t), size=17, bold=True, color=INK,
              anchor='m', lh=22, wrap=False)
     # 02 任务工作流
-    y2 = py + 290
+    y2 = py + 262
     tag(f, fx, y2, '02 任务工作流', fill=th.bg, color=th.text, size=16, h=28, padx=10)
-    ny = y2 + 46
+    ny = y2 + 42
     names = ['验证目标', '任务分解', '环境装配', '仿真执行', '结果比对', '验证报告']
     for k, (t, kd) in enumerate(zip(names, ['n', 'n', 'n', 'n', 'k', 'on'])):
-        fnode(f, fx + k * step, ny, 150, 46, t, th, kd, size=18)
+        fnode(f, fx + k * step, ny, 150, 44, t, th, kd, size=18)
         if k < 5:
-            arrow(f, fx + k * step + 156, ny + 23, fx + (k + 1) * step - 6, ny + 23)
+            arrow(f, fx + k * step + 156, ny + 22, fx + (k + 1) * step - 6, ny + 22)
     text(f, fx + 4 * step + 150, ny - 6, step - 150, 20, '通过', size=14, bold=True, color=SUB, align='c', lh=18,
          wrap=False)
     bx0, bx1 = fx + 4 * step + 75, fx + 2 * step + 75
-    poly(f, [(bx0, ny + 46), (bx0, ny + 84), (bx1, ny + 84), (bx1, ny + 48)], RED, 2, tail='triangle')
-    text(f, bx1, ny + 90, bx0 - bx1, 24, '未通过 → 异常分支：调整后重跑', size=15, bold=True, color=RED, align='c', lh=22,
+    poly(f, [(bx0, ny + 44), (bx0, ny + 78), (bx1, ny + 78), (bx1, ny + 46)], RED, 2, tail='triangle')
+    text(f, bx1, ny + 84, bx0 - bx1, 24, '未通过 → 异常分支：调整后重跑', size=15, bold=True, color=RED, align='c', lh=22,
          wrap=False)
-    arrow(f, kx + 75, sy + 174, kx + 75, ny - 4, th.main, 1.5, dash='dash')
-    text(f, kx + 86, (sy + 174 + ny) / 2.0 - 11, 100, 22, '调用判据', size=15, bold=True, color=th.text, lh=20,
+    arrow(f, kx + 75, sy + 170, kx + 75, ny - 4, th.main, 1.5, dash='dash')
+    text(f, kx + 86, (sy + 170 + ny) / 2.0 - 11, 100, 22, '调用判据', size=15, bold=True, color=th.text, lh=20,
          wrap=False)
     # 03 迭代：结果回流到知识库
     lx = X + XW - 40
-    poly(f, [(fx + 5 * step + 154, ny + 23), (lx, ny + 23), (lx, sy + 162)], OK.main, 2, tail='triangle')
-    tag(f, fx + 5 * step - 20, py + 262, '03 迭代机制', fill=th.bg, color=th.text, size=16, h=28, padx=10)
-    text(f, fx + 5 * step - 20, py + 296, 236, 22, '结果回流，更新判据与工作流', size=15, color=SUB, lh=20, wrap=False)
+    poly(f, [(fx + 5 * step + 154, ny + 22), (lx, ny + 22), (lx, sy + 162)], OK.main, 2, tail='triangle')
+    tag(f, fx + 5 * step + 170, ny - 60, '03 迭代机制', fill=th.bg, color=th.text, size=16, h=28, padx=10)
+    text(f, fx + 5 * step + 170, ny - 28, 230, 22, '结果回流，更新判据与工作流', size=15, color=SUB, lh=20, wrap=False)
     notes(s, FIG_NOTE)
 
 
@@ -625,22 +650,25 @@ def s09_layer2(d):
     th = LAYER[2]
     frame(d, s, '研究内容② 任务理解与智能编排调度：引擎在此落地', '研究什么：验证目标解析与任务分解 · 测试环境自动装配 · 模型保真度与算力自适应调度 · 执行监控与失败重规划',
           '研究内容② 决策层')
-    content_left(s, 2, '定位', '本课题的<b>核心决策层</b>——“多智能体协同运行与调度引擎”在此落地；向下承接知识与规则，向执行层下发执行方案。',
+    content_left(s, 2, '上下游关系', '向下承接①的<b>知识与规则</b>，向③执行层下发<b>执行方案</b>（智能体组合、工况、算力）。',
                  outs=['多智能体协同运行与调度引擎（软件1套）'])
     X, XW = 356, 1500
+    scene_band(s, X, 214, XW, 112,
+               '验证一条线路，要覆盖区段 × 环境温度 × 轨面状态 × 载重 × 手柄序列的组合，工况数量成倍增长：全用高精度模型跑不完，全用简化模型，关键工况又不可信。',
+               '本课题的<b>核心决策层</b>，“多智能体协同运行与调度引擎”在此落地：按工况特征分配模型精度与算力，把高精度用在关键工况上。')
     cw = (XW - 60) / 4.0
     cards = [
-        ('验证目标解析与任务分解', 'target-arrow', '把“验证该机车某项性能是否满足要求”拆解为可执行验证任务，并匹配知识库中的判据与工作流'),
-        ('测试环境自动装配', 'plug-connected', '按验证目标自动完成智能体组合、接口连接与算力资源配置'),
-        ('模型保真度与算力自适应调度', 'adjustments', '按工况特征匹配模型精度与算力配置：常规工况降阶提速，极端工况全保真'),
-        ('执行监控与失败重规划', 'activity', '运行过程监控、异常中断后重规划，支撑指标实时推演'),
+        ('验证目标解析与任务分解', '把“验证该机车某项性能是否满足要求”拆解为可执行验证任务，并匹配知识库中的判据与工作流'),
+        ('测试环境自动装配', '按验证目标自动完成智能体组合、接口连接与算力资源配置'),
+        ('模型保真度与算力自适应调度', '按工况特征匹配模型精度与算力配置：常规工况降阶提速，极端工况全保真'),
+        ('执行监控与失败重规划', '运行过程监控、异常中断后重规划，支撑指标实时推演'),
     ]
-    for i, (t, ic, desc) in enumerate(cards):
-        point_card(s, X + i * (cw + 20), 214, cw, 224, '0%d' % (i + 1), t, ic, desc, th, stack=True)
+    for i, (t, desc) in enumerate(cards):
+        point_card(s, X + i * (cw + 20), 342, cw, 150, '0%d' % (i + 1), t, desc, th)
     # 附图：一次验证任务中的调度过程
-    f, py = fig_area(s, X, 460, XW, 530, '一次验证中的调度过程：按工况切换保真度、分配算力，异常时重规划')
+    f, py = fig_area(s, X, 508, XW, 482, '一次验证中的调度过程：按工况切换保真度、分配算力，异常时重规划')
     fx = X + 24
-    chips_row(f, fx, py + 22, ['<k>验证任务</k>　速度跟踪 ＋ 牵引能耗', '<k>01 任务分解</k>　对象 · 性能 · 判据',
+    chips_row(f, fx, py + 18, ['<k>验证任务</k>　速度跟踪 ＋ 牵引能耗', '<k>01 任务分解</k>　对象 · 性能 · 判据',
                                '<k>02 环境装配</k>　控制系统 · 车辆动力学 · 线路智能体', '<k>03—04 调度执行与监控</k>'],
               gap=44, arrow=True, arrow_color=TRI, size=16, h=40, padx=16, color=BODY, line=LINE)
     tx0, tx1 = fx + 160, X + XW - 24
@@ -650,31 +678,31 @@ def s09_layer2(d):
     for fr, _, _ in segs:
         xs.append(xs[-1] + fr * (tx1 - tx0))
     n3, n4 = '<c=%s>03</c> ' % th.text, '<c=%s>04</c> ' % th.text
-    for lab, ry, rh in [('工况', 92, 40), (n3 + '模型保真度', 144, 40), (n3 + '算力 · GPU', 204, 60),
-                        (n3 + '算力 · NPU', 280, 32), (n4 + '执行监控', 338, 40)]:
+    for lab, ry, rh in [('工况', 76, 40), (n3 + '模型保真度', 124, 40), (n3 + '算力 · GPU', 176, 56),
+                        (n3 + '算力 · NPU', 244, 30), (n4 + '执行监控', 298, 40)]:
         text(f, fx, py + ry, 156, rh, lab, size=16, bold=True, color=INK, anchor='m', lh=22, wrap=False)
     for xb in xs[1:-1]:
-        line(f, xb, py + 86, xb, py + 384, RULE, 1, dash='dash')
-    gb, nb, my = py + 264, py + 312, py + 358       # GPU 基线 / NPU 基线 / 监控线
-    gpu, npu = [(tx0, gb)], [(tx0, nb), (tx0, nb - 8)]
+        line(f, xb, py + 70, xb, py + 342, RULE, 1, dash='dash')
+    gb, nb, my = py + 232, py + 274, py + 318       # GPU 基线 / NPU 基线 / 监控线
+    gpu, npu = [(tx0, gb)], [(tx0, nb), (tx0, nb - 7)]
     for k, (fr, nm, hi) in enumerate(segs):
         x0, x1 = xs[k], xs[k + 1]
-        rect(f, x0 + 2, py + 92, x1 - x0 - 4, 40, fill=WHITE, line=LINE)
-        text(f, x0 + 2, py + 92, x1 - x0 - 4, 40, nm, size=16, color=SUB, align='c', anchor='m', lh=22, wrap=False)
+        rect(f, x0 + 2, py + 76, x1 - x0 - 4, 40, fill=WHITE, line=LINE)
+        text(f, x0 + 2, py + 76, x1 - x0 - 4, 40, nm, size=16, color=SUB, align='c', anchor='m', lh=22, wrap=False)
         fl, fc = (th.main, on_color(th.main)) if hi else (th.bg, th.text)
-        rect(f, x0 + 2, py + 144, x1 - x0 - 4, 40, fill=fl)
-        text(f, x0 + 2, py + 144, x1 - x0 - 4, 40, '全保真 · 准' if hi else '降阶模型 · 快', size=16, bold=True, color=fc,
+        rect(f, x0 + 2, py + 124, x1 - x0 - 4, 40, fill=fl)
+        text(f, x0 + 2, py + 124, x1 - x0 - 4, 40, '全保真 · 准' if hi else '降阶模型 · 快', size=16, bold=True, color=fc,
              align='c', anchor='m', lh=22, wrap=False)
-        lv = 52 if hi else 18
+        lv = 46 if hi else 16
         gpu += [(x0, gb - lv), (x1, gb - lv)]
         if k:
-            npu += [(x0 - 16, nb - 8), (x0, nb - 26), (x0 + 16, nb - 8)]
+            npu += [(x0 - 15, nb - 7), (x0, nb - 23), (x0 + 15, nb - 7)]
     gpu.append((tx1, gb))
-    npu += [(tx1, nb - 8), (tx1, nb)]
+    npu += [(tx1, nb - 7), (tx1, nb)]
     poly(f, gpu, th.main, 1.5, fill=th.soft, closed=True)
     poly(f, npu, th.main, 1.5, fill=th.soft, closed=True)
-    text(f, tx1 - 300, py + 206, 292, 22, '多物理域模型并行仿真', size=14, color=MUTED, align='r', lh=20, wrap=False)
-    text(f, tx1 - 300, py + 280, 292, 20, '切换时的推理与编排决策', size=14, color=MUTED, align='r', lh=20, wrap=False)
+    text(f, tx1 - 300, py + 180, 292, 22, '多物理域模型并行仿真', size=14, color=MUTED, align='r', lh=20, wrap=False)
+    text(f, tx1 - 300, py + 246, 292, 20, '切换时的推理与编排决策', size=14, color=MUTED, align='r', lh=20, wrap=False)
     # 执行监控：异常中断 → 重规划
     line(f, tx0, my, tx1, my, RULE, 2)
     for k, (fr, nm, hi) in enumerate(segs):
@@ -684,13 +712,13 @@ def s09_layer2(d):
             icon(f, 'circle-check', OK.main, x0 + 0.25 * (x1 - x0) - 11, my - 11, 22)
             icon(f, 'alert-circle', RED, xa - 13, my - 13, 26)
             text(f, xa + 18, my - 30, 120, 22, '异常中断', size=14, bold=True, color=RED, lh=20, wrap=False)
-            poly(f, [(xa, my + 13), (xa, my + 30), (x0 + 16, my + 30), (x0 + 16, my + 12)], RED, 1.8, tail='triangle')
-            text(f, x0 + 16, my + 32, xa - x0 - 16, 20, '重规划', size=14, bold=True, color=RED, align='c', lh=20,
+            poly(f, [(xa, my + 13), (xa, my + 28), (x0 + 16, my + 28), (x0 + 16, my + 12)], RED, 1.8, tail='triangle')
+            text(f, x0 + 16, my + 30, xa - x0 - 16, 20, '重规划', size=14, bold=True, color=RED, align='c', lh=20,
                  wrap=False)
         else:
             icon(f, 'circle-check', OK.main, (x0 + x1) / 2.0 - 11, my - 11, 22)
-    arrow(f, tx0, py + 440, tx1, py + 440, RULER, 2)
-    text(f, tx1 - 240, py + 414, 236, 22, '仿真推进（里程）', size=14, color=MUTED, align='r', lh=20, wrap=False)
+    arrow(f, tx0, py + 404, tx1, py + 404, RULER, 2)
+    text(f, tx1 - 240, py + 378, 236, 22, '仿真推进（里程）', size=14, color=MUTED, align='r', lh=20, wrap=False)
     notes(s, FIG_NOTE)
 
 
@@ -702,95 +730,111 @@ def s10_layer3(d):
     content_left(s, 3, '对接项目7总体目标', [{'t': '<b>模型自动标定</b> → 仿真智能体', 'sa': 8}, {'t': '<b>性能自动评估</b> → 测试识别'}],
                  outs=['关键系统仿真智能体／<br>智能孪生模型', '用例与线路数据集', '验证报告与追溯记录'])
     X, XW = 356, 1500
+    scene_band(s, X, 214, XW, 112,
+               '2024 年 12 月，FXN5C 在临哈线长大下坡（约 −10℃）由牵引回手柄后，冷却风扇较长时间保持 40Hz，低温水从 25℃ 被冷却至 0℃，高温水仍在 78℃，散热器冻结。',
+               '这类多系统、长时序的问题，现有 HIL＋经验数据难以复现；执行层要在研发阶段把它<b>跑出来、判出来、找到原因</b>。',
+               role_label='本层怎么做')
     gap = 24
-    cw, ch, y0 = (XW - 4 * gap) / 5.0, 272, 214
+    cw, ch, y0 = (XW - 4 * gap) / 5.0, 200, 342
     steps = [
-        ('仿真智能体', '研制与接入', 'robot',
+        ('仿真智能体', '研制与接入',
          '研制控制系统、车辆动力学与线路等<b>仿真智能体与智能孪生模型</b>；标准化接入、时序同步、<b>模型自动标定</b>'),
-        ('测试用例生成', '用例与线路数据按需自生成', 'file-text', '按覆盖完备性要求，自动生成测试用例与线路模型数据（平纵断面、曲线半径、超高、坡度、不平顺谱）'),
-        ('测试识别', '结果评判 · 异常定位', 'zoom-check', '逐工况对标判据，<b>识别异常工况并定位原因</b>，输出结果可信性判断'),
-        ('测试报告', '报告生成', 'report', '验证结论自动汇总，生成<b>可追溯</b>的验证报告'),
-        ('数据回归', '回流迭代', 'refresh', '验证结果回流，迭代模型标定、判据与工况集；支持设计变更后的<b>回归重跑</b>'),
+        ('测试用例生成', '用例与线路数据按需自生成', '按覆盖完备性要求，自动生成测试用例与线路模型数据（平纵断面、曲线半径、超高、坡度、不平顺谱）'),
+        ('测试识别', '结果评判 · 异常定位', '逐工况对标判据，<b>识别异常工况并定位原因</b>，输出结果可信性判断'),
+        ('测试报告', '报告生成', '验证结论自动汇总，生成<b>可追溯</b>的验证报告'),
+        ('数据回归', '回流迭代', '验证结果回流，迭代模型标定、判据与工况集；支持设计变更后的<b>回归重跑</b>'),
     ]
     cxs = []
-    for i, (t, sub, ic, desc) in enumerate(steps):
+    for i, (t, sub, desc) in enumerate(steps):
         x = X + i * (cw + gap)
         cxs.append(x + cw / 2.0)
-        point_card(s, x, y0, cw, ch, '0%d' % (i + 1), t, ic, desc, th, stack=True, sub=sub, desc_size=18)
+        point_card(s, x, y0, cw, ch, '0%d' % (i + 1), t, desc, th, sub=sub)
         if i < 4:
             tri(s, x + cw + gap / 2.0, y0 + ch / 2.0, 14, 20, TRI)
     yb = y0 + ch
-    poly(s, [(cxs[4], yb), (cxs[4], yb + 24), (cxs[0], yb + 24), (cxs[0], yb + 2)], OK.main, 2, tail='triangle')
+    poly(s, [(cxs[4], yb), (cxs[4], yb + 22), (cxs[0], yb + 22), (cxs[0], yb + 2)], OK.main, 2, tail='triangle')
     lab = '数据回归：结果回流，迭代模型标定、判据与工况集 · 设计变更后回归重跑'
     lw_ = text_width(lab, 16, True) + 28
     lx_ = (cxs[0] + cxs[4]) / 2.0 - lw_ / 2.0
-    rect(s, lx_, yb + 12, lw_, 24, fill=WHITE)
-    text(s, lx_, yb + 12, lw_, 24, lab, size=16, bold=True, color=OK.text, align='c', anchor='m', lh=22, wrap=False)
-    # 附图：测试识别——速度曲线对标判据
-    f, py = fig_area(s, X, 540, XW, 450, '测试识别：逐工况对标判据，识别异常并定位原因')
-    py += 14
+    rect(s, lx_, yb + 10, lw_, 24, fill=WHITE)
+    text(s, lx_, yb + 10, lw_, 24, lab, size=16, bold=True, color=OK.text, align='c', anchor='m', lh=22, wrap=False)
+    # 附图：用现场案例说明测试识别
+    f, py = fig_area(s, X, 588, XW, 402, '以临哈线散热器冻结为例：逐工况对标判据，识别异常并定位原因', note='示意图 · 数据据现场记录')
     fx = X + 24
-    px0, px1, pt, pb = fx + 56, fx + 900, py + 52, py + 318
+    px0, px1, pt, pb = fx + 70, fx + 900, py + 44, py + 226
 
-    def P(t, v):
-        return (px0 + t * (px1 - px0), pb - v * (pb - pt))
+    def P(t, v):                                 # t：时间 0—1；v：水温 ℃（0—90）
+        return (px0 + t * (px1 - px0), pb - v / 90.0 * (pb - pt))
 
-    hx0, hx1 = P(0.335, 0)[0], P(0.44, 0)[0]
-    rect(f, hx0, pt - 8, hx1 - hx0, pb - pt + 8, fill=RED_BG, line=RED, lw=1, dash='dash')
-    icon(f, 'alert-circle', RED, hx0 + 6, pt - 2, 18)
-    text(f, hx0 + 26, pt - 4, 90, 22, '偏差超限', size=14, bold=True, color=RED, lh=20, wrap=False)
-    tgt = [(0, .30), (.08, .72), (.24, .72), (.29, .50), (.47, .50), (.52, .72), (1, .72)]
-    poly(f, [P(t, v + .07) for t, v in tgt] + [P(t, v - .07) for t, v in reversed(tgt)], None, 1, fill=LINE,
-         closed=True)
-    sim = [(0, .30), (.03, .42), (.06, .60), (.09, .70), (.12, .74), (.16, .71), (.20, .73), (.24, .72), (.28, .58),
-           (.31, .52), (.34, .44), (.37, .40), (.40, .40), (.43, .44), (.46, .50), (.50, .60), (.54, .69), (.58, .74),
-           (.63, .71), (.68, .73), (.74, .76), (.80, .73), (.86, .77), (.92, .74), (1, .75)]
-    poly(f, [P(*p) for p in tgt], SUB, 2, dash='dash')
-    poly(f, smooth([P(*p) for p in sim]), th.main, 2.5)
-    arrow(f, px0, pb, px1 + 24, pb, MUTED, 1.5)
-    arrow(f, px0, pb, px0, pt - 24, MUTED, 1.5)
-    text(f, px0 - 56, pt - 26, 48, 22, '速度', size=14, color=MUTED, align='r', lh=20, wrap=False)
-    text(f, px1 - 36, pb - 28, 60, 22, '里程', size=14, color=MUTED, align='r', lh=20, wrap=False)
-    for a, b, nm in [(0.0, 0.28, '直线段'), (0.28, 0.47, '小半径曲线段'), (0.47, 0.70, '直线段'), (0.70, 1.0, '长大下坡段')]:
-        x0, x1 = P(a, 0)[0], P(b, 0)[0]
-        hi = nm == '小半径曲线段'
-        rect(f, x0 + 1, pb + 8, x1 - x0 - 2, 28, fill=RED_BG if hi else WHITE, line=RED if hi else LINE)
-        text(f, x0 + 1, pb + 8, x1 - x0 - 2, 28, nm, size=14, bold=hi, color=RED if hi else SUB, align='c', anchor='m',
-             lh=20, wrap=False)
-    lgx, lgy = px0 + 16, py + 16
-    for kind, lab_ in [('dash', '目标速度（运行图）'), ('line', '仿真速度（智能体输出）'), ('band', '允许偏差带（判据）')]:
-        if kind == 'band':
-            rect(f, lgx, lgy + 4, 32, 14, fill=LINE)
-        else:
-            line(f, lgx, lgy + 11, lgx + 32, lgy + 11, SUB if kind == 'dash' else th.main, 2 if kind == 'dash' else 2.5,
-                 dash='dash' if kind == 'dash' else None)
-        text(f, lgx + 40, lgy, 220, 22, lab_, size=14, color=SUB, lh=20, wrap=False)
-        lgx += 40 + text_width(lab_, 14) + 32
+    lim = 6                                      # 防冻限值（示意位置，不标数值）
+    hx0 = P(0.63, 0)[0]
+    rect(f, hx0, pt - 6, px1 - hx0, pb - pt + 6, fill=RED_BG, line=RED, lw=1, dash='dash')
+    ly_ = P(0, 42)[1]
+    icon(f, 'alert-circle', RED, hx0 + 10, ly_ - 9, 18)
+    text(f, hx0 + 32, ly_ - 11, px1 - hx0 - 38, 22, '低温水越限：过冷 → 散热器冻结', size=14, bold=True, color=RED,
+         lh=20, wrap=False)
+    line(f, px0, P(0, lim)[1], px1, P(0, lim)[1], RED, 1.5, dash='dash')
+    text(f, px0 + 8, P(0, lim)[1] - 22, 200, 20, '防冻限值（判据）', size=14, bold=True, color=RED, lh=20, wrap=False)
+    xh = P(0.2, 0)[0]
+    line(f, xh, pt - 8, xh, pb, SUB, 1.2, dash='dash')
+    text(f, xh + 6, pt - 8, 90, 20, '回手柄', size=14, bold=True, color=SUB, lh=20, wrap=False)
+    ht = [(0, 80), (0.1, 79.5), (0.2, 79), (0.35, 78.2), (0.5, 78), (0.7, 78.2), (0.85, 78), (1, 78)]
+    lt = [(0, 25), (0.1, 25.4), (0.2, 25), (0.3, 21), (0.42, 15), (0.55, 9), (0.67, 4.5), (0.78, 1.6), (0.86, 0.2),
+          (1, 0)]
+    poly(f, smooth([P(*p) for p in ht]), SUB, 2.5)
+    poly(f, smooth([P(*p) for p in lt]), th.main, 2.5)
+    text(f, P(0.3, 78)[0], P(0, 78)[1] - 26, 200, 22, '高温水 维持 78℃', size=14, bold=True, color=SUB, lh=20,
+         wrap=False)
+    text(f, P(0.3, 25)[0] + 10, P(0, 25)[1] - 20, 200, 22, '低温水 25℃ → 0℃', size=14, bold=True, color=th.text, lh=20,
+         wrap=False)
+    for v in (78, 25, 0):
+        text(f, px0 - 56, P(0, v)[1] - 10, 48, 20, '%d℃' % v, size=13, color=MUTED, font=MONO, align='r', lh=20,
+             wrap=False)
+    arrow(f, px0, pb, px1 + 22, pb, MUTED, 1.5)
+    arrow(f, px0, pb, px0, pt - 22, MUTED, 1.5)
+    text(f, px0 - 60, pt - 30, 52, 20, '水温', size=14, color=MUTED, align='r', lh=20, wrap=False)
+    text(f, px1 - 30, pb - 24, 52, 20, '时间', size=14, color=MUTED, align='r', lh=20, wrap=False)
+    # 时间轴下的条带：手柄 / 风扇 / 线路与环境
+    for k, (lab_, cells) in enumerate([('手柄', [(0, 0.2, '牵引', 'n'), (0.2, 1, '回手柄', 'k')]),
+                                       ('风扇', [(0, 0.2, '', 'n'), (0.2, 1, '冷却风扇 40Hz 持续运行', 'w')]),
+                                       ('线路', [(0, 1, '临哈线长大下坡 · 环境约 −10℃', 'n')])]):
+        yy = pb + 10 + k * 30
+        text(f, fx, yy, 60, 26, lab_, size=14, bold=True, color=MUTED, anchor='m', lh=20, wrap=False)
+        for a, b, t, kd in cells:
+            x0, x1 = P(a, 0)[0], P(b, 0)[0]
+            fl, ln, fc = {'n': (WHITE, LINE, SUB), 'k': (th.bg, th.soft, th.text), 'w': (RED_BG, RED, RED)}[kd]
+            rect(f, x0 + 1, yy, x1 - x0 - 2, 26, fill=fl, line=ln)
+            if t:
+                text(f, x0 + 1, yy, x1 - x0 - 2, 26, t, size=14, bold=(kd != 'n'), color=fc, align='c', anchor='m',
+                     lh=20, wrap=False)
     # 识别结果
-    rw = 480
+    rw = 470
     rx = X + XW - 24 - rw
-    text(f, rx, py + 20, rw, 28, '识别结果', size=18, bold=True, color=INK, lh=26, wrap=False)
-    hy = py + 60
-    cols = [(rx, 150), (rx + 150, 170), (rx + 320, 160)]
+    text(f, rx, py + 12, rw, 28, '识别结果', size=18, bold=True, color=INK, lh=26, wrap=False)
+    hy = py + 46
+    cols = [(rx, 170), (rx + 170, 150), (rx + 320, 150)]
     for (cx_, cw_), t in zip(cols, ['工况', '判据', '结论']):
-        text(f, cx_ + 12, hy, cw_ - 12, 26, t, size=14, bold=True, color=MUTED, anchor='m', lh=20, wrap=False)
-    line(f, rx, hy + 28, rx + rw, hy + 28, SUB, 1.2)
-    res = [('直线段', '速度跟踪偏差', '✓ 满足', False), ('小半径曲线段', '速度跟踪偏差', '✗ 超限', True),
-           ('长大下坡段', '牵引能耗', '✓ 满足', False)]
+        text(f, cx_ + 10, hy, cw_ - 10, 24, t, size=14, bold=True, color=MUTED, anchor='m', lh=20, wrap=False)
+    line(f, rx, hy + 26, rx + rw, hy + 26, SUB, 1.2)
+    res = [('牵引工况', '低温水防冻', '✓ 满足', False), ('回手柄 · 长大下坡', '低温水防冻', '✗ 过冷', True),
+           ('回手柄 · 长大下坡', '高温水温度', '✓ 正常', False)]
     for k, (a, b, c, bad) in enumerate(res):
-        ry = hy + 32 + k * 42
+        ry = hy + 28 + k * 36
         if bad:
-            rect(f, rx, ry, rw, 42, fill=RED_BG)
+            rect(f, rx, ry, rw, 36, fill=RED_BG)
         for (cx_, cw_), t, st in zip(cols, (a, b, c), (dict(color=INK), dict(color=BODY),
                                                        dict(color=RED if bad else OK.text, bold=True))):
-            text(f, cx_ + 12, ry, cw_ - 12, 42, t, size=16, anchor='m', lh=22, wrap=False, **st)
-        line(f, rx, ry + 42, rx + rw, ry + 42, LINE, 1)
-    cy2 = hy + 32 + 3 * 42 + 18
-    rect(f, rx, cy2, rw, 80, fill=WHITE, line=RED, lw=1.2)
-    text(f, rx + 16, cy2 + 10, rw - 32, 24, '原因定位', size=15, bold=True, color=RED, lh=22, wrap=False)
-    text(f, rx + 16, cy2 + 40, rw - 32, 28, '黏着利用不足？控制参数不匹配？', size=16, color=BODY, lh=22, wrap=False)
-    text(f, rx, cy2 + 96, rw, 24, '→ 写入验证报告，全要素留痕、可追溯', size=15, bold=True, color=th.text, lh=22, wrap=False)
-    notes(s, FIG_NOTE)
+            text(f, cx_ + 10, ry, cw_ - 10, 36, t, size=15, anchor='m', lh=20, wrap=False, **st)
+        line(f, rx, ry + 36, rx + rw, ry + 36, LINE, 1)
+    cy2 = hy + 28 + 3 * 36 + 14
+    rect(f, rx, cy2, rw, 84, fill=WHITE, line=RED, lw=1.2)
+    text(f, rx + 16, cy2 + 8, rw - 32, 22, '原因定位', size=15, bold=True, color=RED, lh=20, wrap=False)
+    text(f, rx + 16, cy2 + 32, rw - 32, 48, '回手柄后柴油机发热量下降，风扇仍以 40Hz 运行，低温水回路被过度冷却', size=15,
+         color=BODY, lh=22)
+    text(f, rx, cy2 + 96, rw, 22, '→ 写入验证报告；设计修改后，低温工况全量回归重跑', size=15, bold=True, color=th.text, lh=20,
+         wrap=False)
+    notes(s, '说明：本页工程场景为 2024 年 12 月临哈线现场案例（数据据现场记录）；水温曲线为示意，'
+             '如有现场记录曲线，选中附图组合删除后替换即可。防冻限值线仅示意位置，请按设计规范取值。')
 
 
 # =====================================================================  11 研究内容④ 集成层
@@ -798,71 +842,78 @@ def s11_layer4(d):
     s = d.new_slide()
     th = LAYER[4]
     frame(d, s, '研究内容④ 架构融合与协同运行：融合成一个能跑起来的整体', '研究什么：总体架构与接口规范 · 多智能体协同运行 · 可复现沙箱 · 列车级数字样机', '研究内容④ 集成层')
-    content_left(s, 4, '定位', '把前三层<b>融合成一个能跑起来的整体</b>，形成列车级数字样机。',
+    content_left(s, 4, '对接项目7总体目标', '<b>指标实时推演</b> → 协同运行',
                  outs=['列车级数字样机', '列车级数字样机构建方法体系与集成技术规范'])
     X, XW = 356, 1500
+    scene_band(s, X, 214, XW, 112,
+               '现有手段是硬件在环（HIL）结合经验数据模拟运用工况，控制、冷却、动力、线路等系统难以在同一环境中长时序协同运行，复杂场景无法模拟。',
+               '把前三层<b>融合成一个能跑起来的整体</b>，形成列车级数字样机；现有 HIL 台架可作为控制器在环节点接入。')
     cw = (XW - 60) / 4.0
     cards = [
-        ('总体架构与接口规范', 'sitemap', '定义四层之间的<b>接口、数据流与控制流</b>，形成<b>可扩展</b>的架构规范'),
-        ('多智能体协同运行', 'topology-star-3', '异构智能体的<b>实时协同求解、时序同步与状态同步</b>'),
-        ('可复现沙箱', 'box', '<b>隔离</b>：单路模型发散不扩散；<b>记录</b>：参数、模型版本、随机种子；<b>回放</b>：任意一次验证可复现'),
-        ('列车级数字样机', 'train', '集成关键系统仿真智能体，支持<b>列车关键性能验证与智能运维</b>'),
+        ('总体架构与接口规范', '定义四层之间的<b>接口、数据流与控制流</b>，形成<b>可扩展</b>的架构规范'),
+        ('多智能体协同运行', '异构智能体的<b>实时协同求解、时序同步与状态同步</b>'),
+        ('可复现沙箱', '<b>隔离</b>：单路模型发散不扩散；<b>记录</b>：参数、模型版本、随机种子；<b>回放</b>：任意一次验证可复现'),
+        ('列车级数字样机', '集成关键系统仿真智能体，支持<b>列车关键性能验证与智能运维</b>'),
     ]
-    for i, (t, ic, desc) in enumerate(cards):
-        point_card(s, X + i * (cw + 20), 214, cw, 222, '0%d' % (i + 1), t, ic, desc, th, stack=True)
+    for i, (t, desc) in enumerate(cards):
+        point_card(s, X + i * (cw + 20), 342, cw, 150, '0%d' % (i + 1), t, desc, th)
     # 附图：数字样机构成
-    f, py = fig_area(s, X, 458, XW, 532, '列车级数字样机构成：关键系统智能体经标准化接口接入引擎，在沙箱中协同运行')
+    f, py = fig_area(s, X, 508, XW, 482, '列车级数字样机构成：关键系统智能体经标准化接口接入引擎，在沙箱中协同运行')
     fx = X + 24
-    zx, zy, zw, zh = fx, py + 40, 1072, 410
+    zx, zy, zw, zh = fx, py + 34, 1072, 384
     dashed_zone(f, zx, zy, zw, zh, '03 可复现沙箱：隔离 · 记录 · 回放', label_fill=ARCH, label_x=zx + 24, label_size=16)
     ax0, agap = zx + 24, 12
     aw = (zw - 48 - 5 * agap) / 6.0
-    ay = zy + 44
-    by_ = ay + 60 + 44
+    ay = zy + 38
+    by_ = ay + 56 + 38
     for k, (nm, on) in enumerate([('控制系统', True), ('车辆动力学', True), ('线路', True), ('牵引系统', False),
                                   ('制动系统', False), ('辅助系统', False)]):
         x = ax0 + k * (aw + agap)
         if on:
-            rect(f, x, ay, aw, 60, fill=th.bg, line=th.soft, lw=1.2)
-            text(f, x, ay, aw, 60, nm + '<br>智能体', size=17, bold=True, color=th.text, align='c', anchor='m', lh=24,
+            rect(f, x, ay, aw, 56, fill=th.bg, line=th.soft, lw=1.2)
+            text(f, x, ay, aw, 56, nm + '<br>智能体', size=17, bold=True, color=th.text, align='c', anchor='m', lh=23,
                  wrap=False)
         else:
-            rect(f, x, ay, aw, 60, fill=WHITE, line=RULE, lw=1.2, dash='dash')
-            text(f, x, ay, aw, 60, nm + '<br><s=14>预留扩展</s>', size=17, color=MUTED, align='c', anchor='m', lh=24,
+            rect(f, x, ay, aw, 56, fill=WHITE, line=RULE, lw=1.2, dash='dash')
+            text(f, x, ay, aw, 56, nm + '<br><s=14>预留扩展</s>', size=17, color=MUTED, align='c', anchor='m', lh=23,
                  wrap=False)
-        line(f, x + aw / 2.0, ay + 60, x + aw / 2.0, by_ - 10, MUTED if on else RULE, 1.5, dash=None if on else 'dash')
+        line(f, x + aw / 2.0, ay + 56, x + aw / 2.0, by_ - 10, MUTED if on else RULE, 1.5, dash=None if on else 'dash')
         rect(f, x + aw / 2.0 - 5, by_ - 10, 10, 10, fill=th.main if on else RULE)
     bw_ = zw - 48
-    rect(f, ax0, by_, bw_, 66, fill=th.main)
-    text(f, ax0, by_, bw_, 66, ['02 多智能体协同运行与调度引擎',
+    rect(f, ax0, by_, bw_, 62, fill=th.main)
+    text(f, ax0, by_, bw_, 62, ['02 多智能体协同运行与调度引擎',
                                 {'t': '经 01 标准化接口接入 · 实时协同求解 · 时序同步 · 状态同步', 'size': 15, 'bold': False,
-                                 'lh': 22}], size=20, bold=True, color=on_color(th.main), align='c', anchor='m', lh=28,
+                                 'lh': 21}], size=20, bold=True, color=on_color(th.main), align='c', anchor='m', lh=27,
          wrap=False)
     lxc = ax0 + bw_ / 2.0
-    rail = zy + zh - 18
-    lw_, lh_ = 560, 140
-    arrow(f, lxc, by_ + 68, lxc, rail - lh_ - 6, MUTED, 2)
-    text(f, lxc + 10, by_ + 72, 80, 22, '集成', size=14, bold=True, color=SUB, lh=20, wrap=False)
+    rail = zy + zh - 16
+    lw_, lh_ = 480, 120
+    arrow(f, lxc, by_ + 64, lxc, rail - lh_ - 6, MUTED, 2)
+    text(f, lxc + 10, by_ + 68, 80, 22, '集成', size=14, bold=True, color=SUB, lh=20, wrap=False)
     ruler(f, ax0, rail, bw_, step=36, tick=8, lw=2)
     pic(f, LOCO, lxc - lw_ / 2.0 + 60, rail - lh_ * 0.992, lw_, lh_)
-    text(f, ax0, rail - lh_ + 6, 250, 30, '04 列车级数字样机', size=20, bold=True, color=INK, lh=28, wrap=False)
-    text(f, ax0, rail - lh_ + 42, 240, 48, '关键系统仿真智能体 ＋ 协同运行与调度引擎', size=15, color=SUB, lh=22)
-    # 右：支撑的应用
+    text(f, ax0, rail - lh_ + 4, 250, 30, '04 列车级数字样机', size=20, bold=True, color=INK, lh=28, wrap=False)
+    text(f, ax0, rail - lh_ + 40, 240, 48, '关键系统仿真智能体 ＋ 协同运行与调度引擎', size=15, color=SUB, lh=22)
+    # 右：接入现有条件 / 支撑的应用
     ox = zx + zw + 40
     ow = X + XW - 24 - ox
-    arrow(f, zx + zw + 4, zy + zh / 2.0, ox - 6, zy + zh / 2.0, MUTED, 2)
-    text(f, ox, zy + 30, ow, 24, '支撑', size=15, bold=True, color=MUTED, lh=22, wrap=False)
-    b1 = zy + 64
-    rect(f, ox, b1, ow, 196, fill=WHITE, line=LINE)
-    rect(f, ox, b1, BAR, 196, fill=th.main)
-    text(f, ox + 20, b1 + 14, ow - 40, 28, '列车关键性能验证', size=19, bold=True, color=th.text, lh=26, wrap=False)
-    bullets(f, ox + 20, b1 + 54, ow - 40, 130, ['速度跟踪控制品质', '牵引能耗与再生能量利用', '运行平稳性'], th.main, size=17, lh=26,
-            sa=8)
-    b2 = b1 + 196 + 16
-    rect(f, ox, b2, ow, 104, fill=WHITE, line=LINE)
-    rect(f, ox, b2, BAR, 104, fill=th.main)
-    text(f, ox + 20, b2 + 14, ow - 40, 28, '智能运维', size=19, bold=True, color=th.text, lh=26, wrap=False)
-    text(f, ox + 20, b2 + 52, ow - 40, 30, '性能复现 · 状态评估', size=17, color=BODY, lh=26, wrap=False)
+    text(f, ox, by_ - 30, ow, 22, '可接入现有条件', size=15, bold=True, color=MUTED, lh=22, wrap=False)
+    hb = by_ - 4
+    rect(f, ox, hb, ow, 70, fill=WHITE, line=LINE)
+    rect(f, ox, hb, BAR, 70, fill=ARCH)
+    text(f, ox + 20, hb + 8, ow - 36, 26, 'HIL 台架：控制器在环', size=17, bold=True, color=INK, lh=24, wrap=False)
+    text(f, ox + 20, hb + 38, ow - 36, 24, '经验数据用于智能体标定', size=15, color=SUB, lh=22, wrap=False)
+    arrow(f, ox - 4, by_ + 31, ax0 + bw_ + 6, by_ + 31, ARCH, 1.8, dash='dash')
+    sy_ = zy + zh - 150
+    text(f, ox, sy_ - 30, ow, 22, '支撑', size=15, bold=True, color=MUTED, lh=22, wrap=False)
+    rect(f, ox, sy_, ow, 150, fill=WHITE, line=LINE)
+    rect(f, ox, sy_, BAR, 150, fill=th.main)
+    text(f, ox + 20, sy_ + 12, ow - 36, 26, '列车关键性能验证', size=17, bold=True, color=th.text, lh=24, wrap=False)
+    text(f, ox + 20, sy_ + 42, ow - 36, 24, '速度跟踪 · 牵引能耗 · 运行平稳性', size=15, color=BODY, lh=22, wrap=False)
+    line(f, ox + 20, sy_ + 76, ox + ow - 20, sy_ + 76, LINE, 1)
+    text(f, ox + 20, sy_ + 86, ow - 36, 26, '智能运维', size=17, bold=True, color=th.text, lh=24, wrap=False)
+    text(f, ox + 20, sy_ + 116, ow - 36, 24, '性能复现 · 状态评估', size=15, color=BODY, lh=22, wrap=False)
+    arrow(f, zx + zw + 4, sy_ + 75, ox - 6, sy_ + 75, MUTED, 2)
     notes(s, FIG_NOTE)
 
 
@@ -1009,7 +1060,7 @@ def s14_scenario(d):
          wrap=False)
     rect(s, 314, y0, 1542, 84, fill=PANEL)
     icon(s, 'quote', MUTED, 340, y0 + 24, 36)
-    text(s, 394, y0, 1440, 84, '验证该机车在指定线路上按给定运行图运行时的<r>速度跟踪</r>与<r>牵引能耗</r>是否满足要求。', size=26, bold=True,
+    text(s, 394, y0, 1440, 84, '验证 FXN5C 机车在临哈线上按给定运行图运行时的<r>速度跟踪</r>与<r>牵引能耗</r>是否满足要求。', size=26, bold=True,
          color=INK, anchor='m', lh=36, wrap=False)
     # 三步面板
     py, ph = 326, 556
@@ -1319,7 +1370,7 @@ def s19_goals(d):
         ('03', '方法体系、智能运维\n与扩展能力', M3,
          '形成列车级数字样机构建方法体系与标准化集成技术规范，<b>支持列车关键性能验证与智能运维</b>，具备向制动、辅助系统等关键系统扩展的能力',
          [('列车级数字样机构建方法体系与技术规范', '1套')]),
-        ('04', '示范应用', M4, '在典型机车产品上完成示范应用，关键性能验证的<b>效率与工况覆盖度显著提升</b>，形成可推广的智能验证能力',
+        ('04', '示范应用', M4, '在 <b>FXN5C 机车</b>上完成示范应用（以临哈线典型区段为验证场景），关键性能验证的<b>效率与工况覆盖度显著提升</b>，形成可推广的智能验证能力',
          [('示范应用与验证报告', '1份'), ('专利 · 论文 · 标准草案', '4项 · 2篇 · 2项')]),
     ]
     text(s, 64, 212, 400, 32, '预期目标', size=18, bold=True, color=MUTED, lh=26, wrap=False)
@@ -1363,7 +1414,8 @@ def s20_metrics(d):
     rows = [
         ('能力覆盖', '支持<b>异构</b>仿真智能体接入；支持速度跟踪控制品质、牵引能耗与再生能量利用、运行平稳性等关键性能的<b>多工况</b>协同验证',
          [('接入异构仿真智能体', '≥【待填】类'), ('协同验证典型工况', '≥【待填】个')]),
-        ('效率提升', '关键性能验证的<b>效率与工况覆盖度显著提升</b>', [('验证周期缩短', '≥【待填】%'), ('工况覆盖度提升', '≥【待填】%')]),
+        ('效率提升', '关键性能验证的<b>效率与工况覆盖度显著提升</b>，减少现场验证投入（现状一次软件迭代：研发 20＋测试 10＋现场 10 人）',
+         [('验证周期（现状约 2 个月）缩短', '≥【待填】%'), ('工况覆盖度提升', '≥【待填】%')]),
         ('扩展能力', '形成<b>可扩展</b>的智能体接入机制，支持<b>智能运维</b>应用，具备向制动、辅助系统等关键系统扩展的能力', []),
     ]
     y = 256 + 2 * th_ + 12 + 24
@@ -1563,7 +1615,7 @@ def s23_team(d):
     items = [
         ('研发平台', 'building-factory-2', '【待填：机车总体设计／控制系统开发等平台】'),
         ('仿真能力', 'device-desktop-analytics', '【待填：已有的车辆动力学、牵引电传动、控制等仿真模型与软件】'),
-        ('试验能力', 'test-pipe', '【待填：*****、牵引／制动试验台、******等】'),
+        ('试验能力', 'test-pipe', '现有硬件在环（HIL）试验台，结合经验数据模拟运用工况；【待填：其他试验台架】'),
         ('数据积累', 'database', '【待填：机车试验数据与运用数据积累情况】'),
         ('在研项目', 'clipboard-list', '【待填：**级****项目数量与名称】'),
         ('人才队伍', 'users-group', '【待填：参研人员规模与职称结构】'),
@@ -1632,7 +1684,7 @@ def s24_results(d):
     LW = 920
     small = [('成果4', '1套', '列车级数字样机构建方法体系与技术规范', M4, 'file-certificate',
               '形成构建方法、集成流程与标准化接口规范，可作为**内推广与后续课题复用的方法支撑'),
-             ('成果5', '1份', '示范应用与验证报告', M5, 'report-analytics', '在典型机车产品上完成关键性能协同验证，形成验证效能评估结论')]
+             ('成果5', '1份', '示范应用与验证报告', M5, 'report-analytics', '在 FXN5C 机车上完成关键性能协同验证，验证场景为临哈线典型区段，形成验证效能评估结论')]
     sh = (996 - y1 - 14) / 2.0
     for i, (no, form, name, th, ic, txt) in enumerate(small):
         y = y1 + i * (sh + 14)
