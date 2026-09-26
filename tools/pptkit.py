@@ -61,7 +61,7 @@ class Theme:
 # ---------------------------------------------------------------- 配色方案
 # 颜色按“用途”取用：M1–M5 模块序号色；LAYER 四层架构色；OK 正向（目标/回流/已解决）；PH 待填占位；
 # STAGE 四个阶段；ARCH 架构分区标签；KPI 重点数字；BUDGET2 经费“人员”段；LOCO 机车插画。
-# 通过环境变量 PPT_PALETTE 切换：vivid（初版，参考页原色）/ formal（稳重蓝）/ muted（低饱和多色）。
+# 通过环境变量 PPT_PALETTE 切换：premium（主红·留白，默认）/ formal（稳重蓝）/ muted（低饱和多色）/ vivid（参考页原色）。
 T = Theme
 _VIVID = dict(
     M=[T('0A4CFF', 'F4F7FF', 'EAF0FF', 'D6E1FD', '0A4CFF'), T('7C5CF0', 'F5F2FE', 'ECE6FD', 'DDD4FB', '6A4ADE'),
@@ -110,7 +110,7 @@ _PREMIUM = dict(
                chip_line='DCD6CF'),
 )
 PALETTES = {'vivid': _VIVID, 'formal': _FORMAL, 'muted': _MUTED, 'premium': _PREMIUM}
-PALETTE = os.environ.get('PPT_PALETTE', 'vivid')
+PALETTE = os.environ.get('PPT_PALETTE', 'premium')
 _P = PALETTES[PALETTE]
 
 # 中性色可由配色方案覆盖（须在组件函数定义之前完成，以便参数默认值生效）
@@ -175,9 +175,10 @@ def ink_safe(hexcol):
     return '%02X%02X%02X' % tuple(round(x * 0.62 + y * 0.38) for x, y in zip(a, b))
 
 
+# 分层／模块名称是项目常量：build 脚本里用 LAYER_KIND.update({...})、LAYER_NAME.update({...}) 改成本项目的叫法
 LAYER_NO = {1: '①', 2: '②', 3: '③', 4: '④'}
 LAYER_KIND = {1: '基础层', 2: '决策层', 3: '执行层', 4: '集成层'}
-LAYER_NAME = {1: '测试知识库与任务工作流', 2: '任务理解与智能编排调度', 3: '智能体执行', 4: '架构融合与协同运行'}
+LAYER_NAME = {1: '第一层名称', 2: '第二层名称', 3: '第三层名称', 4: '第四层名称'}
 
 # ---------------------------------------------------------------- 文本测量（用于溢出预警）
 _FONT_FILES = {
@@ -420,12 +421,13 @@ def _fill_tf(tf, content, size, color, bold, font, align, lh, sb, sa, cs, bullet
 
 
 class Deck:
-    def __init__(self, total, footer_title):
+    def __init__(self, total, footer_title, report_type='课题申报汇报'):
         self.prs = Presentation()
         self.prs.slide_width = E(W)
         self.prs.slide_height = E(H)
         self.total = total
         self.footer_title = footer_title
+        self.report_type = report_type  # 页脚中间栏：汇报类型（申报／评审／阶段汇报……）
         self._blank = self.prs.slide_layouts[6]
         self._patch_theme_and_layouts()
         self.slide_no = 0
@@ -659,7 +661,7 @@ def frame(d, s, title, subtitle, section, title_size=54):
 def footer(d, s, section):
     rect(s, 64, 1010, 1792, STYLE['rule_w'], fill=RULE)
     sep = '<c=%s>   |   </c>' % RULE
-    text(s, 64, 1024, 1300, 36, d.footer_title + sep + '课题申报汇报' + sep + section, size=17, color=MUTED,
+    text(s, 64, 1024, 1300, 36, d.footer_title + sep + d.report_type + sep + section, size=17, color=MUTED,
          bold=True, cs=2.5, anchor='m', lh=24, wrap=False)
     text(s, 1456, 1024, 400, 36, '%02d / %02d' % (s._no, d.total), size=17, color=MUTED, bold=True, font=MONO,
          align='r', anchor='m', lh=24, wrap=False)
