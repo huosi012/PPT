@@ -22,10 +22,10 @@ FOOTER = '7.3 多智能体协同运行与调度引擎'
 BUDGET = [
     ('1', '直接投入费用', 50, 'AI算力服务器（GPU+NPU异构）1台 40万；仿真与调度一体化工作站 2台 10万', BLUE.main, '直接投入 50'),
     ('2', '人员人工费用', 30, '项目参研人员薪酬费用，按投入人月测算', '4A78FF', '人员 30'),
-    ('3', '固定资产相关费用（折旧）', 5, '现有仿真与测试设备折旧分摊', '8A97AB', None),
-    ('4', '试验检验及试制外协费用', 5, '建模数据采集处理 2万；仿真模型校验与第三方验证 3万', 'A8B4C6', None),
-    ('5', '研发成果相关费用', 5, '发明专利申请 2万；论文版面及标准草案编制 3万', 'C3CCD9', None),
-    ('6', '与研发活动直接相关的其他费用', 5, '差旅费 3万；会议费 2万', 'DCE2EA', None),
+    ('3', '固定资产相关费用（折旧）', 5, '现有仿真与测试设备折旧分摊', '6F7C90', None),
+    ('4', '试验检验及试制外协费用', 5, '建模数据采集处理 2万；仿真模型校验与第三方验证 3万', '8E9AAE', None),
+    ('5', '研发成果相关费用', 5, '发明专利申请 2万；论文版面及标准草案编制 3万', 'AAB5C5', None),
+    ('6', '与研发活动直接相关的其他费用', 5, '差旅费 3万；会议费 2万', 'C5CDD9', None),
 ]
 
 
@@ -108,31 +108,32 @@ def s02_agenda(d):
 # =====================================================================  03 项目简介
 def s03_intro(d):
     s = d.new_slide()
-    frame(d, s, '项目简介：研究重心是“引擎”，数字样机是引擎的集成产物', '基本信息 · 在项目7中的位置与边界 · 主要成果物 · 经费概览', '项目简介')
+    frame(d, s, '项目简介：研究重心是引擎，数字样机是引擎的集成产物', '基本信息 · 在项目7中的位置与边界 · 主要成果物 · 经费概览', '项目简介')
     # ---- 左：基本信息
     L, LW = 64, 840
     header(s, L, 212, '基本信息', w=LW)
-    lab = dict(fill=GRAYBG, bold=True, color=SUB, size=18)
+    lab = dict(fill=GRAYBG, bold=True, color=SUB, size=17)
     val = dict(color=INK, size=19)
-    yy = table(s, L, 256, [118, 302, 118, 302], [
-        ['项目名称', '7. 基于智能体的轨道交通装备性能数字样机关键技术研究', '课题名称', '<b>7.3 轨道交通装备性能验证的多智能体协同运行与调度引擎技术研究</b>'],
+    yy = table(s, L, 256, [96, 278, 112, 354], [
+        ['项目名称', '7. 基于智能体的轨道交通装备<br>性能数字样机关键技术研究', '课题名称',
+         '<b>7.3 轨道交通装备性能验证的</b><br><b>多智能体协同运行与调度引擎技术研究</b>'],
         ['牵头单位', '**********', '项目负责人', '***'],
         ['主管部门', '********部（***）', '产业领域', '轨道交通装备'],
         ['项目目的', '基础前瞻共性技术研究', '研究周期', '2027.01—2028.12（24个月）'],
         ['总预算', '<r>100万元</r>', '当年预算', '50万元'],
-    ], size=19, lh=27, pad_x=12, pad_y=8, col_styles={0: lab, 1: val, 2: lab, 3: val})
+    ], size=19, lh=27, pad_x=10, pad_y=8, col_styles={0: lab, 1: val, 2: lab, 3: val})
     # ---- 左：主要成果物（3×2）
     y1 = yy + 22
     header(s, L, y1, '主要成果物', note='软件 · 模型 · 系统 · 规范 · 报告 · 知识产权', w=LW)
     items = [
         ('多智能体协同运行与调度引擎', '软件1套', BLUE, 'settings-automation'),
-        ('关键系统仿真智能体／智能孪生模型', '模型1套', PURPLE, 'robot'),
+        ('关键系统仿真智能体／<br>智能孪生模型', '模型1套', PURPLE, 'robot'),
         ('列车级数字样机', '系统1套', GREEN, 'train'),
         ('列车级数字样机构建方法体系与技术规范', '规范1套', GREEN, 'file-certificate'),
         ('示范应用与验证报告', '报告1份', ORANGE, 'report-analytics'),
-        ('发明专利／论文／企业标准草案', '4项／2篇／2项', ORANGE, 'certificate'),
+        ('发明专利／论文／<br>企业标准草案', '4项／2篇／2项', ORANGE, 'certificate'),
     ]
-    cw, ch, gx, gy = (LW - 24) / 3.0, 108, 12, 12
+    cw, ch, gx, gy = (LW - 24) / 3.0, 116, 12, 12
     for i, (name, form, th, ic) in enumerate(items):
         cx = L + (i % 3) * (cw + gx)
         cy = y1 + 46 + (i // 3) * (ch + gy)
@@ -141,7 +142,7 @@ def s03_intro(d):
         icon(s, ic, th.main, cx + 16, cy + 18, 30)
         tag(s, cx + cw - 16 - (text_width(form, 16, True) + 20), cy + 18, form, fill=th.bg, color=th.text, size=16,
             h=28, padx=10)
-        text(s, cx + 16, cy + 54, cw - 28, 52, name, size=18, bold=True, color=INK, lh=25)
+        text(s, cx + 16, cy + 56, cw - 28, 52, name, size=18, bold=True, color=INK, lh=25)
     # ---- 左：经费概览（堆叠条）
     y2 = y1 + 46 + 2 * ch + gy + 22
     header(s, L, y2, '经费概览', note='总预算 100 万元', w=LW)
@@ -157,36 +158,42 @@ def s03_intro(d):
     R, RW = 944, 912
     header(s, R, 212, '在项目7中的位置与相邻课题边界', note='项目7设5个子课题 · 研究重心是“引擎”', w=RW)
     rows = [
-        ('7.1', '高质量数据集', '仅采用其数据规范与接口，不承担构建（<b>7.1 建库、7.3 按需生成</b>）', 'n'),
-        ('7.2', '多物理域建模与仿真智能体', '为验证需要自建控制系统、车辆动力学与线路等必要智能体，<b>不覆盖弓网/牵引/制动等全部关键系统</b>', 'n'),
+        ('7.1', '高质量数据集', '边界：仅采用其数据规范与接口，不承担构建（<b>7.1 建库、7.3 按需生成</b>）', 'n'),
+        ('7.2', '多物理域建模与仿真智能体', '边界：为验证需要自建控制系统、车辆动力学与线路等必要智能体，<b>不覆盖弓网/牵引/制动等全部关键系统</b>',
+         'n'),
         ('7.3', '协同运行与调度引擎（本课题）',
-         '<b>核心攻关多智能体协同运行与调度引擎</b>，解决多专业智能体“接得上、跑得动、调得灵”的问题；<b>列车级数字样机是引擎承载智能体后形成的集成产物</b>',
-         'me'),
-        ('7.4', '数字样机构建', '承接智能体集成与协同运行', 'n'),
-        ('7.5', '方案优化与智能生成', '仅为优化提供验证支撑', 'n'),
-        ('6.2', '通用智能体调度平台', '本课题为<b>面向性能验证任务的领域化编排</b>，强调实时协同与多物理域时序', 'ext'),
+         '<b>核心攻关多智能体协同运行与调度引擎</b>，<br>解决多专业智能体“接得上、跑得动、调得灵”的问题；<br>'
+         '<b>列车级数字样机是引擎承载智能体后形成的集成产物</b>', 'me'),
+        ('7.4', '数字样机构建', '边界：承接智能体集成与协同运行', 'n'),
+        ('7.5', '方案优化与智能生成', '边界：仅为优化提供验证支撑', 'n'),
+        ('6.2', '通用智能体调度平台', '边界：本课题为<b>面向性能验证任务的领域化编排</b>，强调实时协同与多物理域时序', 'ext'),
     ]
-    hs = [96, 124, 150, 96, 96, 110]
+    nb, tgap = 76, 20
+    tw_ = RW - nb - tgap - 22
+    ext_gap = 20
+    groups = [34 + 8 + wrap_lines(desc, tw_, 19) * 29 for _, _, desc, _ in rows]
+    pad = (996 - 256 - 10 * (len(rows) - 1) - ext_gap - sum(groups)) / float(len(rows))
     y = 256
-    for (no, name, desc, kind), h in zip(rows, hs):
+    for (no, name, desc, kind), g in zip(rows, groups):
+        h = g + pad
         if kind == 'ext':
-            line(s, R, y - 7, R + RW, y - 7, RULE, 1.5, dash='dash')
-            y += 8
+            line(s, R, y + 5, R + RW, y + 5, RULE, 1.5, dash='dash')
+            y += ext_gap
         me = (kind == 'me')
         rect(s, R, y, RW, h, fill=RED_BG if me else WHITE, line=RED if me else LINE, lw=2 if me else 1,
              dash='dash' if kind == 'ext' else None)
-        shp = rect(s, R, y, 88, h, fill=RED if me else (PANEL if kind == 'ext' else GRAYBG))
-        text(s, R, y, 88, h, no, size=26, bold=True, color=WHITE if me else INK, font=MONO, align='c', anchor='m',
+        shp = rect(s, R, y, nb, h, fill=RED if me else (PANEL if kind == 'ext' else GRAYBG))
+        text(s, R, y, nb, h, no, size=26, bold=True, color=WHITE if me else INK, font=MONO, align='c', anchor='m',
              lh=34, shp=shp, wrap=False)
-        tx = R + 88 + 22
-        text(s, tx, y + 12, 640, 34, name, size=22, bold=True, color=RED if me else INK, lh=34, wrap=False)
+        tx = R + nb + tgap
+        top = y + (h - g) / 2.0
+        text(s, tx, top, 640, 34, name, size=22, bold=True, color=RED if me else INK, lh=34, wrap=False)
         if me:
-            tag(s, tx + text_width(name, 22, True) + 14, y + 15, '本课题', fill=RED, size=16, h=28, padx=10)
+            tag(s, tx + text_width(name, 22, True) + 14, top + 3, '本课题', fill=RED, size=16, h=28, padx=10)
         if kind == 'ext':
-            tag(s, tx + text_width(name, 22, True) + 14, y + 15, '相邻项目', fill=GRAYBG, color=SUB, size=16, h=28,
+            tag(s, tx + text_width(name, 22, True) + 14, top + 3, '相邻项目', fill=GRAYBG, color=SUB, size=16, h=28,
                 padx=10)
-        text(s, tx, y + 50, RW - 88 - 44, h - 58, ('边界：' if not me else '') + desc, size=19,
-             color=BODY if me else SUB, lh=29)
+        text(s, tx, top + 42, tw_, g - 40, desc, size=19, color=BODY if me else SUB, lh=29)
         y += h + 10
 
 
@@ -212,7 +219,7 @@ def s04_value(d):
          '突破多智能体协同运行与调度引擎技术，构建包含关键系统仿真智能体的列车级数字样机，实现列车关键性能的<r>快速、可复现、全覆盖</r>验证。',
          size=23, bold=True, color=INK, anchor='m', lh=36)
     # 价值与效益
-    side_label(s, 64, 540, 206, '价值与效益', '应用价值与推动作用 · 潜在社会经济效益')
+    side_label(s, 64, 540, 206, '价值与效益', '应用价值与推动作用<br>潜在社会经济效益')
     y0, ph = 528, 468
     pw = (XW - 32) / 2.0
     yy = panel(s, X, y0, pw, ph, BLUE, '应用价值与对领域发展的推动作用', '01', 'trending-up', title_size=28, badge=76)
@@ -220,7 +227,7 @@ def s04_value(d):
         '应用于<b>机车研发验证与运维测试</b>，覆盖速度跟踪控制品质、牵引能耗与再生能量利用、运行平稳性等关键性能；支撑复杂工况的<b>低成本、高频次</b>验证',
         '推动研发验证从<b>单系统、离线</b>向<b>列车级、实时协同、智能调度</b>演进；将多智能体协同从通用平台层引入<b>装备性能验证</b>领域',
     ], BLUE.main, size=20, lh=31, sa=12)
-    concl(s, X + 40, y0 + ph - 32 - 72, pw - 80, 72, '输出列车级数字样机构建方法体系与技术规范，为行业提供可复用的方法支撑', BLUE,
+    concl(s, X + 40, y0 + ph - 32 - 72, pw - 80, 72, '输出列车级数字样机构建方法体系与技术规范，<br>为行业提供可复用的方法支撑', BLUE,
           size=20)
     x2 = X + pw + 32
     yy = panel(s, x2, y0, pw, ph, GREEN, '潜在社会经济效益', '02', 'coins', title_size=30, badge=76)
@@ -229,13 +236,16 @@ def s04_value(d):
         ('社会效益', 'shield-check', '提升关键性能验证的覆盖度与可信度，支撑轨道交通安全可靠运营'),
         ('产业效益', 'building-factory-2', '方法体系具备向<b>制动、辅助系统</b>扩展的能力，可在**内主机企业推广'),
     ]
-    ey = yy + 22
-    for lab_, ic, txt in effects:
+    hs_ = [max(56, 30 + wrap_lines(t, pw - 156, 19) * 29) for _, _, t in effects]
+    top, bottom = yy + 22, y0 + ph - 30
+    gap_ = (bottom - top - sum(hs_)) / float(len(effects) - 1)
+    ey = top
+    for (lab_, ic, txt), hh in zip(effects, hs_):
         rect(s, x2 + 40, ey, 56, 56, fill=GREEN.bg)
         icon(s, ic, GREEN.main, x2 + 40 + 12, ey + 12, 32)
         text(s, x2 + 116, ey - 2, 200, 30, lab_, size=21, bold=True, color=GREEN.text, lh=30, wrap=False)
-        text(s, x2 + 116, ey + 28, pw - 156, 62, txt, size=19, color=BODY, lh=29)
-        ey += 98
+        text(s, x2 + 116, ey + 28, pw - 156, hh - 26, txt, size=19, color=BODY, lh=29)
+        ey += hh + gap_
 
 
 # =====================================================================  05 立项必要性与紧迫性
@@ -255,9 +265,9 @@ def s05_urgency(d):
     num_header(s, L, 530, '二', '底层能力受制于人的风险已经量化', w=LW)
     kw_ = (LW - 2 * 16) / 3.0
     tiles = [
-        ('约 5%', '研发设计类工业软件国产化率', '有研究报告指出；CAD/CAE/EDA 长期被欧美少数巨头企业垄断'),
-        ('超 3 亿美元', '全球最大 CAE 厂商年研发投入', '相当于国内所有工业软件公司投入总和的数倍'),
-        ('约 5% / 年', '用户端软件年均涨价', '用户端每年软件支出达数百万元，且不提供个性化定制'),
+        ('约 5%', '研发设计类工业软件<br>国产化率', '有研究报告指出；<br>CAD/CAE/EDA 长期被欧美少数巨头企业垄断'),
+        ('超 3 亿美元', '全球最大 CAE 厂商<br>年研发投入', '相当于国内所有工业软件<br>公司投入总和的数倍'),
+        ('约 5% / 年', '用户端软件<br>年均涨价', '用户端每年软件支出达<br>数百万元，且不提供个性化定制'),
     ]
     for i, (v, lab_, sub) in enumerate(tiles):
         kpi(s, L + i * (kw_ + 16), 576, kw_, 226, v, lab_, sub, color=RED, value_size=40, label_size=19,
@@ -283,10 +293,11 @@ def s05_urgency(d):
     # 四、窗口期
     num_header(s, R, 610, '四', '窗口期有限', w=RW)
     rect(s, R, 656, RW, 206, fill=PANEL)
-    icon(s, 'quote', MUTED, R + 20, 672, 34)
-    text(s, R + 66, 670, RW - 90, 184,
-         '《规划》面向世界科技前沿提出，要“<b>抢占新一轮科技革命和产业变革制高点</b>，保持我国铁路科技创新领先优势，<b>增强国际话语权和影响力</b>”。数字孪生与智能体技术正处于从概念验证走向工程落地的窗口期——<r>若“***”期间不能拿下协同运行与调度引擎的自主权，验证环节将再次依赖国外工具链，重演工业软件的路径。</r>',
-         size=20, color=BODY, lh=31)
+    quote = ('《规划》面向世界科技前沿提出，要“<b>抢占新一轮科技革命和产业变革制高点</b>，保持我国铁路科技创新领先优势，<b>增强国际话语权和影响力</b>”。数字孪生与智能体技术正处于从概念验证走向工程落地的窗口期——<r>若“***”期间不能拿下协同运行与调度引擎的自主权，验证环节将再次依赖国外工具链，重演工业软件的路径。</r>')
+    qn_ = wrap_lines(quote, RW - 90, 20)
+    qt = 656 + (206 - qn_ * 31) / 2.0
+    icon(s, 'quote', MUTED, R + 20, qt + 2, 32)
+    text(s, R + 66, qt, RW - 90, qn_ * 31 + 4, quote, size=20, color=BODY, lh=31)
     # 结论
     summary(s, L, 894, 1792, 96, '结论：本课题要做的不是“锦上添花的工具”，而是<r>验证环节的自主引擎</r>。晚一年布局，就多一年被动。',
             title_size=28)
@@ -426,7 +437,8 @@ def s07_layer1(d):
             line(s, vx + 93, vy + 64, vx + 93, vy + vh - 66, th.main, 2, tail='triangle')
             poly(s, [(vx + 168, vy + 43), (vx + vw - 93, vy + 43), (vx + vw - 93, vy + vh - 66)], th.main, 2,
                  tail='triangle')
-            text(s, vx + 176, vy + 52, vw - 290, 30, '持续迭代', size=16, bold=True, color=th.text, lh=22, wrap=False)
+            text(s, vx + 168, vy + 12, vw - 261, 26, '持续迭代', size=16, bold=True, color=th.text, align='c', lh=22,
+                 wrap=False)
     # 底部：产出 + 与上层的关系
     y1 = 772
     header(s, X, y1, '产出', w=700)
@@ -489,7 +501,7 @@ def s08_layer2(d):
             for k, (a, b, fc, bg) in enumerate(rows):
                 cy = vy + 60 + k * 110
                 text(s, vx + 20, cy, vw - 40, 30, a, size=18, bold=True, color=INK, lh=26, wrap=False)
-                chip(s, vx + 20, cy + 34, b, w=vw - 40, h=46, size=19, color=fc, fill=bg, line=None, bold=True)
+                chip(s, vx + 20, cy + 34, b, w=vw - 40, h=46, size=19, color=fc, fill=bg, line=fc, bold=True)
         else:
             text(s, vx, vy + 18, vw, 26, '监控 → 重规划闭环', size=16, bold=True, color=MUTED, align='c', lh=24,
                  wrap=False)
@@ -509,7 +521,7 @@ def s08_layer2(d):
     fx = X + 760
     chips_row(s, fx, y1 + 16, ['① 判据与工作流', '② 调度引擎', '③ 执行层'], gap=54, arrow=True, arrow_color=TRI,
               size=19, h=44, padx=16, color=INK, line=LINE)
-    text(s, fx, y1 + 64, XW - 760, 40, '向下承接知识与规则输入，向执行层下发执行方案（智能体组合、工况、算力）', size=17, color=SUB, lh=24)
+    text(s, fx, y1 + 74, XW - 760, 40, '向下承接知识与规则输入，向执行层下发执行方案（智能体组合、工况、算力）', size=17, color=SUB, lh=24)
 
 
 # =====================================================================  09 研究内容③ 执行层
@@ -518,7 +530,7 @@ def s09_layer3(d):
     th = LAYER[3]
     frame(d, s, '研究内容③ 智能体执行：一条完整的验证执行链', '仿真智能体 → 测试用例生成 → 测试识别 → 测试报告 → 数据回归，结果回流、支持回归重跑', '研究内容③ 执行层')
     content_left(s, 3, '对接项目7总体目标',
-                 '<b>模型自动标定</b>：由仿真智能体承担\n<b>性能自动评估</b>：由测试识别承担')
+                 [{'t': '<b>模型自动标定</b><br>→ 01 仿真智能体', 'sa': 14}, {'t': '<b>性能自动评估</b><br>→ 03 测试识别'}])
     X, XW = 356, 1500
     gap = 30
     cw, ch, y0 = (XW - 4 * gap) / 5.0, 530, 214
@@ -542,7 +554,7 @@ def s09_layer3(d):
         text(s, x + 22, y0 + 112, cw - 40, 38, t, size=25, bold=True, color=INK, anchor='m', lh=34, wrap=False)
         text(s, x + 22, y0 + 154, cw - 40, 58, sub, size=17, bold=True, color=th.text, lh=25)
         line(s, x + 22, y0 + 216, x + cw - 22, y0 + 216, LINE, 1.5)
-        text(s, x + 22, y0 + 234, cw - 40, ch - 330, desc, size=20, color=BODY, lh=31)
+        text(s, x + 22, y0 + 234, cw - 40, ch - 330, desc, size=19, color=BODY, lh=30)
         concl(s, x + 18, y0 + ch - 18 - 52, cw - 36, 52, keys[i], th, size=19, check=True, pad=14)
         if i < 4:
             tri(s, x + cw + gap / 2.0, y0 + ch / 2.0, 20, 26, TRI)
@@ -586,13 +598,13 @@ def s10_layer4(d):
     x, y = pos[1]
     yy = tops[1] + 18
     text(s, x + 32, yy, pw - 64, 34, '异构智能体的<b>实时协同求解、时序同步与状态同步</b>', size=20, color=BODY, lh=30, wrap=False)
-    chips_row(s, x + 32, yy + 58, ['实时协同求解', '时序同步', '状态同步'], gap=46, arrow=False, size=19, h=44, padx=20,
+    chips_row(s, x + 32, yy + 58, ['实时协同求解', '时序同步', '状态同步'], gap=12, arrow=False, size=19, h=44, padx=20,
               color=th.text, line=th.main, bold=True)
     # 03 沙箱三件事
     x, y = pos[2]
     yy = tops[2] + 16
     bw = (pw - 64 - 24) / 3.0
-    for k, (a, b, ic) in enumerate([('隔离', '单路模型发散不扩散', 'shield-check'), ('记录', '参数、模型版本、随机种子', 'file-text'),
+    for k, (a, b, ic) in enumerate([('隔离', '单路模型发散不扩散', 'shield-check'), ('记录', '参数、模型版本、<br>随机种子', 'file-text'),
                                     ('回放', '任意一次验证可复现', 'player-play')]):
         bx = x + 32 + k * (bw + 12)
         rect(s, bx, yy, bw, 116, fill=th.bg)
@@ -725,14 +737,15 @@ def s12_route(d):
         ('③ → ①', RED, '数据回归', '<r>数据回归</r>：结果回流更新判据与工作流'),
     ]
     y = 262
+    lh_ = (zy + zh - 262 - 3 * 13) / 4.0
     for t, col, st, body in links:
-        rect(s, R, y, RW, 132, fill=WHITE, line=LINE)
-        rect(s, R, y, 6, 132, fill=col)
+        rect(s, R, y, RW, lh_, fill=WHITE, line=LINE)
+        rect(s, R, y, 6, lh_, fill=col)
         tag(s, R + 26, y + 20, t, fill=col, size=19, h=34, padx=14)
         text(s, R + 150, y + 20, RW - 176, 34, st, size=19, bold=True, color=RED if col == RED else SUB, align='r',
              anchor='m', lh=26, wrap=False)
         text(s, R + 26, y + 66, RW - 52, 60, body, size=20, color=BODY, lh=30)
-        y += 132 + 13
+        y += lh_ + 13
     # 路线闭环
     y1 = 882
     rect(s, 64, y1, 5, 104, fill=RED)
@@ -756,7 +769,7 @@ def s13_scenario(d):
          wrap=False)
     rect(s, 314, y0, 1542, 84, fill=PANEL)
     icon(s, 'quote', MUTED, 340, y0 + 24, 36)
-    text(s, 394, y0, 1440, 84, '“验证该机车在指定线路上按给定运行图运行时的<r>速度跟踪</r>与<r>牵引能耗</r>是否满足要求。”', size=26, bold=True,
+    text(s, 394, y0, 1440, 84, '验证该机车在指定线路上按给定运行图运行时的<r>速度跟踪</r>与<r>牵引能耗</r>是否满足要求。', size=26, bold=True,
          color=INK, anchor='m', lh=36, wrap=False)
     # 三步面板
     py, ph = 326, 556
@@ -780,7 +793,7 @@ def s13_scenario(d):
     # ① 任务理解
     x, w, th = xs[0], ws[0], BLUE
     y = tops[0]
-    for lab_, val in [('验证对象', '牵引控制系统（含级位控制、防空转／防滑行）'), ('关键性能', '<b>速度跟踪偏差、牵引能耗</b>'),
+    for lab_, val in [('验证对象', '牵引控制系统<br>（含级位控制、防空转／防滑行）'), ('关键性能', '<b>速度跟踪偏差、牵引能耗</b>'),
                       ('验证判据', '从设计规范与运用要求中提取，形式化为<b>可自动比对</b>的判据条目')]:
         tag(s, x + 28, y, lab_, fill=th.bg, color=th.text, size=18, h=32, padx=12)
         n = wrap_lines(strip_tags(val), w - 56, 20)
@@ -813,13 +826,13 @@ def s13_scenario(d):
          wrap=False)
     bx, by = subs[2]
     sub_head(bx, by, '测试环境自装配')
-    chips_row(s, bx + 16, by + 54, ['牵引控制智能体', '线路智能体'], gap=30, size=17, h=38, padx=12, color=INK,
-                   line=LINE)
-    text(s, bx + 16 + text_width('牵引控制智能体', 17) + 24, by + 54, 30, 38, '＋', size=18, bold=True, color=MUTED,
-         align='c', anchor='m', lh=24, wrap=False)
-    text(s, bx + 16, by + 92, 30, 38, '＋', size=18, bold=True, color=MUTED, align='c', anchor='m', lh=24, wrap=False)
-    chip(s, bx + 46, by + 96, '车辆动力学智能体', h=38, size=17, padx=12, color=INK, line=LINE)
-    text(s, bx + 16, by + 148, sw - 32, 30, '接口对接与算力配置', size=17, color=SUB, lh=26, wrap=False)
+    for k, t_ in enumerate(['牵引控制智能体', '车辆动力学智能体', '线路智能体']):
+        ry = by + 46 + k * 38
+        if k:
+            text(s, bx + 16, ry, 24, 34, '＋', size=18, bold=True, color=MUTED, align='c', anchor='m', lh=24,
+                 wrap=False)
+        chip(s, bx + 44, ry, t_, h=32, size=17, padx=12, color=INK, line=LINE)
+    text(s, bx + 16, by + 166, sw - 32, 26, '接口对接与算力配置', size=17, color=SUB, lh=24, wrap=False)
     bx, by = subs[3]
     sub_head(bx, by, '保真度分配')
     for k, (a, b, fc, bg) in enumerate([('常规直线工况', '降阶模型（快）', th.text, WHITE),
@@ -833,8 +846,8 @@ def s13_scenario(d):
     y = tops[2]
     bullets(s, x + 28, y, w - 56, 70, ['三类智能体<b>实时协同求解</b>，模型参数自动标定'], th.main, size=20, lh=31, sa=0)
     fy = y + 76
-    flow = [('逐工况对标判据', None, INK, LINE), ('定位异常工况', '如某小半径曲线段速度偏差超限', RED, RED),
-            ('追溯原因', '黏着利用不足？控制参数不匹配？', RED, RED)]
+    flow = [('逐工况对标判据', None, INK, LINE), ('定位异常工况', '如某小半径曲线段<br>速度偏差超限', RED, RED),
+            ('追溯原因', '黏着利用不足？<br>控制参数不匹配？', RED, RED)]
     for k, (a, b, fc, lc) in enumerate(flow):
         chip(s, x + 28, fy, a, w=190, h=42, size=19, color=fc, line=lc, bold=True)
         if b:
@@ -842,7 +855,7 @@ def s13_scenario(d):
         if k < 2:
             line(s, x + 123, fy + 42, x + 123, fy + 66, TRI, 2, tail='triangle')
         fy += 68
-    concl(s, x + 28, py + ph - 28 - 96, w - 56, 96, '输出：验证报告 ＋ 全要素留痕（可回放、可回归）', th, size=21)
+    concl(s, x + 28, py + ph - 28 - 96, w - 56, 96, '输出：验证报告 ＋ 全要素留痕<br>（可回放、可回归）', th, size=21)
     # 结论
     summary(s, 64, 904, 1792, 86, '这一次验证里：工况没人手写、线路数据没人准备、环境没人搭、异常没人看图判断。这就是“全流程交给智能体”。',
             title_size=27)
@@ -865,18 +878,18 @@ def s14_innovation(d):
         x = 64 + i * (pw + 32)
         rect(s, x, y0, pw, ph, fill=WHITE, line=LINE)
         rect(s, x, y0, pw, 6, fill=th.main)
-        icon_badge(s, ic, th, x + 32, y0 + 32, 72)
-        text(s, x + 126, y0 + 30, pw - 126 - 120, 78, title, size=25, bold=True, color=INK, anchor='m', lh=34)
+        icon_badge(s, ic, th, x + 32, y0 + 30, 64)
         num_mark(s, x + pw - 32 - 100, y0 + 22, 100, '0%d' % (i + 1), th.num, size=46)
-        line(s, x + 32, y0 + 130, x + pw - 32, y0 + 130, LINE, 1.5)
+        text(s, x + 32, y0 + 110, pw - 64, 40, title, size=25, bold=True, color=INK, anchor='m', lh=34, wrap=False)
+        line(s, x + 32, y0 + 166, x + pw - 32, y0 + 166, LINE, 1.5)
         # 常规做法
-        cy = y0 + 152
+        cy = y0 + 184
         tag(s, x + 32, cy, '常规做法', fill=GRAYBG, color=SUB, size=17, h=30, padx=12)
         text(s, x + 32, cy + 40, pw - 64, 40, conv, size=21, color=SUB, lh=31)
         tri(s, x + pw / 2.0, cy + 102, 18, 26, TRI, direction='d')
         # 本课题
         by = cy + 124
-        bh = 212
+        bh = 196
         rect(s, x + 32, by, pw - 64, bh, fill=th.bg)
         tag(s, x + 52, by + 18, '本课题', fill=th.main, size=17, h=30, padx=12)
         text(s, x + 52, by + 60, pw - 104, 96, ours, size=21, color=INK, lh=32)
@@ -900,7 +913,7 @@ def s15_benchmark(d):
     s = d.new_slide()
     frame(d, s, '技术对标：不重复造轮子，补上智能编排与实时协同这一层', '对标六类现有成熟技术：已解决什么 · 未解决什么 · 本课题定位在哪', '技术对标与定位')
     L = 64
-    cols = [300, 330, 556]
+    cols = [290, 372, 524]
     header(s, L, 212, '现有成熟技术对标', w=sum(cols))
     rows = [
         ('单系统商用仿真软件', '单专业高精度仿真', '单系统、离线、人工操作，难以形成列车级协同'),
@@ -911,7 +924,7 @@ def s15_benchmark(d):
         ('通用智能体框架', '任务编排与工具调用', '缺多物理域实时协同与时序同步能力'),
     ]
     trs = [['<b>%s</b>' % a, '<c=%s>✓</c>  %s' % (GREEN.main, b), '<bc=%s>×</bc>  %s' % (RED, c)] for a, b, c in rows]
-    table(s, L, 256, cols, trs, header=['现有成熟技术', '已解决', '未解决（本课题的定位）'], size=20, lh=30, pad_y=24,
+    table(s, L, 256, cols, trs, header=['现有成熟技术', '已解决', '未解决（本课题的定位）'], size=20, lh=30, pad_y=33,
           pad_x=18, col_styles={0: dict(size=20), 1: dict(color=GREEN.text), 2: dict(color=BODY)})
     # 右：技术定位
     R, RW = 1290, 566
@@ -925,16 +938,16 @@ def s15_benchmark(d):
     rect(s, R, by, RW, 136, fill=RED_BG)
     rect(s, R, by, 5, 136, fill=RED)
     text(s, R + 28, by + 14, RW - 48, 30, '在成熟技术之上，补上这一层', size=18, bold=True, color=RED, lh=26, wrap=False)
-    text(s, R + 28, by + 48, RW - 48, 80, '面向列车级性能验证的<r>智能编排与实时协同</r>', size=27, bold=True, color=INK, lh=38)
+    text(s, R + 28, by + 48, RW - 48, 80, '面向列车级性能验证的<br><r>智能编排与实时协同</r>', size=27, bold=True, color=INK, lh=38)
     text(s, R, by + 150, RW, 28, '成熟技术底座', size=16, bold=True, color=MUTED, align='c', lh=24, wrap=False)
     base = ['商用仿真软件', '协同仿真标准', 'HIL 试验台', '实物与线路试验', '代理／降阶模型', '通用智能体框架']
     bw_ = (RW - 2 * 8) / 3.0
     for k, t in enumerate(base):
         chip(s, R + (k % 3) * (bw_ + 8), by + 182 + (k // 3) * 46, t, w=bw_, h=38, size=17, color=SUB, fill=PANEL,
              line=LINE)
-    text(s, R, by + 300, RW, 150,
+    text(s, R, by + 318, RW, 150,
          '技术定位：不重复造轮子——不做仿真软件、不做接口标准、不做试验台；而是在成熟技术之上，补上“<b>面向列车级性能验证的智能编排与实时协同</b>”这一层。',
-         size=20, color=BODY, lh=31)
+         size=21, color=BODY, lh=33)
     # 底部：与同类工作的差异
     summary(s, L, 890, 1792, 100, '与同类工作的差异',
             '现有工作多聚焦单一系统仿真或通用智能体平台；本课题面向<b>列车级性能验证</b>，把“协同运行与调度”做成<b>可交付的引擎</b>与<b>可复用的方法论体系</b>。',
@@ -977,7 +990,7 @@ def s16_future(d):
 def s17_schedule(d):
     s = d.new_slide()
     frame(d, s, '阶段目标与进度：四阶段推进，前一阶段交付即后一阶段输入', '研究周期 2027.01—2028.12（24 个月） · 四个里程碑 M1—M4 与阶段交付物对齐', '阶段目标与进度安排')
-    X0, X1 = 64, 1856
+    X0, X1 = 64, 1844
     mw = (X1 - X0) / 24.0
     stages = [
         ('阶段一', '架构与规范', 0, 6, STAGE[0], '2027.01—2027.06', '需求分析与总体架构设计', '总体架构、验证判据知识化方法与标准化接口规范',
@@ -1000,19 +1013,18 @@ def s17_schedule(d):
         w = (b - a) * mw - (2 if a else 0)
         shp = rect(s, x, by, w, 54, fill=col)
         fg = INK if col == STAGE[1] else WHITE
-        text(s, x, by, w, 54, '%s · %s' % (name, short) if w > 260 else name, size=20, bold=True, color=fg,
+        full = '%s · %s' % (name, short)
+        text(s, x, by, w, 54, full if text_width(full, 19, True) + 24 <= w else name, size=19, bold=True, color=fg,
              align='c', anchor='m', lh=26, shp=shp, wrap=False)
     # 月刻度
     ty = by + 62
     rect(s, X0, ty, X1 - X0, 3, fill=RULER)
     for m in range(25):
         xx = X0 + m * mw
-        rect(s, xx - 1, ty + 3, 2, 10 if m % 3 == 0 else 6, fill=RULER)
-    for m in range(0, 24, 3):
-        mm = (m % 12) + 1
-        text(s, X0 + m * mw - 30, ty + 16, 60, 24, '%02d' % mm, size=16, color=MUTED, font=MONO, align='c', lh=22,
-             wrap=False)
-    text(s, X1 - 60, ty + 16, 60, 24, '12', size=16, color=MUTED, font=MONO, align='r', lh=22, wrap=False)
+        rect(s, xx - 1, ty + 3, 2, 12 if m % 12 == 0 else (8 if m % 3 == 0 else 5), fill=RULER)
+    for m in range(24):
+        text(s, X0 + (m + 0.5) * mw - 24, ty + 14, 48, 24, '%02d' % (m % 12 + 1), size=15, color=MUTED, font=MONO,
+             align='c', lh=20, wrap=False)
     # 里程碑
     my = ty + 52
     for name, short, a, b, col, per, goal, deli, mk, mdate, mtext in stages:
@@ -1037,7 +1049,7 @@ def s17_schedule(d):
         line(s, x + 26, cy0 + 126, x + cw - 26, cy0 + 126, LINE, 1.5)
         text(s, x + 26, cy0 + 140, cw - 52, 28, '阶段交付', size=17, bold=True, color=MUTED, lh=24, wrap=False)
         parts = [p for p in deli.split('、')]
-        bullets(s, x + 26, cy0 + 174, cw - 52, 150, parts, col if col != STAGE[1] else 'D9A300', size=20, lh=30, sa=6)
+        bullets(s, x + 26, cy0 + 174, cw - 52, 150, parts, col if col != STAGE[1] else 'D9A300', size=19, lh=29, sa=6)
         rect(s, x + 20, cy0 + ch - 20 - 50, cw - 40, 50, fill=RED_BG)
         text(s, x + 36, cy0 + ch - 20 - 50, cw - 72, 50, '<r>%s</r>（%s）%s' % (mk, mdate, mtext), size=19, color=INK,
              anchor='m', lh=26, bold=True, wrap=False)
@@ -1053,11 +1065,11 @@ def s18_tasks(d):
     frame(d, s, '任务分解与考核：四个子任务，交付物逐级成为下一任务输入', '子任务1 知识 → 子任务2 调度 → 子任务3 执行 → 子任务4 集成；数据回归更新判据与工作流', '预期成果与效益')
     tasks = [
         (1, ['验证判据知识库', '任务工作流定义'], '知识库核验、报告评审'),
-        (2, ['多智能体协同运行与调度引擎（软件）'], '软件演示、功能核验'),
+        (2, ['多智能体协同运行与<br>调度引擎（软件）'], '软件演示、功能核验'),
         (3, ['仿真智能体／孪生模型', '用例与线路数据', '验证报告'], '模型核验、比对试验'),
         (4, ['列车级数字样机', '构建方法体系与技术规范'], '示范应用验收、第三方验证'),
     ]
-    links = ['判据与\n工作流', '执行\n方案', '验证\n结论']
+    links = ['判据与<br>工作流', '执行方案', '验证结论']
     g = 100
     cw, ch, y0 = (1792 - 3 * g) / 4.0, 520, 214
     cxs = []
@@ -1086,8 +1098,8 @@ def s18_tasks(d):
                  lh=24)
     # 回流：子任务4 → 子任务2
     yb = y0 + ch
-    poly(s, [(cxs[3], yb), (cxs[3], yb + 46), (cxs[1], yb + 46), (cxs[1], yb + 2)], GREEN.main, 2.5, tail='triangle')
-    text(s, cxs[1], yb + 56, cxs[3] - cxs[1], 30, '数据回归：更新判据与工作流', size=20, bold=True, color=GREEN.text, align='c',
+    poly(s, [(cxs[3], yb), (cxs[3], yb + 46), (cxs[0], yb + 46), (cxs[0], yb + 2)], GREEN.main, 2.5, tail='triangle')
+    text(s, cxs[0], yb + 56, cxs[3] - cxs[0], 30, '数据回归：更新判据与工作流', size=20, bold=True, color=GREEN.text, align='c',
          lh=28, wrap=False)
     summary(s, 64, 872, 1792, 118, '每个子任务的交付物即下一子任务的输入', '形成“<r>知识—调度—执行—集成</r>”的闭环。', title_size=28,
             desc_size=22)
@@ -1152,12 +1164,15 @@ def s20_metrics(d):
         ('效率提升', '关键性能验证的<b>效率与工况覆盖度显著提升</b>'),
     ]
     y = 256 + 2 * th_ + 12 + 24
-    for lab_, txt in rows:
-        n = wrap_lines(strip_tags(txt), LW - 150, 20)
-        h = max(76, n * 31 + 40)
+    ns = [wrap_lines(txt, LW - 130, 20) for _, txt in rows]
+    base = [n * 31 + 36 for n in ns]
+    pad = (256 + 4 * 144 + 3 * 12 - y - sum(base)) / float(len(rows))
+    for (lab_, txt), n, b in zip(rows, ns, base):
+        h = b + pad
         line(s, L, y, L + LW, y, LINE, 1)
-        tag(s, L, y + 20, lab_, fill=BLUE.bg, color=BLUE.text, size=18, h=32, padx=12)
-        text(s, L + 130, y + 18, LW - 130, h - 18, txt, size=20, color=BODY, lh=31)
+        top = y + (h - n * 31) / 2.0
+        tag(s, L, top - 1, lab_, fill=BLUE.bg, color=BLUE.text, size=18, h=32, padx=12)
+        text(s, L + 130, top, LW - 130, n * 31 + 4, txt, size=20, color=BODY, lh=31)
         y += h
     line(s, L, y, L + LW, y, LINE, 1)
     # 右：效益评估
@@ -1203,7 +1218,7 @@ def s21_budget(d):
     rows.append(['', '<b>合计</b>', '<b>100</b>', '<b>100%</b>', '—'])
     cols = [64, 262, 124, 180, 434]
     table(s, L, 332, cols, rows, header=['序号', '科目', '金额（万元）', '占比', '测算依据'], size=19, lh=28, pad_x=14,
-               pad_y=17, head_size=16,
+               pad_y=20, head_size=16,
                col_styles={0: dict(align='c', font=MONO, bold=True, color=SUB), 1: dict(bold=True, color=INK),
                            2: dict(align='c', font=MONO, bold=True, color=INK), 3: dict(align='r', font=MONO, color=SUB),
                            4: dict(color=BODY, size=18, lh=27)},
@@ -1212,7 +1227,7 @@ def s21_budget(d):
     y = 332 + 44
     for i, (no, name, v, basis, col, _) in enumerate(BUDGET):
         n = max(wrap_lines(basis, cols[4] - 28, 18) * 27, wrap_lines(name, cols[1] - 28, 19, True) * 28)
-        rh = n + 34
+        rh = n + 40
         bx = L + sum(cols[:3]) + 14
         rect(s, bx, y + rh / 2.0 - 7, 100 * v / 50.0, 14, fill=col)
         rect(s, L + 6, y + rh / 2.0 - 7, 4, 14, fill=col)
@@ -1229,13 +1244,13 @@ def s21_budget(d):
              color=INK, font=MONO, align='r', anchor='m', lh=56, wrap=False)
     header(s, R, 380, '合理性说明', w=RW)
     bullets(s, R, 424, RW, 560, [
-        '<b>算力是核心投入且与任务强相关</b>：NPU 承担智能体推理与任务编排决策，GPU 承担多物理域模型并行仿真，二者协同满足<b>实时协同运行与保真度切换</b>要求',
+        '<b>算力是核心投入且与任务强相关</b>：NPU 承担智能体推理与任务编排决策，GPU 承担多物理域模型并行仿真，<br>二者协同满足<b>实时协同运行与保真度切换</b>要求',
         '<b>人员占比 30%</b>：以算法与软件开发为主，属智力密集型研究，占比合理',
         '<b>折旧 5 万</b>：充分利用现有仿真与测试设备，避免重复购置',
         '<b>外协 5 万</b>：用于建模数据采集与第三方验证，保障数据质量与结果客观性',
         '<b>成果 5 万</b>：支撑专利、论文与标准草案产出；<b>其他 5 万</b>：差旅与会议，用于示范应用与协同交流',
         '<r>无对外技术合作费支出</r>，全部经费用于自主研发；分年度投入均衡，与四阶段进度匹配',
-    ], BLUE.main, size=20, lh=31, sa=14)
+    ], BLUE.main, size=20, lh=31, sa=20)
 
 
 # =====================================================================  22 项目管理计划
@@ -1251,7 +1266,7 @@ def s22_management(d):
     groups = [
         (1, '判据知识化、工作流建模、知识与流程迭代', '判据知识库、工作流定义', None),
         (2, '任务解析、环境装配、保真度与算力调度', '协同运行与调度引擎', None),
-        (3, '智能体研制、用例生成、识别与报告、数据回归', '仿真智能体／孪生模型、验证报告', '仿真智能体／用例／识别／报告／回归'),
+        (3, '智能体研制、用例生成、识别与报告、<br>数据回归', '仿真智能体／孪生模型、验证报告', '仿真智能体／用例／识别／报告／回归'),
         (4, '架构设计、协同运行、沙箱、样机集成', '列车级数字样机、方法体系与规范', None),
     ]
     gw = (1792 - 3 * 24) / 4.0
@@ -1262,18 +1277,18 @@ def s22_management(d):
         th = LAYER[k]
         x = 64 + i * (gw + 24)
         line(s, x + gw / 2.0, 296, x + gw / 2.0, gy - 2, MUTED, 1.5, tail='triangle')
-        rect(s, x, gy, gw, 268, fill=WHITE, line=LINE)
+        rect(s, x, gy, gw, 284, fill=WHITE, line=LINE)
         rect(s, x, gy, gw, 6, fill=th.main)
         tag(s, x + 22, gy + 22, '子任务%d组' % k, fill=th.main, size=17, h=30, padx=12)
         text(s, x + 22 + text_width('子任务%d组' % k, 17, True) + 38, gy + 22, gw - 160, 30, '对应' + LAYER_NO[k],
              size=17, bold=True, color=th.text, anchor='m', lh=24, wrap=False)
         text(s, x + 22, gy + 62, gw - 44, 34, LAYER_NAME[k], size=22, bold=True, color=INK, lh=30, wrap=False)
         text(s, x + 22, gy + 96, gw - 44, 26, extra or '', size=16, color=SUB, lh=22, wrap=False)
-        text(s, x + 22, gy + 126, 120, 26, '主要任务', size=16, bold=True, color=MUTED, lh=22, wrap=False)
-        text(s, x + 22, gy + 152, gw - 44, 56, task, size=18, color=BODY, lh=27)
-        concl(s, x + 16, gy + 268 - 16 - 48, gw - 32, 48, '交付：' + deli, th, size=17, pad=12)
+        text(s, x + 22, gy + 134, 120, 26, '主要任务', size=16, bold=True, color=MUTED, lh=22, wrap=False)
+        text(s, x + 22, gy + 160, gw - 44, 56, task, size=18, color=BODY, lh=27)
+        concl(s, x + 16, gy + 284 - 16 - 48, gw - 32, 48, '交付：' + deli, th, size=17, pad=12)
     # 管理流程
-    y1 = 630
+    y1 = 634
     L, LW = 64, 876
     header(s, L, y1, '管理流程', note='双周 → 月度 → 季度 → 年度', w=LW)
     cad = [('双周', '双周例会', '子任务进展同步与问题协调'), ('月度', '月度节点检查', '对照里程碑核查交付物'),
@@ -1281,8 +1296,8 @@ def s22_management(d):
     cw = (LW - 3 * 12) / 4.0
     for i, (f, n, t) in enumerate(cad):
         x = L + i * (cw + 12)
-        hh = 210 + i * 36
-        top = 996 - hh
+        hh = 206 + i * 36
+        top = 990 - hh
         rect(s, x, top, cw, hh, fill=BLUE.bg if i == 3 else PANEL, line=LINE)
         rect(s, x, top, cw, 5, fill=BLUE.main)
         oval(s, x + 20, top + 24, 60, 60, fill=BLUE.soft)
@@ -1297,7 +1312,7 @@ def s22_management(d):
            ('风险管控', 'alert-triangle', '技术风险（模型精度、实时性、判据知识化完备性）、进度风险、接口风险，均设置应对预案'),
            ('资源保障', 'server', '算力资源、试验与运用数据、样车与试验台资源')]
     y = y1 + 48
-    hs = [74, 62, 96, 62]
+    hs = [72, 58, 92, 58]
     for (t, ic, body), h in zip(ctl, hs):
         line(s, R, y, R + RW, y, LINE, 1)
         icon(s, ic, RED if t == '风险管控' else INK, R, y + 16, 28)
@@ -1307,14 +1322,14 @@ def s22_management(d):
         else:
             chips_row(s, R + 230, y + 14, ['M1 架构与接口规范', 'M2 智能体与引擎', 'M3 数字样机与验证', 'M4 示范应用与验收'], gap=8,
                       size=15, h=32, padx=8, color=RED, fill=RED_BG, line=None, bold=True)
-        y += h + 8
-    line(s, R, y, R + RW, y, LINE, 1)
+        y += h + 6
+    line(s, R, y - 6, R + RW, y - 6, LINE, 1)
 
 
 # =====================================================================  23 团队研究能力
 def s23_team(d):
     s = d.new_slide()
-    frame(d, s, '团队研究能力：为何由我单位承担', '牵头单位：**********　·　研发平台 · 仿真能力 · 试验能力 · 数据积累 · 在研项目 · 人才队伍', '团队研究能力')
+    frame(d, s, '团队研究能力：为何由我单位承担', '牵头单位：********** · 研发平台 · 仿真能力 · 试验能力 · 数据积累 · 在研项目 · 人才队伍', '团队研究能力')
     items = [
         ('研发平台', 'building-factory-2', '【待填：机车总体设计／控制系统开发等平台】'),
         ('仿真能力', 'device-desktop-analytics', '【待填：已有的车辆动力学、牵引电传动、控制等仿真模型与软件】'),
@@ -1356,9 +1371,9 @@ def s24_results(d):
     top = [
         ('成果1', '软件1套', '多智能体协同运行与调度引擎', BLUE, 'settings-automation', [
             '完成<b>任务理解—任务编排—智能体执行</b>全流程：验证目标解析、环境自装配、保真度与算力调度、执行监控与重规划',
-            '支持异构仿真智能体统一接入，解决多专业模型“接不上”的问题',
+            '支持异构仿真智能体统一接入，<br>解决多专业模型“接不上”的问题',
             '面向性能验证提供<b>实时协同运行能力</b>']),
-        ('成果2', '1套', '关键系统仿真智能体／智能孪生模型', PURPLE, 'robot', [
+        ('成果2', '1套', '关键系统仿真智能体／<br>智能孪生模型', PURPLE, 'robot', [
             '覆盖控制系统、车辆动力学与线路等关键系统',
             '由“被动模型”升级为“<b>自主智能体</b>”，具备参数自动标定与结果判断能力',
             '具备标准化接口与可扩展接入机制，支持后续新增系统']),
@@ -1375,13 +1390,13 @@ def s24_results(d):
         icon_badge(s, ic, th, x + 28, y0 + 30, 72)
         text(s, x + 118, y0 + 28, 300, 30, '<k>%s</k>　<c=%s>%s</c>' % (no, SUB, form), size=18, color=th.text, lh=26,
              wrap=False)
-        text(s, x + 118, y0 + 58, pw - 118 - 28, 70, name, size=24, bold=True, color=INK, lh=32)
+        text(s, x + 118, y0 + 58, pw - 118 - 28 - 96, 70, name, size=24, bold=True, color=INK, lh=32)
         num_mark(s, x + pw - 28 - 90, y0 + 22, 90, '0%d' % (i + 1), th.num, size=40)
         line(s, x + 28, y0 + 132, x + pw - 28, y0 + 132, LINE, 1.5)
         bullets(s, x + 28, y0 + 152, pw - 56, ph - 170, bl, th.main, size=20, lh=31, sa=12)
     # 成果4、5
     y1 = y0 + ph + 22
-    LW = 1000
+    LW = 920
     small = [('成果4', '1套', '列车级数字样机构建方法体系与技术规范', ORANGE, 'file-certificate',
               '形成构建方法、集成流程与标准化接口规范，可作为**内推广与后续课题复用的方法支撑'),
              ('成果5', '1份', '示范应用与验证报告', CYAN, 'report-analytics', '在典型机车产品上完成关键性能协同验证，形成验证效能评估结论')]
@@ -1391,11 +1406,13 @@ def s24_results(d):
         rect(s, 64, y, LW, sh, fill=WHITE, line=LINE)
         rect(s, 64, y, 6, sh, fill=th.main)
         icon_badge(s, ic, th, 90, y + (sh - 60) / 2.0, 60)
-        text(s, 172, y + 16, LW - 200, 34, '<k><c=%s>%s</c></k>　%s　<c=%s>%s</c>' % (th.text, no, name, SUB, form),
+        n = wrap_lines(txt, LW - 200, 19)
+        top = y + (sh - (34 + 6 + n * 28)) / 2.0
+        text(s, 172, top, LW - 200, 34, '<k><c=%s>%s</c></k>　%s　<c=%s>%s</c>' % (th.text, no, name, SUB, form),
              size=21, bold=True, color=INK, lh=30, wrap=False)
-        text(s, 172, y + 54, LW - 200, sh - 60, txt, size=19, color=BODY, lh=28)
+        text(s, 172, top + 40, LW - 200, n * 28 + 4, txt, size=19, color=BODY, lh=28)
     # 知识产权与标准
-    R, RW = 1088, 768
+    R, RW = 1008, 848
     header(s, R, y1 - 4, '知识产权与标准', w=RW)
     ip = [('4', '项', '发明专利申请', '覆盖任务编排调度机制、保真度与算力调度、实时时序同步、工况自生成等方向'),
           ('2', '篇', '核心论文', '面向多智能体协同仿真与性能验证方法'),

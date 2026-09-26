@@ -40,7 +40,7 @@ SYMBOL = 'Arial'       # 项目符号三角
 INK = '0F1A2B'        # 标题、粗体
 BODY = '3A4556'       # 正文
 SUB = '6B7785'        # 副标题、说明
-MUTED = '9AA6B8'      # 标签说明、页脚
+MUTED = '7C889A'      # 标签说明、页脚（对比度约 3.6:1）
 LINE = 'E3E7EF'       # 卡片描边
 RULE = 'D3D9E1'       # 页眉页脚细线
 GRAYBG = 'F3F5F7'     # 问题卡底
@@ -101,26 +101,57 @@ TAG_RE = re.compile(r'(<\/?[a-z]+(?:=[^>]*)?>)')
 
 
 def strip_tags(s):
-    return TAG_RE.sub('', s)
+    return TAG_RE.sub('', s.replace('<br>', '\n'))
 
 
-_NO_LINE_START = set('，。、；：！？）》」』】”’%,.;:!?)')
+def segments(s):
+    """去掉行内标记后按软换行 <br> / 换行符切分为若干行段。"""
+    return strip_tags(s).split('\n')
+
+
+# 中文排版禁则：行首不出现的收尾标点（允许悬挂）、行尾不出现的开头标点
+_NO_START = set('，。、；：！？）」』】〕》〉”’％%,.;:!?)]}…')
+_NO_END = set('（「『【〔《〈“‘([{')
+_TOKEN_RE = re.compile(r'[A-Za-z0-9\.\-_/%+#&@~]+|\s|.')
+FIT = 0.985   # 行宽安全系数
+
+
+def layout_lines(s, width, size, bold=False, fit=FIT):
+    """模拟中文排版换行，返回各行宽度：拉丁单词不拆，收尾标点可悬挂，开头标点随下一行。"""
+    width *= fit
+    if width <= 0:
+        return [text_width(s, size, bold)]
+    lines, last = [0.0], [None]
+    for t in _TOKEN_RE.findall(s):
+        w = text_width(t, size, bold)
+        cur = lines[-1]
+        if cur > 0 and cur + w > width:
+            if t in _NO_START:
+                lines[-1] = cur + w
+                last[-1] = t
+                continue
+            if t.isspace():
+                continue
+            if last[-1] in _NO_END:
+                pw = text_width(last[-1], size, bold)
+                lines[-1] = cur - pw
+                lines.append(pw + w)
+            else:
+                lines.append(w)
+            last.append(t)
+        else:
+            lines[-1] = cur + w
+            last[-1] = t
+    return lines
 
 
 def wrap_lines(s, width, size, bold=False):
-    """按 PowerPoint 的中文换行习惯粗略估算行数。"""
-    if width <= 0:
-        return 99
-    tokens = re.findall(r'[A-Za-z0-9\.\-_/%+#]+|\s|.', s)
-    lines, cur = 1, 0.0
-    for t in tokens:
-        w = text_width(t, size, bold)
-        if cur + w > width * 0.95 and cur > 0 and not (t in _NO_LINE_START):
-            lines += 1
-            cur = 0 if t.isspace() else w
-        else:
-            cur += w
-    return lines
+    """估算行数（支持 <br> 软换行）。"""
+    return sum(len(layout_lines(seg, width, size, bold)) for seg in segments(s))
+
+
+def _orphan(lines, size, min_chars=3):
+    return len(lines) >= 2 and lines[-1] < size * min_chars - 1
 
 
 WARNINGS = []
@@ -180,6 +211,9 @@ def parse_markup(s, base):
         m = re.fullmatch(r'<(\/?)([a-z]+)(?:=([^>]*))?>', tok)
         if m:
             closing, tag, val = m.groups()
+            if tag == 'br':
+                out.append(('\x0b', stack[-1]))
+                continue
             if closing:
                 if len(stack) > 1:
                     stack.pop()
@@ -236,6 +270,10 @@ def _apply_ppr(p, align='l', lh=None, sb=0, sa=0, bullet=None, ind=0, bu_char='�
 
 
 def _add_run(p, text, st):
+    if text == '\x0b':
+        br = _sub(p._p, 'a:br')
+        _sub(br, 'a:rPr', lang='zh-CN', altLang='en-US', sz=str(int(round(st['size'] * 50))))
+        return
     r = p.add_run()
     r.text = text
     rPr = r._r.get_or_add_rPr()
@@ -270,8 +308,8 @@ def _fill_tf(tf, content, size, color, bold, font, align, lh, sb, sa, cs, bullet
                    bu_char=it.get('bu_char', bu_char), bu_size=it.get('bu_size', bu_size))
         for txt, rst in parse_markup(it['t'], st):
             _add_run(p, txt, rst)
-        paras.append(dict(t=strip_tags(it['t']), size=st['size'], bold=st['bold'], lh=plh, sb=psb, sa=psa,
-                          ind=pind if pbul or it.get('ind') else 0))
+        paras.append(dict(t=strip_tags(it['t']), segs=segments(it['t']), size=st['size'], bold=st['bold'], lh=plh,
+                          sb=psb, sa=psa, ind=pind if pbul or it.get('ind') else 0, align=it.get('align', align)))
     return paras
 
 
@@ -352,10 +390,46 @@ def oval(s, x, y, w, h, fill=None, line=None, lw=1, **kw):
     return shape(s, OVAL, x, y, w, h, fill, line, lw, **kw)
 
 
+def _need_height(paras, avail_w, wrap=True, fit=FIT):
+    need, lines_total, orphan = 0, 0, False
+    for p in paras:
+        n = 0
+        for seg in p['segs']:
+            ls = layout_lines(seg, avail_w - p['ind'], p['size'], p['bold'], fit) if wrap else [0]
+            n += len(ls)
+            orphan = orphan or _orphan(ls, p['size'])
+        lines_total += n
+        need += n * p['lh'] + p['sb'] + p['sa']
+    return need, lines_total, orphan
+
+
+BALANCE_FITS = (1.012, 0.975)   # 同时在“略宽”和“略窄”两种行宽假设下校验，抵消渲染器取整与字体差异
+
+
+def _balance(paras, avail_w, max_frac=0.34):
+    """避免末行孤字、避免“恰好放满”的临界换行：逐步收窄可用宽度，直到在各行宽假设下行数一致、
+    且末行不少于 3 个字（行数不超过原先的最大值）。返回收窄量。"""
+    base = [_need_height(paras, avail_w, fit=f) for f in BALANCE_FITS]
+    stable = len(set(b[1] for b in base)) == 1
+    if stable and not any(b[2] for b in base):
+        return 0
+    limit = max(b[1] for b in base)
+    step = min(p['size'] for p in paras) / 2.0
+    d = step
+    while d <= avail_w * max_frac:
+        res = [_need_height(paras, avail_w - d, fit=f) for f in BALANCE_FITS]
+        if any(r[1] > limit for r in res):
+            break
+        if len(set(r[1] for r in res)) == 1 and not any(r[2] for r in res):
+            return d
+        d += step
+    return 0
+
+
 def text(s, x, y, w, h, content, size=22, color=BODY, bold=False, font=FONT, align='l', anchor='t', lh=None,
          sb=0, sa=0, cs=0, inset=0, wrap=True, bullet=None, ind=24, bu_char='►', bu_size=62, check=True,
-         shp=None):
-    """文本框（或填充已有形状 shp 的文字）。content 为字符串（\\n 分段）或段落列表。"""
+         shp=None, balance=True):
+    """文本框（或填充已有形状 shp 的文字）。content 为字符串（\\n 分段、<br> 软换行）或段落列表。"""
     if shp is None:
         box = s.shapes.add_textbox(E(x), E(y), E(w), E(h))
     else:
@@ -363,25 +437,38 @@ def text(s, x, y, w, h, content, size=22, color=BODY, bold=False, font=FONT, ali
     tf = box.text_frame
     tf.word_wrap = wrap
     tf.auto_size = MSO_AUTO_SIZE.NONE
-    ins = inset if isinstance(inset, (tuple, list)) else (inset,) * 4
-    tf.margin_left, tf.margin_top, tf.margin_right, tf.margin_bottom = [E(v) for v in ins]
+    ins = list(inset) if isinstance(inset, (tuple, list)) else [inset] * 4
     tf.vertical_anchor = {'t': MSO_ANCHOR.TOP, 'm': MSO_ANCHOR.MIDDLE, 'b': MSO_ANCHOR.BOTTOM}[anchor]
     paras = _fill_tf(tf, content, size, color, bold, font, align, lh, sb, sa, cs, bullet, ind, bu_char, bu_size)
+    avail_w = w - ins[0] - ins[2]
+    if wrap and balance:
+        dd = _balance(paras, avail_w)
+        if dd:
+            if paras[0]['align'] == 'c':
+                ins[0] += dd / 2.0
+                ins[2] += dd / 2.0
+            elif paras[0]['align'] == 'r':
+                ins[0] += dd
+            else:
+                ins[2] += dd
+            avail_w -= dd
+    tf.margin_left, tf.margin_top, tf.margin_right, tf.margin_bottom = [E(v) for v in ins]
     if check:
-        avail_w = w - ins[0] - ins[2]
-        need = 0
-        for p in paras:
-            n = wrap_lines(p['t'], avail_w - p['ind'], p['size'], p['bold']) if wrap else 1
-            need += n * p['lh'] + p['sb'] + p['sa']
+        need, _, orph = _need_height(paras, avail_w, wrap)
+        orph = wrap and any(_need_height(paras, avail_w, fit=f)[2] for f in BALANCE_FITS)
         avail_h = h - ins[1] - ins[3]
         if need > avail_h + 2:
             WARNINGS.append('第%02d页 文本可能溢出 (需要%.0fpx/可用%.0fpx): %s' % (
                 getattr(s, '_no', 0), need, avail_h, paras[0]['t'][:30]))
+        if wrap and orph:
+            WARNINGS.append('第%02d页 末行孤字: %s' % (getattr(s, '_no', 0), paras[0]['t'][:30]))
         if not wrap:
             for p in paras:
-                tw = text_width(p['t'], p['size'], p['bold'])
-                if tw > avail_w + 2:
-                    WARNINGS.append('第%02d页 单行文本超宽 (%.0f/%.0f): %s' % (getattr(s, '_no', 0), tw, avail_w, p['t'][:30]))
+                for seg in p['segs']:
+                    tw = text_width(seg, p['size'], p['bold'])
+                    if tw > avail_w + 2:
+                        WARNINGS.append('第%02d页 单行文本超宽 (%.0f/%.0f): %s' % (getattr(s, '_no', 0), tw, avail_w,
+                                                                             seg[:30]))
     return box
 
 
@@ -555,16 +642,19 @@ def concl(s, x, y, w, h, txt, th, size=22, check=False, bar=5, pad=22, align='l'
 
 
 def summary(s, x, y, w, h, title, desc=None, title_size=30, desc_size=21, bar=RED, desc_color=SUB, gap=10):
-    """红条总结：左侧 5px 红条 + 粗体结论 + 灰色说明。"""
+    """红条总结：左侧 5px 红条 + 粗体结论 + 灰色说明（内容整体垂直居中）。"""
     rect(s, x, y, 5, h, fill=bar)
-    th = round(title_size * 1.4)
+    tlh = round(title_size * 1.4)
     if desc:
-        text(s, x + 28, y, w - 28, th, title, size=title_size, bold=True, color=INK, anchor='m', lh=th)
-        text(s, x + 28, y + th + gap, w - 28, h - th - gap, desc, size=desc_size, color=desc_color,
-             lh=round(desc_size * 1.55))
+        dlh = round(desc_size * 1.55)
+        tn = wrap_lines(title, w - 28, title_size, True)
+        dn = wrap_lines(desc, w - 28, desc_size)
+        total = tn * tlh + gap + dn * dlh
+        top = y + max(0, (h - total) / 2.0)
+        text(s, x + 28, top, w - 28, tn * tlh, title, size=title_size, bold=True, color=INK, anchor='t', lh=tlh)
+        text(s, x + 28, top + tn * tlh + gap, w - 28, dn * dlh + 4, desc, size=desc_size, color=desc_color, lh=dlh)
     else:
-        text(s, x + 28, y, w - 28, h, title, size=title_size, bold=True, color=INK, anchor='m',
-             lh=round(title_size * 1.45))
+        text(s, x + 28, y, w - 28, h, title, size=title_size, bold=True, color=INK, anchor='m', lh=tlh)
 
 
 def num_mark(s, x, y, w, num, color, size=54, align='r'):
@@ -681,7 +771,7 @@ def table(s, x, y, cols, rows, header=None, size=20, lh=None, pad_x=16, pad_y=11
         for i, (w, h_) in enumerate(zip(cols, header)):
             st = col_styles.get(i, {})
             text(s, cx + pad_x, yy, w - 2 * pad_x, hh, h_, size=head_size, bold=True, color=head_color,
-                 anchor='m', lh=hh, align=st.get('halign', st.get('align', 'l')), wrap=False)
+                 anchor='m', lh=round(head_size * 1.3), align=st.get('halign', st.get('align', 'l')), wrap=False)
             cx += w
         yy += hh
     elif first_line:
