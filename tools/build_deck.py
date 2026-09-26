@@ -22,10 +22,10 @@ FOOTER = '7.3 多智能体协同运行与调度引擎'
 BUDGET = [
     ('1', '直接投入费用', 50, 'AI算力服务器（GPU+NPU异构）1台 40万；仿真与调度一体化工作站 2台 10万', BLUE.main, '直接投入 50'),
     ('2', '人员人工费用', 30, '项目参研人员薪酬费用，按投入人月测算', '4A78FF', '人员 30'),
-    ('3', '固定资产相关费用（折旧）', 5, '现有仿真与测试设备折旧分摊', '6F7C90', None),
-    ('4', '试验检验及试制外协费用', 5, '建模数据采集处理 2万；仿真模型校验与第三方验证 3万', '8E9AAE', None),
-    ('5', '研发成果相关费用', 5, '发明专利申请 2万；论文版面及标准草案编制 3万', 'AAB5C5', None),
-    ('6', '与研发活动直接相关的其他费用', 5, '差旅费 3万；会议费 2万', 'C5CDD9', None),
+    ('3', '固定资产相关费用（折旧）', 5, '现有仿真与测试设备折旧分摊', '56637A', None),
+    ('4', '试验检验及试制外协费用', 5, '建模数据采集处理 2万；仿真模型校验与第三方验证 3万', '727F95', None),
+    ('5', '研发成果相关费用', 5, '发明专利申请 2万；论文版面及标准草案编制 3万', '8E9AAE', None),
+    ('6', '与研发活动直接相关的<br>其他费用', 5, '差旅费 3万；会议费 2万', 'AAB5C5', None),
 ]
 
 
@@ -827,19 +827,19 @@ def s13_scenario(d):
     bx, by = subs[2]
     sub_head(bx, by, '测试环境自装配')
     for k, t_ in enumerate(['牵引控制智能体', '车辆动力学智能体', '线路智能体']):
-        ry = by + 46 + k * 38
+        ry = by + 44 + k * 36
         if k:
             text(s, bx + 16, ry, 24, 34, '＋', size=18, bold=True, color=MUTED, align='c', anchor='m', lh=24,
                  wrap=False)
-        chip(s, bx + 44, ry, t_, h=32, size=17, padx=12, color=INK, line=LINE)
-    text(s, bx + 16, by + 166, sw - 32, 26, '接口对接与算力配置', size=17, color=SUB, lh=24, wrap=False)
+        chip(s, bx + 44, ry, t_, h=30, size=17, padx=12, color=INK, line=LINE)
+    text(s, bx + 16, by + 154, sw - 32, 26, '接口对接与算力配置', size=17, color=SUB, lh=24, wrap=False)
     bx, by = subs[3]
     sub_head(bx, by, '保真度分配')
     for k, (a, b, fc, bg) in enumerate([('常规直线工况', '降阶模型（快）', th.text, WHITE),
                                         ('长大下坡、小半径曲线、湿轨', '全保真模型（准）', RED, RED_BG)]):
-        yy = by + 50 + k * 72
+        yy = by + 46 + k * 66
         text(s, bx + 16, yy, sw - 32, 28, a, size=17, color=BODY, lh=26, wrap=False)
-        chip(s, bx + 16, yy + 30, '→ ' + b, h=36, size=17, color=fc, fill=bg, line=None if bg != WHITE else th.main,
+        chip(s, bx + 16, yy + 28, '→ ' + b, h=36, size=17, color=fc, fill=bg, line=None if bg != WHITE else th.main,
              bold=True, padx=12)
     # ③ 智能体执行：纵向小流程
     x, w, th = xs[2], ws[2], GREEN
@@ -1069,8 +1069,8 @@ def s18_tasks(d):
         (3, ['仿真智能体／孪生模型', '用例与线路数据', '验证报告'], '模型核验、比对试验'),
         (4, ['列车级数字样机', '构建方法体系与技术规范'], '示范应用验收、第三方验证'),
     ]
-    links = ['判据与<br>工作流', '执行方案', '验证结论']
-    g = 100
+    links = ['判据与工作流', '执行方案', '验证结论']
+    g = 112
     cw, ch, y0 = (1792 - 3 * g) / 4.0, 520, 214
     cxs = []
     for i, (k, outs, check) in enumerate(tasks):
@@ -1094,8 +1094,8 @@ def s18_tasks(d):
         if i < 3:
             ax0, ax1 = x + cw + 10, x + cw + g - 10
             line(s, ax0, y0 + ch / 2.0, ax1, y0 + ch / 2.0, MUTED, 2.5, tail='triangle')
-            text(s, x + cw, y0 + ch / 2.0 - 64, g, 56, links[i], size=17, bold=True, color=SUB, align='c', anchor='b',
-                 lh=24)
+            text(s, x + cw, y0 + ch / 2.0 - 40, g, 32, links[i], size=16, bold=True, color=SUB, align='c', anchor='b',
+                 lh=22, wrap=False)
     # 回流：子任务4 → 子任务2
     yb = y0 + ch
     poly(s, [(cxs[3], yb), (cxs[3], yb + 46), (cxs[0], yb + 46), (cxs[0], yb + 2)], GREEN.main, 2.5, tail='triangle')
@@ -1266,7 +1266,7 @@ def s22_management(d):
     groups = [
         (1, '判据知识化、工作流建模、知识与流程迭代', '判据知识库、工作流定义', None),
         (2, '任务解析、环境装配、保真度与算力调度', '协同运行与调度引擎', None),
-        (3, '智能体研制、用例生成、识别与报告、<br>数据回归', '仿真智能体／孪生模型、验证报告', '仿真智能体／用例／识别／报告／回归'),
+        (3, '智能体研制、用例生成、识别与报告、数据回归', '仿真智能体／孪生模型、验证报告', '仿真智能体／用例／识别／报告／回归'),
         (4, '架构设计、协同运行、沙箱、样机集成', '列车级数字样机、方法体系与规范', None),
     ]
     gw = (1792 - 3 * 24) / 4.0
@@ -1285,7 +1285,7 @@ def s22_management(d):
         text(s, x + 22, gy + 62, gw - 44, 34, LAYER_NAME[k], size=22, bold=True, color=INK, lh=30, wrap=False)
         text(s, x + 22, gy + 96, gw - 44, 26, extra or '', size=16, color=SUB, lh=22, wrap=False)
         text(s, x + 22, gy + 134, 120, 26, '主要任务', size=16, bold=True, color=MUTED, lh=22, wrap=False)
-        text(s, x + 22, gy + 160, gw - 44, 56, task, size=18, color=BODY, lh=27)
+        text(s, x + 22, gy + 160, gw - 44, 56, task, size=17, color=BODY, lh=26)
         concl(s, x + 16, gy + 284 - 16 - 48, gw - 32, 48, '交付：' + deli, th, size=17, pad=12)
     # 管理流程
     y1 = 634
