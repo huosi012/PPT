@@ -127,7 +127,7 @@ def s03_intro(d):
     # ---- 左：基本信息
     L, LW = 64, 840
     header(s, L, 212, '项目基本信息', w=LW)
-    lab = dict(fill=GRAYBG, bold=True, color=SUB, size=17)
+    lab = dict(bold=True, color=SUB, size=17)
     val = dict(color=INK, size=19)
     yy = table(s, L, 256, [96, 278, 112, 354], [
         ['项目名称', '7. 基于智能体的轨道交通装备<br>性能数字样机关键技术研究', '课题名称',
@@ -196,7 +196,9 @@ def s03_intro(d):
         me = (kind == 'me')
         rect(s, R, y, RW, h, fill=RED_BG if me else WHITE, line=RED if me else LINE, lw=2 if me else 1,
              dash='dash' if kind == 'ext' else None)
-        shp = rect(s, R, y, nb, h, fill=RED if me else (PANEL if kind == 'ext' else GRAYBG))
+        shp = rect(s, R, y, nb, h, fill=RED if me else WHITE)
+        if not me:
+            line(s, R + nb, y + 12, R + nb, y + h - 12, LINE, 1)
         text(s, R, y, nb, h, no, size=26, bold=True, color=WHITE if me else INK, font=MONO, align='c', anchor='m',
              lh=34, shp=shp, wrap=False)
         tx = R + nb + tgap

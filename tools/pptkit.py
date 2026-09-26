@@ -104,7 +104,7 @@ _PREMIUM = dict(
     PH=T('9E6F28', 'FBF6EC', 'F4E8D2', 'EBDCBF', '875D1C'),
     STAGE=['D6A7A9', 'B75A5F', 'A61C22', '5B1317'],
     ARCH='3E3A36', KPI='A61C22', BUDGET2='B45A5F', LOCO='locomotive_premium',
-    GRAYS=['6E6862', '8C857E', 'AAA39C', 'C6C0BA'], AGENDA_NUM='DDD8D2', ZONE_FILL='FDFCFB', ZONE_LINE='CCC6BF',
+    GRAYS=['B9B1A9', 'C9C2BB', 'D8D2CC', 'E6E1DC'], AGENDA_NUM='DDD8D2', ZONE_FILL='FDFCFB', ZONE_LINE='CCC6BF',
     STYLE=dict(top_bar=3, title_bar=(72, 5), rule_w=1, tag_outline=True, kpi_plain=True, table_plain=True,
                problem_fill='FFFFFF', badge_fill='F6F2EF', concl_bar=3, sum_bar=4, card_bar=3,
                chip_line='DCD6CF'),
