@@ -94,20 +94,21 @@ _MUTED = dict(
 )
 _WARM = T('E9E4DF', 'E9E4DF', 'E9E4DF', 'E9E4DF', 'E9E4DF')  # 淡色大编号统一用浅暖灰
 _PREMIUM = dict(
-    N=dict(INK='1E1E1E', BODY='474543', SUB='6F6B67', MUTED='8A857F', LINE='ECE8E3', RULE='DCD7D1',
-           GRAYBG='F6F4F1', PANEL='FAF9F7', GRAYBAR='CBC4BC', TRI='D3CDC6', RULER='C5BFB8',
-           RED='A61C22', RED_BG='FAF3F2'),
-    M=[T('A61C22', 'FAF4F3', 'F4E8E6', 'E9E4DF', 'A61C22')] * 5,
-    LAYER=(T('C47C80', 'FBF6F5', 'F6EBEA', 'E9E4DF', 'A0525A'), T('AC454B', 'FAF4F4', 'F4E6E6', 'E9E4DF', '9A3B41'),
-           T('8C1D23', 'F9F2F2', 'F2E2E2', 'E9E4DF', '8C1D23'), T('5B1317', 'F7F1F1', 'EEE0E0', 'E9E4DF', '5B1317')),
-    OK=T('4E4A45', 'F6F4F1', 'ECE8E4', 'E3DED9', '3E3A36'),
+    # 中性色为不带黄调的干净灰；红色只做点缀；线条与底色更浅，色条更细
+    N=dict(INK='1A1A1A', BODY='3D3D3D', SUB='666666', MUTED='8C8C8C', LINE='E9E9E9', RULE='DEDEDE',
+           GRAYBG='F6F6F6', PANEL='F9F9F9', GRAYBAR='C9C9C9', TRI='D2D2D2', RULER='C6C6C6',
+           RED='A61C22', RED_BG='FBF4F4'),
+    M=[T('A61C22', 'FBF4F4', 'F5E9E9', 'E6E6E6', 'A61C22')] * 5,
+    LAYER=(T('C47C80', 'FCF6F6', 'F7ECEC', 'E6E6E6', 'A0525A'), T('AC454B', 'FBF4F4', 'F5E7E7', 'E6E6E6', '9A3B41'),
+           T('8C1D23', 'FAF2F2', 'F3E3E3', 'E6E6E6', '8C1D23'), T('5B1317', 'F8F1F1', 'EFE1E1', 'E6E6E6', '5B1317')),
+    OK=T('4A4A4A', 'F6F6F6', 'ECECEC', 'E3E3E3', '3A3A3A'),
     PH=T('9E6F28', 'FBF6EC', 'F4E8D2', 'EBDCBF', '875D1C'),
     STAGE=['D6A7A9', 'B75A5F', 'A61C22', '5B1317'],
-    ARCH='3E3A36', KPI='A61C22', BUDGET2='B45A5F', LOCO='locomotive_premium',
-    GRAYS=['B9B1A9', 'C9C2BB', 'D8D2CC', 'E6E1DC'], AGENDA_NUM='DDD8D2', ZONE_FILL='FDFCFB', ZONE_LINE='CCC6BF',
-    STYLE=dict(top_bar=3, title_bar=(72, 5), rule_w=1, tag_outline=True, kpi_plain=True, table_plain=True,
-               problem_fill='FFFFFF', badge_fill='F6F2EF', concl_bar=3, sum_bar=4, card_bar=3,
-               chip_line='DCD6CF'),
+    ARCH='3A3A3A', KPI='A61C22', BUDGET2='B45A5F', LOCO='locomotive_premium',
+    GRAYS=['B8B8B8', 'C8C8C8', 'D8D8D8', 'E6E6E6'], AGENDA_NUM='DCDCDC', ZONE_FILL='FCFCFC', ZONE_LINE='CFCFCF',
+    STYLE=dict(top_bar=3, title_bar=(72, 4), rule_w=1, tag_outline=True, kpi_plain=True, table_plain=True,
+               problem_fill='FFFFFF', badge_fill='F5F5F5', concl_bar=3, sum_bar=3, card_bar=3,
+               chip_line='DADADA'),
 )
 PALETTES = {'vivid': _VIVID, 'formal': _FORMAL, 'muted': _MUTED, 'premium': _PREMIUM}
 PALETTE = os.environ.get('PPT_PALETTE', 'premium')
