@@ -22,10 +22,10 @@ FOOTER = '7.3 多智能体协同运行与调度引擎'
 BUDGET = [
     ('1', '直接投入费用', 50, 'AI算力服务器（GPU+NPU异构）1台 40万；仿真与调度一体化工作站 2台 10万', M1.main, '直接投入 50'),
     ('2', '人员人工费用', 30, '项目参研人员薪酬费用，按投入人月测算', BUDGET2, '人员 30'),
-    ('3', '固定资产相关费用（折旧）', 5, '现有仿真与测试设备折旧分摊', '56637A', None),
-    ('4', '试验检验及试制外协费用', 5, '建模数据采集处理 2万；仿真模型校验与第三方验证 3万', '727F95', None),
-    ('5', '研发成果相关费用', 5, '发明专利申请 2万；论文版面及标准草案编制 3万', '8E9AAE', None),
-    ('6', '与研发活动直接相关的<br>其他费用', 5, '差旅费 3万；会议费 2万', 'AAB5C5', None),
+    ('3', '固定资产相关费用（折旧）', 5, '现有仿真与测试设备折旧分摊', GRAYS[0], None),
+    ('4', '试验检验及试制外协费用', 5, '建模数据采集处理 2万；仿真模型校验与第三方验证 3万', GRAYS[1], None),
+    ('5', '研发成果相关费用', 5, '发明专利申请 2万；论文版面及标准草案编制 3万', GRAYS[2], None),
+    ('6', '与研发活动直接相关的<br>其他费用', 5, '差旅费 3万；会议费 2万', GRAYS[3], None),
 ]
 
 
@@ -39,13 +39,13 @@ def loco_train(s, x, y_rail, w_each, n=3, gap=10, faded=True):
 # =====================================================================  01 封面
 def s01_cover(d):
     s = d.new_slide()
-    rect(s, 64, 34, 1792, 2, fill=RULE)
+    rect(s, 64, 34, 1792, STYLE['rule_w'], fill=RULE)
     rect(s, 64, 132, 8, 30, fill=RED)
     text(s, 88, 128, 1400, 38, '****“***”科技重大专项课题申报', size=25, bold=True, color=RED, cs=3, anchor='m',
          lh=38, wrap=False)
     text(s, 64, 196, 1792, 230, ['<r>7.3</r> 轨道交通装备性能验证的', '多智能体协同运行与调度引擎技术研究'],
          size=78, bold=True, color=INK, lh=110)
-    rect(s, 64, 446, 120, 8, fill=RED)
+    rect(s, 64, 446, STYLE['title_bar'][0] * 1.25, STYLE['title_bar'][1] + 2, fill=RED)
     text(s, 64, 480, 1792, 46, '所属项目：7. 基于智能体的轨道交通装备性能数字样机关键技术研究', size=29, color=SUB,
          anchor='m', lh=46, wrap=False)
     cells = [('牵头单位', '**********'), ('项目负责人', '***'), ('申报层级', '课题级'),
@@ -62,7 +62,7 @@ def s01_cover(d):
     # 机车 + 标尺（轨道）
     ruler(s, 64, 944, 1792)
     loco_train(s, 560, 944, 428, n=3, gap=8, faded=False)
-    rect(s, 64, 1010, 1792, 2, fill=RULE)
+    rect(s, 64, 1010, 1792, STYLE['rule_w'], fill=RULE)
     sep = '<c=%s>   |   </c>' % RULE
     text(s, 64, 1024, 1300, 36, FOOTER + sep + '课题申报汇报' + sep + '研究周期 2027.01—2028.12', size=17,
          color=MUTED, bold=True, cs=2.5, anchor='m', lh=36, wrap=False)
@@ -91,7 +91,7 @@ def s02_agenda(d):
         if core:
             rect(s, 64, y + 4, 1792, rh - 8, fill=RED_BG)
             rect(s, 64, y + 4, 5, rh - 8, fill=RED)
-        text(s, 92, y, 110, rh, no, size=46, bold=True, color=RED if core else 'C9D2DF', font=MONO, anchor='m',
+        text(s, 92, y, 110, rh, no, size=46, bold=True, color=RED if core else AGENDA_NUM, font=MONO, anchor='m',
              lh=58, wrap=False)
         oval(s, 208, y + (rh - 64) / 2.0, 64, 64, fill=WHITE if core else GRAYBG, line=None)
         icon(s, ic, RED if core else SUB, 208 + 15, y + (rh - 64) / 2.0 + 15, 34)
@@ -677,7 +677,7 @@ def s12_route(d):
     L, LW = 64, 1112
     header(s, L, 212, '总体技术路线', note='四层递进 ＋ 可复现沙箱底座', w=LW)
     zy, zh = 290, 556
-    dashed_zone(s, L, zy, LW, zh, '可复现沙箱底座（隔离 · 记录 · 回放）', label_fill=ARCH, fill='FBFCFE', label_x=L + 28)
+    dashed_zone(s, L, zy, LW, zh, '可复现沙箱底座（隔离 · 记录 · 回放）', label_fill=ARCH, fill=ZONE_FILL, label_x=L + 28)
     cols = {
         1: ['判据知识化', '工作流建模', '知识迭代'],
         2: ['目标解析与任务分解', '环境自装配', '保真度与算力调度', '监控与重规划'],
@@ -707,7 +707,7 @@ def s12_route(d):
     tl = '数据回归：结果回流更新判据与工作流'
     tw = text_width(tl, 17, True) + 24
     text(s, cxs[2] - tw / 2.0, ly - 14, tw, 28, tl, size=17, bold=True, color=RED, align='c', anchor='m', lh=24,
-         wrap=False, shp=rect(s, cxs[2] - tw / 2.0, ly - 14, tw, 28, fill='FBFCFE'))
+         wrap=False, shp=rect(s, cxs[2] - tw / 2.0, ly - 14, tw, 28, fill=ZONE_FILL))
     # 汇入 ④
     by = cy0 + chh
     bus = by + 26
@@ -1429,17 +1429,17 @@ def s24_results(d):
 # =====================================================================  25 结束页
 def s25_end(d):
     s = d.new_slide()
-    rect(s, 64, 34, 1792, 2, fill=RULE)
+    rect(s, 64, 34, 1792, STYLE['rule_w'], fill=RULE)
     rect(s, 64, 132, 8, 30, fill=RED)
     text(s, 88, 128, 1400, 38, '****“***”科技重大专项课题申报', size=25, bold=True, color=RED, cs=3, anchor='m',
          lh=34, wrap=False)
     text(s, 64, 262, 1792, 140, '恳请各位专家指导', size=104, bold=True, color=INK, lh=134, wrap=False)
-    rect(s, 64, 432, 120, 8, fill=RED)
+    rect(s, 64, 432, STYLE['title_bar'][0] * 1.25, STYLE['title_bar'][1] + 2, fill=RED)
     text(s, 64, 476, 1792, 50, '**********', size=34, bold=True, color=INK, lh=46, wrap=False)
     text(s, 64, 538, 1792, 46, '7.3 轨道交通装备性能验证的多智能体协同运行与调度引擎技术研究', size=28, color=SUB, lh=40, wrap=False)
     ruler(s, 64, 944, 1792)
     loco_train(s, 560, 944, 428, n=3, gap=8, faded=False)
-    rect(s, 64, 1010, 1792, 2, fill=RULE)
+    rect(s, 64, 1010, 1792, STYLE['rule_w'], fill=RULE)
     sep = '<c=%s>   |   </c>' % RULE
     text(s, 64, 1024, 1300, 36, FOOTER + sep + '课题申报汇报' + sep + '谢谢', size=17, color=MUTED, bold=True, cs=2.5,
          anchor='m', lh=24, wrap=False)

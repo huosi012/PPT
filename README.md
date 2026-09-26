@@ -28,7 +28,7 @@
 ```bash
 pip install python-pptx pillow
 python3 tools/build_deck.py            # 输出 项目汇报PPT.pptx
-PPT_PALETTE=formal python3 tools/build_deck.py out.pptx   # 切换配色：vivid（现版，默认）/ formal（稳重蓝）/ muted（低饱和多色）
+PPT_PALETTE=formal python3 tools/build_deck.py out.pptx   # 切换配色：vivid（现版，默认）/ formal（稳重蓝）/ muted（低饱和多色）/ premium（主红·留白）
 ```
 
 图标 PNG 已随仓库提供；如需新增图标，先在 `tools/` 下执行 `npm install`（依赖 `@tabler/icons`、`sharp`）。

@@ -92,9 +92,42 @@ _MUTED = dict(
     STAGE=['7E9A5E', 'C3A04A', '4F8AA6', '6A5A8C'],
     ARCH='5B5E91', KPI='2F5D8A', BUDGET2='6A8BB2', LOCO='locomotive_formal',
 )
-PALETTES = {'vivid': _VIVID, 'formal': _FORMAL, 'muted': _MUTED}
+_WARM = T('E9E4DF', 'E9E4DF', 'E9E4DF', 'E9E4DF', 'E9E4DF')  # 淡色大编号统一用浅暖灰
+_PREMIUM = dict(
+    N=dict(INK='1E1E1E', BODY='474543', SUB='6F6B67', MUTED='8A857F', LINE='ECE8E3', RULE='DCD7D1',
+           GRAYBG='F6F4F1', PANEL='FAF9F7', GRAYBAR='CBC4BC', TRI='D3CDC6', RULER='C5BFB8',
+           RED='A61C22', RED_BG='FAF3F2'),
+    M=[T('A61C22', 'FAF4F3', 'F4E8E6', 'E9E4DF', 'A61C22')] * 5,
+    LAYER=(T('C47C80', 'FBF6F5', 'F6EBEA', 'E9E4DF', 'A0525A'), T('AC454B', 'FAF4F4', 'F4E6E6', 'E9E4DF', '9A3B41'),
+           T('8C1D23', 'F9F2F2', 'F2E2E2', 'E9E4DF', '8C1D23'), T('5B1317', 'F7F1F1', 'EEE0E0', 'E9E4DF', '5B1317')),
+    OK=T('4E4A45', 'F6F4F1', 'ECE8E4', 'E3DED9', '3E3A36'),
+    PH=T('9E6F28', 'FBF6EC', 'F4E8D2', 'EBDCBF', '875D1C'),
+    STAGE=['D6A7A9', 'B75A5F', 'A61C22', '5B1317'],
+    ARCH='3E3A36', KPI='A61C22', BUDGET2='B45A5F', LOCO='locomotive_premium',
+    GRAYS=['6E6862', '8C857E', 'AAA39C', 'C6C0BA'], AGENDA_NUM='DDD8D2', ZONE_FILL='FDFCFB', ZONE_LINE='CCC6BF',
+    STYLE=dict(top_bar=3, title_bar=(72, 5), rule_w=1, tag_outline=True, kpi_plain=True, table_plain=True,
+               problem_fill='FFFFFF', badge_fill='F6F2EF', concl_bar=3, sum_bar=4, card_bar=3,
+               chip_line='DCD6CF'),
+)
+PALETTES = {'vivid': _VIVID, 'formal': _FORMAL, 'muted': _MUTED, 'premium': _PREMIUM}
 PALETTE = os.environ.get('PPT_PALETTE', 'vivid')
 _P = PALETTES[PALETTE]
+
+# 中性色可由配色方案覆盖（须在组件函数定义之前完成，以便参数默认值生效）
+_N = _P.get('N', {})
+INK, BODY, SUB, MUTED = (_N.get(k, v) for k, v in (('INK', INK), ('BODY', BODY), ('SUB', SUB), ('MUTED', MUTED)))
+LINE, RULE, GRAYBG, PANEL = (_N.get(k, v) for k, v in (('LINE', LINE), ('RULE', RULE), ('GRAYBG', GRAYBG),
+                                                         ('PANEL', PANEL)))
+GRAYBAR, TRI, RULER = (_N.get(k, v) for k, v in (('GRAYBAR', GRAYBAR), ('TRI', TRI), ('RULER', RULER)))
+RED, RED_BG = _N.get('RED', RED), _N.get('RED_BG', RED_BG)
+# 组件样式开关（缺省即初版样式）
+STYLE = dict(top_bar=6, title_bar=(96, 6), rule_w=2, tag_outline=False, kpi_plain=False, table_plain=False,
+             problem_fill=None, badge_fill=None, concl_bar=5, sum_bar=5, card_bar=5, chip_line=None)
+STYLE.update(_P.get('STYLE', {}))
+AGENDA_NUM = _P.get('AGENDA_NUM', 'C9D2DF')
+ZONE_FILL = _P.get('ZONE_FILL', 'FBFCFE')
+ZONE_LINE = _P.get('ZONE_LINE', 'B7C0CE')
+GRAYS = _P.get('GRAYS', ['56637A', '727F95', '8E9AAE', 'AAB5C5'])
 
 
 def _pick(v):
@@ -607,24 +640,24 @@ def icon(s, name, color, x, y, size, stroke=1.6, filled=False):
 
 
 def icon_badge(s, name, th, x, y, d=88, isz=None, fill=None, stroke=1.6):
-    oval(s, x, y, d, d, fill=fill or th.soft)
+    oval(s, x, y, d, d, fill=fill or STYLE['badge_fill'] or th.soft)
     isz = isz or round(d * 0.54)
     icon(s, name, th.main, x + (d - isz) / 2.0, y + (d - isz) / 2.0, isz, stroke)
 
 
 # ---------------------------------------------------------------- 页框
 def frame(d, s, title, subtitle, section, title_size=54):
-    rect(s, 64, 34, 1792, 2, fill=RULE)
+    rect(s, 64, 34, 1792, STYLE['rule_w'], fill=RULE)
     text(s, 64, 48, 1792, 84, title, size=title_size, color=INK, bold=True, anchor='m', lh=round(title_size * 1.3),
          wrap=False)
-    rect(s, 64, 136, 96, 6, fill=RED)
+    rect(s, 64, 136, STYLE['title_bar'][0], STYLE['title_bar'][1], fill=RED)
     if subtitle:
         text(s, 64, 156, 1792, 42, subtitle, size=26, color=SUB, anchor='m', lh=34, wrap=False)
     footer(d, s, section)
 
 
 def footer(d, s, section):
-    rect(s, 64, 1010, 1792, 2, fill=RULE)
+    rect(s, 64, 1010, 1792, STYLE['rule_w'], fill=RULE)
     sep = '<c=%s>   |   </c>' % RULE
     text(s, 64, 1024, 1300, 36, d.footer_title + sep + '课题申报汇报' + sep + section, size=17, color=MUTED,
          bold=True, cs=2.5, anchor='m', lh=24, wrap=False)
@@ -650,10 +683,12 @@ def side_label(s, x, y, w, title, desc=None, color=INK, desc_size=19):
 
 
 def tag(s, x, y, txt, fill=RED, color=WHITE, size=18, h=32, padx=14, bold=True, radius=0, line=None, w=None,
-        align='c'):
-    """实心色块标签，返回宽度。"""
+        align='c', solid=False):
+    """色块标签（样式开关 tag_outline 打开时改为描边标签），返回宽度。"""
     tw = text_width(strip_tags(txt), size, bold)
     w = w or tw + padx * 2
+    if STYLE['tag_outline'] and not solid and fill not in (None, WHITE) and (color == WHITE or luminance(fill) < 0.6):
+        line, color, fill = fill, ink_safe(fill), WHITE
     shp = rrect(s, x, y, w, h, fill=fill, line=line, radius=radius) if radius else rect(s, x, y, w, h, fill=fill,
                                                                                             line=line)
     text(s, x, y, w, h, txt, size=size, color=color, bold=bold, align=align, anchor='m', lh=round(size * 1.3),
@@ -661,21 +696,22 @@ def tag(s, x, y, txt, fill=RED, color=WHITE, size=18, h=32, padx=14, bold=True, 
     return w
 
 
-def problem_card(s, x, y, w, h, title, body, title_size=27, body_size=21, pad=26, bar=GRAYBAR, bg=GRAYBG,
+def problem_card(s, x, y, w, h, title, body, title_size=27, body_size=21, pad=26, bar=GRAYBAR, bg=None,
                  title_color=RED):
-    rect(s, x, y, w, h, fill=bg, line=LINE)
-    rect(s, x, y, 5, h, fill=bar)
+    rect(s, x, y, w, h, fill=bg or STYLE['problem_fill'] or GRAYBG, line=LINE)
+    rect(s, x, y, STYLE['card_bar'], h, fill=bar)
     text(s, x + pad, y + 22, w - pad * 2, 40, title, size=title_size, bold=True, color=title_color, anchor='m',
          lh=40)
     text(s, x + pad, y + 72, w - pad * 1.6, h - 84, body, size=body_size, color=BODY, lh=round(body_size * 1.55))
 
 
-def panel(s, x, y, w, h, th, title=None, num=None, icon_name=None, title_size=32, top=6, pad=40, badge=84,
+def panel(s, x, y, w, h, th, title=None, num=None, icon_name=None, title_size=32, top=None, pad=40, badge=84,
           head_h=None, divider=True, bg=WHITE):
     """色条模块面板：白底 + 顶部主题色条 + 图标圆 + 标题 + 淡色编号 + 分隔线。返回内容区起点 y。"""
+    top = top or STYLE['top_bar']
     rect(s, x, y, w, h, fill=bg, line=LINE)
     rect(s, x, y, w, top, fill=th.main)
-    cy = y + top + 26
+    cy = y + 6 + 26
     head_h = head_h or badge
     tx = x + pad
     if icon_name:
@@ -685,7 +721,7 @@ def panel(s, x, y, w, h, th, title=None, num=None, icon_name=None, title_size=32
         text(s, tx, cy, w - (tx - x) - pad - (110 if num else 0), head_h, title, size=title_size, bold=True,
              color=INK, anchor='m', lh=round(title_size * 1.3))
     if num:
-        text(s, x + w - pad - 140, y + top + 14, 140, 70, num, size=54, bold=True, color=th.num, font=MONO,
+        text(s, x + w - pad - 140, y + 6 + 14, 140, 70, num, size=54, bold=True, color=th.num, font=MONO,
              align='r', anchor='t', lh=70, wrap=False)
     yy = cy + head_h + 22
     if divider:
@@ -705,8 +741,9 @@ def bullets(s, x, y, w, h, items, th_color, size=22, lh=None, sa=10, color=BODY,
     return text(s, x, y, w, h, paras, size=size, color=color, lh=lh, sa=sa, ind=ind, anchor=anchor)
 
 
-def concl(s, x, y, w, h, txt, th, size=22, check=False, bar=5, pad=22, align='l', bold=True):
+def concl(s, x, y, w, h, txt, th, size=22, check=False, bar=None, pad=22, align='l', bold=True):
     """结论条：同色浅底 + 左侧色条 + 加粗同色字。"""
+    bar = bar or STYLE['concl_bar']
     rect(s, x, y, w, h, fill=th.bg)
     rect(s, x, y, bar, h, fill=th.main)
     t = ('✓ ' + txt) if check else txt
@@ -715,8 +752,8 @@ def concl(s, x, y, w, h, txt, th, size=22, check=False, bar=5, pad=22, align='l'
 
 
 def summary(s, x, y, w, h, title, desc=None, title_size=30, desc_size=21, bar=RED, desc_color=SUB, gap=10):
-    """红条总结：左侧 5px 红条 + 粗体结论 + 灰色说明（内容整体垂直居中）。"""
-    rect(s, x, y, 5, h, fill=bar)
+    """红条总结：左侧红条 + 粗体结论 + 灰色说明（内容整体垂直居中）。"""
+    rect(s, x, y, STYLE['sum_bar'], h, fill=bar)
     tlh = round(title_size * 1.4)
     if desc:
         dlh = round(desc_size * 1.55)
@@ -745,7 +782,7 @@ def ruler(s, x, y, w, color=RULER, step=44, tick=10, lw=3):
         rect(s, xx, y + lw, 2, tick, fill=color)
 
 
-def dashed_zone(s, x, y, w, h, label=None, label_fill=ARCH, color='B7C0CE', fill=None, label_w=None, lw=1.5,
+def dashed_zone(s, x, y, w, h, label=None, label_fill=ARCH, color=ZONE_LINE, fill=None, label_w=None, lw=1.5,
                 label_size=19, label_x=None):
     rect(s, x, y, w, h, fill=fill, line=color, lw=lw, dash='dash')
     if label:
@@ -765,7 +802,7 @@ def layer_nav(s, x, y, w, current, bar_h=62, gap=10):
         on = (i == current)
         rect(s, x, yy, w, bar_h, fill=th.main if on else WHITE, line=None if on else LINE)
         if not on:
-            rect(s, x, yy, 5, bar_h, fill=th.main)
+            rect(s, x, yy, STYLE['card_bar'], bar_h, fill=th.main)
         text(s, x + 20, yy + 7, w - 30, 26, LAYER_NO[i] + ' ' + LAYER_KIND[i], size=19, bold=True,
              color=WHITE if on else INK, lh=26, wrap=False)
         text(s, x + 20, yy + 33, w - 30, 24, LAYER_NAME[i], size=16, color=WHITE if on else SUB, lh=24,
@@ -779,6 +816,8 @@ def chip(s, x, y, txt, color=BODY, fill=WHITE, line=LINE, size=19, h=38, padx=14
     """描边小标签/节点，返回宽度。"""
     tw = text_width(strip_tags(txt), size, bold)
     w = w or tw + padx * 2
+    if STYLE['chip_line'] and fill == WHITE and line not in (None, LINE):
+        line = STYLE['chip_line']
     shp = rrect(s, x, y, w, h, fill=fill, line=line, lw=lw, radius=radius) if radius else rect(
         s, x, y, w, h, fill=fill, line=line, lw=lw)
     text(s, x, y, w, h, txt, size=size, color=color, bold=bold, align=align, anchor='m', lh=round(size * 1.3),
@@ -815,7 +854,10 @@ def num_header(s, x, y, num, title, w=860, fill=INK, size=24, note=None):
 
 def kpi(s, x, y, w, h, value, label, sub=None, color=RED, value_size=50, bg=GRAYBG, bar=None, pad=24,
         label_size=20, sub_size=18):
-    rect(s, x, y, w, h, fill=bg)
+    if STYLE['kpi_plain']:
+        rect(s, x, y, 1.5, h, fill=LINE)
+    else:
+        rect(s, x, y, w, h, fill=bg)
     if bar:
         rect(s, x, y, 5, h, fill=bar)
     vh = round(value_size * 1.25)
@@ -839,7 +881,10 @@ def table(s, x, y, cols, rows, header=None, size=20, lh=None, pad_x=16, pad_y=11
     yy = y
     if header:
         hh = 44
-        rect(s, x, yy, tw, hh, fill=head_bg)
+        if STYLE['table_plain']:
+            line(s, x, yy + hh, x + tw, yy + hh, SUB, 1.2)
+        else:
+            rect(s, x, yy, tw, hh, fill=head_bg)
         cx = x
         for i, (w, h_) in enumerate(zip(cols, header)):
             st = col_styles.get(i, {})
