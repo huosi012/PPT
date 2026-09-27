@@ -1,0 +1,33 @@
+# 笔记第 2 页：④ 对称/反对称矩阵（续上一页 ①②③）；二、矩阵的逆；三、矩阵的秩（定义）
+# 全页蓝色笔迹，无红笔/荧光笔。右侧淡紫色镜像字为背面透印，已忽略。
+I1| ④ | $A^{T}=A\Rightarrow$ 对称矩阵　　　$A^{T}=-A\Rightarrow$ 反对称矩阵
+P1| 任意{s|矩阵} $n$ 阶矩阵均可分解为对称矩阵+反对称矩阵
+
+H1| 二、矩阵的逆
+I1| ① | {hei|逆的性质：}
+E1| (kA)^{-1}=\frac{1}{k}A^{-1}\ (k\neq 0)
+E1| (AB)^{-1}=B^{-1}A^{-1}
+E1| |A^{-1}|=\frac{1}{|A|}
+E1| (A^{T})^{-1}=(A^{-1})^{T}
+E1| (A^{-1})^{-1}=A
+I1| ② | {hei|可逆的充要条件：}$n$ 阶矩阵 $A$ 可逆 $\Leftrightarrow |A|\neq 0$
+P1| $\Leftrightarrow r(A)=n$
+P1| $\Leftrightarrow A$ 的列（或行）向量组线性无关
+P1| $\Leftrightarrow$ 齐次线性方程组 $Ax=0$ 只有零解
+P1| $\Leftrightarrow$ 非齐次线性方程组 $Ax=b$ 有唯一解
+P1| $\Leftrightarrow A$ 的特征值均不为零
+I1| ③ | {hei|逆的求法}
+I2| (1) | 定义法：$AB=E$ 或 $BA=E$
+I2| (2) | 初等变换法
+E2| \left(A\,\middle\vert\,E\right)\xrightarrow{\text{初等行变换}}\left(E\,\middle\vert\,A^{-1}\right)\quad\text{或}\quad\left(\frac{A}{E}\right)\xrightarrow{\text{初等列变换}}\left(\frac{E}{A^{-1}}\right)
+# A^{∗} 用 U+2217：ASCII * 在 LibreOffice 预览中显示为红色 ¿（Word 两者都正常）
+I2| (3) | 伴随矩阵法　$A^{-1}=\frac{A^{∗}}{|A|}$
+I2| (4) | 分块矩阵法
+E2| \begin{pmatrix}A&O\\O&B\end{pmatrix}^{-1}=\begin{pmatrix}A^{-1}&O\\O&B^{-1}\end{pmatrix}
+E2| \begin{pmatrix}O&A\\B&O\end{pmatrix}^{-1}=\begin{pmatrix}O&B^{-1}\\A^{-1}&O\end{pmatrix}
+
+H1| 三、矩阵的秩
+I1| ① | {s|性质}{hei|定义}　$A=O\Leftrightarrow r(A)=0$
+P1| $A$ 为 $m\times n$ 阶矩阵，若 $r(A)=m$，则称 $A$ 为行满秩矩阵
+P2| 若 $r(A)=n$，则称 $A$ 为列满秩矩阵
+P1| $n$ 阶矩阵，若 $r(A)=n$，则称 $A$ 为满秩矩阵

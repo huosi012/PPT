@@ -1,0 +1,47 @@
+# 笔记第 4 页（n04）：转置的性质、逆（定义、性质、充要条件、求法）、秩的定义
+H2| {hy|转置的性质}
+I1| 1) | $(A+B)^{T}=A^{T}+B^{T}$
+I1| 2) | $(kA)^{T}=kA^{T}$
+I1| 3) | $(AB)^{T}=B^{T}A^{T}$
+I1| 4) | $(A^{T})^{T}=A$.
+I1| 5) | $|A^{T}|=|A|$
+
+P0| {b,hy|逆的定义}　设 $A$ 为{r|①}{udr|$n$ 阶矩阵}，若存在 $n$ 阶矩阵 $B$，使得{r|②}$AB=E$ {udr|或} $BA=E$，则称 $A$ 可逆，$B$ 为 $A$ 的逆矩阵，记作 $B=A^{-1}$。
+P1| {pk|$\underset{2\times 3}{A}\ \underset{3\times 2}{B}=E$}　{r|必为方阵才有逆}
+
+H2| {hy|逆的性质}
+I1| (1) | $\R{(kA)}^{-1}=\frac{1}{k}A^{-1}(k\neq 0)$；　{r|Pr: $k$}
+I1| (2) | $(AB)^{-1}=B^{-1}A^{-1}$；
+I1| (3) | $|A^{-1}|=\frac{1}{|A|}$；
+I1| (4) | $(A^{T})^{-1}=(A^{-1})^{T}$；　{r|$A^{T}(A^{-1})^{T}=(A^{-1}A)^{T}=E^{T}=E$}
+I1| (5) | $(A^{-1})^{-1}=A$。
+
+H2| {r|★}{hy|可逆的充要条件}
+P0| $n$ 阶矩阵 $A$ 可逆
+P0| $\Leftrightarrow |A|\neq 0$　{r|$|A^{-1}|=\frac{1}{|A|}$　$\therefore |A|\neq 0$}
+P0| $\Leftrightarrow r(A)=n$
+P0| $\Leftrightarrow A$ 的列（或行）向量组线性无关
+P0| $\Leftrightarrow$ 齐次线性方程组 $Ax=0$ 只有零解
+P0| $\Leftrightarrow$ 非齐次线性方程组 $Ax=b$ 有唯一解
+P0| $\Leftrightarrow A$ 的特征值均不为零
+
+# 右栏（贴图）：逆的求法
+H2| {hy|逆的求法}
+I1| (1) | 定义法：$AB=E$ 或 $BA=E$；
+I1| (2) | 初等变换法：$\left(A\ \middle|\ E\right)$ 初等行变换$\longrightarrow\left(E\ \middle|\ A^{-1}\right)$ 或 $\begin{pmatrix}A\\E\end{pmatrix}$ 初等列变换$\longrightarrow\begin{pmatrix}E\\A^{-1}\end{pmatrix}$
+P1| {r|互换　$k$ 乘　$k$ 乘加到另一行}
+I1| (3) | 伴随矩阵法：$A^{-1}=\frac{A^{*}}{|A|}$；
+I1| (4) | 分块矩阵法：$\begin{pmatrix}A&O\\O&B\end{pmatrix}^{-1}=\begin{pmatrix}A^{-1}&O\\O&B^{-1}\end{pmatrix}$，$\begin{pmatrix}O&A\\B&O\end{pmatrix}^{-1}$
+P1| 二阶矩阵 $\begin{pmatrix}a&b\\c&d\end{pmatrix}^{-1}=\frac{1}{|A|}\begin{pmatrix}d&-b\\-c&a\end{pmatrix}$
+
+# 页底：秩
+H2| {r|秩的定义}
+P0| {b,hy|$k$ 阶子式的定义}　在 $m\times n$ 阶矩阵 $A$ 中任取 $k$ 行与 $k$ 列（$k\leq m,k\leq n$），位于这些行与列的交叉点上的 $k^{2}$ 个元素构成一个 $k$ 阶{uw|行列式}，称{uw|为} $A$ 的一个 $k$ {uw|阶子式}。
+P1| 子式是一个数
+P0| {b,hy|秩的定义}　若矩阵 $A$ {udr|有个} $r$ 阶子式非零，{udr|所有的} $r+1$ 阶子式（如果存在的话）均为零，则称 $r$ 为 $A$ 的秩，记作 $r(A)$，并规定零矩阵的秩为零。　{r|即非零子式的最高阶数}
+P0| {b|【评注】}
+I1| (1) | 若矩阵 $A$ {udr|有个} $r$ 阶子式非零，则 $r(A)\geq r$；
+# (2) 跨页：上半在第 4 页底，下半在第 5 页顶；(3) 只在第 5 页顶。按学生要求【评注】整体放在本页，第 5 页不再重复。
+I1| (2) | 若矩阵 $A$ {udr|所有的} $r+1$ 阶子式均为零，则 $r(A)<r+1$；
+# 粉色批注只剩上半截（被贴图下边缘裁掉），见 p04.review.md
+I1| (3) | $A\neq O\Leftrightarrow r(A)\geq 1$。　{pk|2阶…0}

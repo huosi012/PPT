@@ -1,0 +1,42 @@
+# 笔记第 3 页（n03）：接第一章“四、公式”①②；五、克拉默法则；第二章 矩阵 一、运算；下方电子手写“运算性质”
+I1| ③ | $|A^{T}|=|A|${r|（行列互换、行列式值不变）}
+I1| ④ | $|A^{-1}|=|A|^{-1}${r|（$AA^{-1}=A^{-1}A=E$　$|E|=1$）}
+I1| ⑤ | $|A^{*}|=|A|^{n-1}${r|（$A^{*}=|A|A^{-1}$）}
+I1| ⑥ | 设 $A$ 的特征值为 $\lambda_1,\lambda_2,\cdots,\lambda_n$，则 $|A|=\prod_{i=1}^{n}\lambda_i${r|（连乘）}
+I1| ⑦ | 若 $A$ 与 $B$ 相似，则 $|A|=|B|$（相似：$B=P^{-1}AP$）
+E1| \R{B=P^{-1}AP}
+E1| \R{\Rightarrow|B|=|P^{-1}AP|=|P^{-1}||A|\cdot|P|=|A|}
+
+H1| 五、克拉默法则
+P1| 方程组：
+E1| \begin{cases}a_{11}x_1+a_{12}x_2+\cdots+a_{1n}x_n=b_1\\ a_{21}x_1+a_{22}x_2+\cdots+a_{2n}x_n=b_2\\ \cdots\\ a_{n1}x_1+a_{n2}x_2+\cdots+a_{nn}x_n=b_n\end{cases}
+P1| {r|如果}系数矩阵
+E1| D=\begin{vmatrix}a_{11} & a_{12} & \cdots & a_{1n}\\ a_{21} & a_{22} & \cdots & a_{2n}\\ \vdots & \vdots & & \\ a_{n1} & a_{n2} & \cdots & a_{nn}\end{vmatrix}\neq 0
+P1| {r|那么}则方程组有唯一解 $x_1=\frac{D_1}{D}$，$x_2=\frac{D_2}{D}$，$\cdots$，$x_n=\frac{D_n}{D}$
+E1| D_n=\begin{vmatrix}a_{11} & \cdots & a_{1(j-1)} & b_1 & a_{1(j+1)} & \cdots & a_{1n}\\ a_{21} & \cdots & a_{2(j-1)} & b_2 & a_{2(j+1)} & \cdots & a_{2n}\\ \vdots & & \vdots & \vdots & \vdots & & \vdots\\ a_{n1} & \cdots & a_{n(j-1)} & b_n & a_{n(j+1)} & \cdots & a_{nn}\end{vmatrix}\quad(j=1,2,\cdots,n)
+# 右侧红笔：D1、D2 两个例子
+E1| \R{D_1\Rightarrow\begin{vmatrix}b_1 & a_{12} & \cdots & a_{1n}\\ b_2 & a_{22} & \cdots & a_{2n}\\ \vdots & \vdots & & \\ b_n & a_{n2} & \cdots & a_{nn}\end{vmatrix}}
+E1| \R{D_2=\begin{vmatrix}a_{11} & b_1 & \cdots & a_{1n}\\ a_{21} & b_2 & \cdots & a_{2n}\\ \vdots & \vdots & & \\ a_{n1} & b_n & \cdots & a_{nn}\end{vmatrix}}
+# 推论：原页“齐次线性方程组”下有波浪线，向下箭头指向“必有零解”；两种情况上下对齐
+P0| {hei|推论：}{uw|齐次线性方程组}（$\Downarrow$ 必有零解）
+P1| 只有零解 $\Leftrightarrow D\neq 0\Leftrightarrow r(A)=n${r|（满秩）}
+P1| 有非零解 $\Leftrightarrow D=0\Leftrightarrow r(A)<n$
+
+T| 第二章　矩阵
+H1| 一、运算
+P0| {r|拆　提项　同乘　转置}
+I1| ① | 若 $A$ 可逆，则 $AB=AC\rightarrow B=C$，$BA=CA\Rightarrow B=C$
+I1| ② | 若 $A$ 列满秩，则 $AB=AC\Rightarrow B=C$　　左乘列满秩，秩不变
+I1| ③ | 若 $A$ 行满秩，则 $BA=CA\Rightarrow B=C$　　右乘行满秩，秩不变
+
+# 扫描件下方：电子手写（蓝色），标题黄色荧光；灰底为粘贴的打印笔记
+H2| {hy|运算性质}
+P1| 满足 $(AB)C=A(BC)\Rightarrow$ 结合率
+P1| 满足 $A(B+C)=AB+AC\Rightarrow$ 分配率
+P1| 交换率　特例下满足
+B2| 但存在特例：当 $A=E$（单位矩阵）、$A=0$（零矩阵）、$A$ 可逆或 $A$ 为伴随矩阵时，交换律成立
+P1| 消去　特例下满足
+P2| {b|特例情况：}
+B2| 当 $A$ 可逆时，$AB=AC\Rightarrow B=C$
+B2| 当 $A$ 为列满秩矩阵时，$AB=AC\Rightarrow B=C$
+B2| 证明方法：两边左乘 $A^{-1}$

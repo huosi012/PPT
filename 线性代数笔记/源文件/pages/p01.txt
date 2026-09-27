@@ -1,0 +1,32 @@
+# 笔记第 1 页：第一章 行列式（已确认的内容，改写成统一格式）
+T| 第一章　行列式
+
+H1| 一、概念
+I1| ① | {hei|逆序数：}一个排列中，大数在小数前面的总数，记作 $\tau$
+I1| ② | {hei|性质：}
+B1| 行列互换（转置），值不变
+B1| 两行（列）互换，变号
+B1| $\begin{vmatrix}ka & kb\\ c & d\end{vmatrix}=k\begin{vmatrix}a & b\\ c & d\end{vmatrix}$
+B1| $\begin{vmatrix}a+b & e\\ c+d & f\end{vmatrix}=\begin{vmatrix}a & e\\ c & f\end{vmatrix}+\begin{vmatrix}b & e\\ d & f\end{vmatrix}$
+B1| 一行（列）乘 $k$ 加到另一行，值不变 ⇒ 两行（列）成比例，行列式 = 0
+
+H1| 二、重要行列式
+I1| ① | {hei|上（下）三角} = 主对角线相乘，或 {r|$(-1)^{\frac{n(n-1)}{2}}$} 副对角线相乘
+I1| ② | {hei|$n$ 阶 $ab$ 型行列式}
+E1| \begin{vmatrix} a & b & b & \cdots & b\\ b & a & b & \cdots & b\\ b & b & a & \cdots & b\\ \vdots & \vdots & \vdots & \ddots & \vdots\\ b & b & b & \cdots & a\end{vmatrix}=[a+(n-1)b](a-b)^{n-1}
+I1| ③ | {hei|拉普拉斯}
+E1| \begin{vmatrix}A & C\\ \mathrm{O} & B\end{vmatrix}=\begin{vmatrix}A & \mathrm{O}\\ C & B\end{vmatrix}=|A||B|
+E1| \begin{vmatrix}C & A\\ B & \mathrm{O}\end{vmatrix}=\begin{vmatrix}\mathrm{O} & A\\ B & C\end{vmatrix}=\R{(-1)^{mn}}|A||B|
+P1| {g,sm|其中 $m$、$n$ 分别为 $A$、$B$ 的阶数}
+I1| ④ | {hei|范德蒙}
+E1| D_n=\begin{vmatrix} 1 & 1 & \cdots & 1\\ x_1 & x_2 & \cdots & x_n\\ \vdots & \vdots & \ddots & \vdots\\ x_1^{n-1} & x_2^{n-1} & \cdots & x_n^{n-1}\end{vmatrix}=\prod_{1\le i<j\le n}(x_j-x_i)
+
+H1| 三、展开定理
+P0| $M_{ij}$：余子式{r|（是个数）}
+P0| $A_{ij}=\HY{(-1)^{i+j}}M_{ij}${r|（代数余子式）}
+E1| a_{i1}A_{j1}+a_{i2}A_{j2}+\cdots+a_{in}A_{jn}=\begin{cases}|A|, & \UD{i=j}\\ 0, & \UD{i\neq j}\end{cases}
+E1| a_{1i}A_{1j}+a_{2i}A_{2j}+\cdots+a_{ni}A_{nj}=\begin{cases}|A|, & i=j\\ 0, & i\neq j\end{cases}
+
+H1| 四、公式
+I1| ① | $|kA|=k^{n}|A|${r|（这里 $A$ 是矩阵）}
+I1| ② | $|AB|=|A||B|$

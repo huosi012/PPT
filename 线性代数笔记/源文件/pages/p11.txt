@@ -1,0 +1,22 @@
+# 笔记第 11 页（PDF 第 1 页）：公共解、同解
+H1| 公共解（定义、求法 3）
+P0| {b|公共解的定义}　若 $\alpha$ 既为线性方程组（Ⅰ）的解，又为线性方程组（Ⅱ）的解，则称 $\alpha$ 为线性方程组（Ⅰ）与（Ⅱ）的公共解。
+
+H2| {r|★}公共解的求法
+I1| (1) | 已知线性方程组（Ⅰ）与（Ⅱ）的具体形式，则{b|联立}方程组（Ⅰ）与（Ⅱ），得到公共解；
+I1| (2) | 已知线性方程组（Ⅰ）的具体形式与线性方程组（Ⅱ）的通解，则将方程组（Ⅱ）的通解代入方程组（Ⅰ），确定通解中的参数，得到公共解；
+I1| (3) | 已知线性方程组（Ⅰ）与（Ⅱ）的通解，则令其相等，确定通解中的参数，得到公共解。
+
+H1| 同解（定义、充要 2 个）
+P0| {b|同解的定义}　若线性方程组（Ⅰ）的解均为线性方程组（Ⅱ）的解，反之亦然，则称线性方程组（Ⅰ）与（Ⅱ）的同解。
+
+H2| 同解的充要条件
+P0| 设 $A$ 为 {ur|$m\times n$} 阶矩阵，$B$ 为 {udr|$l\times n$} 阶矩阵，则线性方程组 $Ax=0$ 与 $Bx=0$ 同解{r|（两个方程组行数相同）}
+P0| $\Leftrightarrow A,B$ 的行向量组等价
+E0| \Leftrightarrow r(A)=r\begin{pmatrix}A\\B\end{pmatrix}=r(B)
+
+P0| {r|$r(A^{T}A)=r(A)$ 证明}
+P0| {b|【详解】}（Ⅰ）易知 $Ax=0$ 的解均为 $A^{T}Ax=0$ 的解。{pk|$A^{T}A\alpha=0$}
+P0| 设 $\alpha$ 为 $A^{T}Ax=0$ 的解，即 $A^{T}A\alpha=0$。等式两边左乘 $\alpha^{T}$，得 $\alpha^{T}A^{T}A\alpha=0$，即 $(A\alpha)^{T}(A\alpha)=0$，从而 $A\alpha=0$，即 $\alpha$ 为 $Ax=0$ 的解，故 $A^{T}Ax=0$ 与 $Ax=0$ 同解。
+E1| \PK{\overset{1\times m}{\begin{pmatrix}a_1 & \cdots & a_m\end{pmatrix}}\overset{m\times 1}{\begin{pmatrix}a_1\\ \vdots\\ a_m\end{pmatrix}}=a_1^{2}+\cdots+a_m^{2}=0}
+P0| （Ⅱ）由 $A^{T}Ax=0$ 与 {uwp|$Ax=0$} 同解，知其基础{uwp|解系}中解的个数相同，即 $n-${uwp|$r(A^{T}A)$} = $n-r(A)$，故 $r(A^{T}A)=r(A)$。

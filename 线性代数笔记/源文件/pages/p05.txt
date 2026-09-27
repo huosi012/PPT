@@ -1,0 +1,60 @@
+# 笔记第 5 页：第二章 矩阵（三、矩阵的秩 ② 性质 起）
+# 页首印刷的【评注】(2)(3) 及其旁的粉色批注已并入第 4 页，本页从“② 性质”开始
+
+I1| ② | {hei,hy|性质}
+I2| (1) | $r(A)\le\min\{m,n\}$　{r|秩小于等于行数和列数}
+I2| (2) | $r(A+B)\le r(A)+r(B)$　{r|和差的秩小于等于秩的和}
+I2| (3) | $r(AB)\le\min\{r(A),r(B)\}$　{r|乘积的秩小于等于被乘数的秩}
+I2| (4) | $\max\{r(A),r(B)\}\le r\left(A\middle|B\right)\le r(A)+r(B)$　{r|联立的秩大于等于矩阵的秩　小于等于矩阵和的秩}
+I2| (5) | $r(A)=r(kA)$
+I2| (6) | $P$、$Q$ 可逆　$r(A)=r(PA)=r(AQ)=r(PAQ)$
+I2| (7) | {hy|左乘列满秩，秩不变．右乘行满秩，秩不变}
+I2| (8) | $r(A)=r(A^{T})=r(A^{T}A)=r(AA^{T})$
+I2| (9) | {r|$AB=O$，则 $r(A)+r(B)\le n$}
+
+# 右侧粘贴的印刷【详解】（红色箭头由 (9) 的红框指向它）
+P2| {b|【详解】}（Ⅰ）将 $B$ 按列分块，得
+E2| AB=A(\beta_1,\beta_2,\cdots,\beta_s)=(A\beta_1,A\beta_2,\cdots,A\beta_s)=(0,0,\cdots,0)
+P2| 从而 $A\beta_i=0\,(i=1,2,\cdots,s)$，故 $B$ 的列向量均为 $Ax=0$ 的解．
+P2| （Ⅰ）知 {ur|$r(\beta_1,\beta_2,\cdots,\beta_s)$}$\le${ur|$n-\boldsymbol{r(A)}$}，故 $r(A)+r(B)\le n$．
+P2| {r|{pk|$s$}个解的极大无关组中向量个数}　　{r|所有解的极大无关组中向量个数}
+P2| 解空间的维度．如果解是 $x=ky$ 那就是一条线是一维
+P2| 如果是 $(x,y)$　$x$ 与 $y$ 无关是一个面是二维
+P2| 如果是 $(x,y,z)$ 那就是三维
+P2| $B$ 如果是 $O$ 满足
+P2| $B$ 的一列是 $xyz$ 的取值组合
+P2| （Ⅱ）由 $ABx=0$ 与 $Bx=0$ 同解，知其基础解系中解的个数相同，即 {udr|$s$}$-r(AB)=s-r(B)$，故 $r(AB)=r(B)$．
+P2| {r|进一步：$r(B^{T})=r(AB)^{T}=r(B^{T}\UD{A^{T}})$ 右乘行满秩…}
+P2| {r|$r(\underset{n\times m}{A^{T}})=r(A)=n$，行满秩}
+
+I1| ③ | {hei,hy|秩的求法}：初等行变换为{hy,uw|行阶梯形}矩阵．$r(A)=$ 非零行行数
+P1| ↓ 每行第一个非零数下的数均为 0
+
+H1| 四、伴随矩阵
+I1| ① | {hei,r,hy|定义}　代数余子式构成的矩阵　{r|$\HY{A^{*}}=\begin{pmatrix}A_{11} & A_{21}\\ A_{12} & A_{22}\end{pmatrix}$}
+# 右侧粘贴的印刷块（红色、黄色箭头由“定义”指向它）
+P1| {b|二、伴随矩阵　正式定义}
+P1| 把{b|所有代数余子式}按{b|行列转置}排列，构成的新矩阵，记作 $A^{*}$。
+P1| 形式写法：
+E1| A^{*}=\begin{pmatrix}A_{11} & A_{21} & \ldots & A_{n1}\\ A_{12} & A_{22} & \ldots & A_{n2}\\ \vdots & \vdots & & \vdots\\ A_{1n} & A_{2n} & \ldots & A_{nn}\end{pmatrix}
+P1| 二阶矩阵：$A=\begin{pmatrix}a & b\\ c & d\end{pmatrix}$　$A^{*}=\begin{pmatrix}d & -b\\ -c & a\end{pmatrix}$　主对调，副变号
+# 右下蓝色笔记（与上一行同一内容）
+P1| 二阶求伴随　$A=\begin{pmatrix}a & b\\ c & d\end{pmatrix}$　$A^{*}=\begin{pmatrix}d & -b\\ -c & a\end{pmatrix}$
+I1| ② | {hei|性质}
+I2| (1) | $AA^{*}=A^{*}A=|A|E\xrightarrow{|A|\neq 0}A^{-1}=\frac{1}{|A|}A^{*}$，$A^{*}=|A|\cdot A^{-1}$
+# 右侧红色证明（黄色箭头由 (1) 指向它）
+P2| {r|Pr: $AA^{*}=\begin{pmatrix}a_{11} & \cdots & a_{1n}\\ \vdots & & \vdots\\ a_{n1} & \cdots & a_{nn}\end{pmatrix}\begin{pmatrix}A_{11} & & A_{n1}\\ \vdots & \cdots & \vdots\\ A_{1n} & & A_{nn}\end{pmatrix}=\begin{pmatrix}|A| & \cdots & 0\\ \vdots & & \vdots\\ 0 & \cdots & |A|\end{pmatrix}=|A|E$}
+I2| (2) | $(kA)^{*}=k^{n-1}\cdot A^{*}$
+I2| (3) | $(AB)^{*}=B^{*}A^{*}$　{r|$(AB)^{*}=|AB|(AB)^{-1}=|A||B|B^{-1}A^{-1}=B^{*}A^{*}$}
+I2| (4) | $|A^{*}|=|A|^{n-1}$
+I2| (5) | $(A^{T})^{*}=(A^{*})^{T}$
+I2| (6) | $(A^{-1})^{*}=(A^{*})^{-1}=\frac{A}{|A|}$
+I2| (7) | $(A^{*})^{*}=|A^{*}|\cdot(A^{*})^{-1}=|A|^{n-1}\cdot\frac{A}{|A|}=A\cdot|A|^{n-2}$
+I2| (8) | $r(A^{*})=\begin{cases}n, & r(A)=n\\ 1, & r(A)=n-1\\ 0, & r(A)<n-1\end{cases}$
+# 扫描页下方的红色批注（大括号）
+P1| {r|3个 $n-1$ 次}
+B1| {r|$|A^{*}|=|A|^{n-1}$}
+B1| {r|$(kA^{*})=k^{n-1}A^{*}$}
+B1| {r|$ab$ 型}
+
+H1| 五、初等变换与初等矩阵

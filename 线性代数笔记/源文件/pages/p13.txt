@@ -1,0 +1,67 @@
+# 笔记第 13 页（PDF 第 3 页）——接第 12 页 ③ 特征值求法 (1)(2)
+
+# ---------- ③ 特征值求法（续）：推 ----------
+P1| {hy,hei|推：}
+I2| (1) | {hy|上(下)三角矩阵，主对角线元素即为特征值.}
+# 页面右上角红笔（证明）
+P2| {r|Pr: $|A-\lambda E|=\begin{vmatrix} a_{11}-\lambda & & a_{1n}\\ & \ddots & \\ O & & a_{nn}-\lambda\end{vmatrix}=(a_{11}-\lambda)\cdots(a_{nn}-\lambda)=0\ \therefore\ \lambda_{1}=a_{11}\cdots\lambda_{n}=a_{nn}$}
+I2| (2) | 设 $A$ 为 $n$ 阶矩阵，若 $aA+bE\ (a\neq0)$ 不可逆，则 $\lambda=-\frac{b}{a}$ 为 $A$ 的特征值.
+E2| |aA+bE|=0\Leftrightarrow a^{n}|A+\frac{b}{a}E|=0.\quad\R{\Leftrightarrow|A-(-\frac{b}{a})E|=0}
+P2| {r|不可逆.}
+E2| \R{\lambda=-\frac{b}{a}}
+
+# ---------- ④ 性质 ----------
+I1| ④ | {hy,hei|性质.}
+I2| (1) | 不同特征值的特征向量线性无关
+I2| (2) | 不同特征值的特征向量之和不是特征向量. {r|但同一特征值的非零线性特征向量组合仍为特征向量}
+I2| (3) | $k$ 重特征值最多有 $k$ 个线性无关的特征向量. {r|$1\leq n-r(A-\lambda_{i}E)\leq k_{i}$}
+I2| (4) | 设 $A$ 的特征值为 $\lambda_{1},\lambda_{2},\cdots,\lambda_{n}$，则 $\sum_{i=1}^{n}\lambda_{i}=\sum_{i=1}^{n}a_{ii}=\mathrm{tr}(A)$，$\prod_{i=1}^{n}\lambda_{i}=|A|$
+P2| {hy|特和为迹}　　　　　　{hy|特积为行列式}
+
+# 右栏贴图（印刷）：迹的定义——放在性质(4)之后（(4) 中出现 tr(A)）
+P2| {b|1. 定义}
+P2| 只对{b|方阵}才有迹（行数=列数）：
+P2| 方阵主对角线上所有元素之和，记作 $\mathrm{tr}(A)$。
+P2| 设 $n$ 阶方阵：
+E2| A=\begin{pmatrix} a_{11} & a_{12} & \cdots & a_{1n}\\ a_{21} & a_{22} & \cdots & a_{2n}\\ \vdots & \vdots & & \vdots\\ a_{n1} & a_{n2} & \cdots & a_{nn}\end{pmatrix}
+E2| \mathrm{tr}(A)=a_{11}+a_{22}+\cdots+a_{nn}=\sum_{i=1}^{n}a_{ii}
+P2| {b|举例}
+E2| A=\begin{pmatrix} 1 & 2\\ 3 & 4\end{pmatrix},\quad \mathrm{tr}(A)=1+4=5
+E2| B=\begin{pmatrix} 2 & 0 & 1\\ 5 & -1 & 3\\ 0 & 2 & 7\end{pmatrix},\quad \mathrm{tr}(B)=2+(-1)+7=8
+
+I2| (5) | 若 $r(A)=1$，即 $A=\alpha\beta^{T}$，$\alpha,\beta$ 为 $n$ 维非零列向量. 则 $A$ 的特征值为
+P2| $\alpha$ → 极大无关组　　$\beta^{T}$ → 线性表示的系数
+E2| \lambda_{1}=\mathrm{tr}(A)=\alpha^{T}\beta=\beta^{T}\alpha,\ \lambda_{2}\sim\lambda_{n}=0
+P2| {r|{hy|秩}一矩阵　特征值为迹}
+I2| (6) | 设 $\alpha$ 为矩阵 $A$ 属于特征值 $\lambda$ 的特征向量. 则
+E2| \begin{matrix} A & f(A) & A^{-1} & A^{*} & A^{T} & \R{P^{-1}AP}\\ \lambda & f(\lambda) & \frac{1}{\lambda} & \frac{|A|}{\lambda} & \lambda & \R{\lambda}\\ \alpha & \alpha & \alpha & \alpha & \text{/} & \R{P^{-1}\alpha}\end{matrix}
+P2| $f(A)$：{r|多项式}
+P2| $\lambda$（特征值）　$\alpha$（特征向量）
+E2| \R{(P^{-1}AP)(P^{-1}\alpha)=P^{-1}(A\alpha)=P^{-1}(\lambda\alpha)=\lambda(P^{-1}\alpha)}
+
+# 右栏贴图（印刷）：例 5.6——用到性质(3)(4)(6)，位置紧接(6)表格下方，放在第一节末尾
+P0| {b|【例 5.6】}设 $A$ 为 4 阶矩阵，且 $r(A-E)=3$，$r(A-2E)=3$，$r(A-4E)=2$，则 $|A+E|=\text{ }$________.
+P0| {b|【详解】}由 $r(A-E)=3$，知 $A$ 的特征值 1 的线性无关的特征向量的个数为 $4-r(A-E)=1$；
+P0| 由 $r(A-2E)=3$，知 $A$ 的特征值 2 的线性无关的特征向量的个数为 $4-r(A-2E)=1$；
+P0| 由 $r(A-4E)=2$，知 $A$ 的特征值 4 的线性无关的特征向量的个数为 $4-r(A-4E)=2$，从而 $A$ 的特征值为 1，2，4，4，$A+E$ 的特征值为 2，3，5，5，故 $|A+E|=2\times3\times5\times5=\PK{150}$.
+
+# ---------- 二、相似矩阵 ----------
+H1| 二、{hy|相似矩阵}
+I1| ① | {hei|定义：}$B=P^{-1}AP$.
+I1| ② | {hei|性质：}
+I2| (1) | $A\sim B$，则 $|A|=|B|$，$r(A)=r(B)$，{s||A−λE|=|B−λE|}
+B2| {hy|特征值/方程相同，迹相同}
+I2| (2) | 若 $A\sim B$，则 $f(A)\sim f(B)$，$A^{-1}\sim B^{-1}$，$A^{*}\sim B^{*}$，$A^{T}\sim B^{T}$
+I2| (3) | $A\sim B$，$B\sim C\Rightarrow A\sim C$
+
+# ---------- 三、相似对角化 ----------
+H1| 三、{hy|相似对角化}.
+P0| {r|{hy|定}义　充要(2个)　充分(2个)}
+I1| ① | $P^{-1}\HY{A}P=\Lambda=\begin{pmatrix}\R{\lambda_{1}} & & & \\ & \R{\lambda_{2}} & & \\ & & \R{\ddots} & \\ & & & \R{\lambda_{n}}\end{pmatrix}$ {r|→特征值}，则称 $A$ 可以相似对角化.
+P1| {r|是方阵}　　　　　　{r|对角矩阵}
+P1| {hy|$P$ 是由 $A$ 的{r|$\R{n}$ 个}{uwr|线性无关}的{r|特征向量}构成的{r|可逆}矩阵，$\Lambda$ 是由 $A$ 个特征值}构成的的对角矩阵
+P1| {r|一、}{hg|若 $A,B$ 均可相似对角化：$A\sim B$}{r|（AB相似）}{hg|$\Leftrightarrow A,B$ 特征值相同}
+# 扫描件下方的红笔手写
+P1| {r|证：$P_{1}^{-1}AP_{1}=\Lambda=\begin{pmatrix}\lambda_{1} & & \\ & \ddots & \\ & & \lambda_{n}\end{pmatrix}=P_{2}^{-1}BP_{2}$}
+P1| {r|由传递性 $A\sim B$.}
+P1| {r|二、}{hg,r|若 $\R{A}$ 可相似对角化，则 $\R{r(A)}$ 等于非零特征值的个数.}
