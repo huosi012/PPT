@@ -1,0 +1,51 @@
+# 笔记第 6 页：第二章 矩阵（五、初等变换与初等矩阵；标题已在第 5 页末）
+
+I1| ① | {hei|初等变换：}三种．　{r|两行互换}　{r|倍乘}　{r|倍乘再加到另一行}
+I1| ② | {hei|初等矩阵：}{s|E变成}$E$ 初等变换{r,hy|一次}{hy|得到的矩阵}
+P1| $E(i,j)$：$i,j$ 两行/列交换．
+P1| $E(i(k))$：第 $i$ 行(列)乘 $k$
+P1| $E(ij(k))$：第 $j$ 行乘 $k$ 加到第 $i$ 行/第 $i$ 列乘 $k$ 加到第 $j$ 列
+I1| ③ | {r|★}{hei|初等矩阵的性质：}$|E(i,j)|=-1$
+E1| |E(i(k))|=k
+E1| |E(ij(k))|=1
+E1| \R{\text{逆}\begin{cases}E(i,j)^{-1}=E(i,j)\\ E(i(k))^{-1}=E(i(\frac{1}{k}))\\ E(ij(k))^{-1}=E(ij(-k))\end{cases}\quad\text{转置}\begin{cases}E(i,j)^{T}=E(i,j)\\ E(i(k))^{T}=E(i(k))\\ E(ij(k))^{T}=E(ji(k))\end{cases}}
+# 红色批注写在“转置”大括号正下方
+P1| {r|初等矩阵的转置还是它自己}
+P1| {hy|初等行/列变换相当于左({s|[?]}或右)乘相应的初等矩阵}
+P1| {hy|可逆矩阵可以写成有限个初等矩阵的乘积}　{r|⇒ 等价}
+I1| ④ | {hei|初等变换应用：}
+I2| (1) | 求逆
+I2| (2) | 初等变换不改变秩．求秩．
+I2| (3) | 不改变线性关系．{s|[?]}求向量组
+I2| (4) | 求方程组的解
+I1| ⑤ | {hei|矩阵等价的定义：}$A$ 经过有限次初变变成 $B$．
+P1| $\Leftrightarrow B=PAQ$（$P,Q$ 可逆）$\Leftrightarrow r(A)=r(B)$
+# 右侧粘贴的印刷块（红色圈出，圈的尾巴伸向⑤）
+P1| 设 $A,B$ 为 $m\times n$ 阶矩阵，$A$ 与 $B$ 等价
+P1| $\Leftrightarrow$ 存在 $m$ 阶矩阵可逆矩阵 $P$ 与 $n$ 阶矩阵可逆矩阵 $Q$，使得 $B=${udr|$PAQ$}
+P1| $\Leftrightarrow r(A)=r(B)$
+
+H1| 六、分块矩阵　{r|分块矩阵}
+I1| ① | {hei|转置．}$A=\begin{pmatrix}A_{11} & \cdots & A_{1t}\\ \vdots & & \vdots\\ A_{s1} & \cdots & A_{st}\end{pmatrix}$，则 $A^{T}=\begin{pmatrix}A_{11}^{T} & \cdots & A_{s1}^{T}\\ \vdots & & \\ A_{1t}^{T} & \cdots & A_{st}^{T}\end{pmatrix}$
+I1| ② | {hei|求逆．}$\begin{pmatrix}A & O\\ O & B\end{pmatrix}^{-1}=\begin{pmatrix}A^{-1} & O\\ O & B^{-1}\end{pmatrix}$，$\begin{pmatrix}O & A\\ B & O\end{pmatrix}^{-1}=\begin{pmatrix}O & B^{-1}\\ A^{-1} & O\end{pmatrix}$
+# 红色大括号及其左侧红字标签括住以下四个式子
+E1| \R{\text{考的概率低}}\begin{cases}\begin{pmatrix}A & C\\ O & B\end{pmatrix}=\begin{pmatrix}A^{-1} & -A^{-1}CB^{-1}\\ O & B^{-1}\end{pmatrix},\quad \begin{pmatrix}A & O\\ C & B\end{pmatrix}^{-1}=\begin{pmatrix}A^{-1} & O\\ -B^{-1}CA^{-1} & B^{-1}\end{pmatrix}\\ \begin{pmatrix}C & A\\ B & O\end{pmatrix}^{-1}=\begin{pmatrix}O & B^{-1}\\ A^{-1} & -A^{-1}CB^{-1}\end{pmatrix},\quad \begin{pmatrix}O & A\\ B & C\end{pmatrix}^{-1}=\begin{pmatrix}-B^{-1}CA^{-1} & B^{-1}\\ A^{-1} & O\end{pmatrix}\end{cases}
+# 右下方：红字标题 + 红圈圈出的印刷截图（网课截图，工具栏/水印/头像已略）
+P0| {r|分块矩阵的乘法}
+P0| {b|分块矩阵的乘法}　设 $A$ 为 $m\times l$ 阶矩阵，$B$ 为 $l\times n$ 阶矩阵，$A$ 的列与 $B$ 的行采用相同的分块法　{r|前列后行分法相同}
+E0| A=\begin{pmatrix}A_{11} & \cdots & A_{1t}\\ \vdots & & \vdots\\ A_{s1} & \cdots & A_{st}\end{pmatrix}\ \PK{\text{3列}},\ \ \ \PK{\text{3行}}\ B=\begin{pmatrix}B_{11} & \cdots & B_{1r}\\ \vdots & & \vdots\\ B_{t1} & \cdots & B_{tr}\end{pmatrix}
+P0| 则 $AB=\begin{pmatrix}C_{11} & \cdots & C_{1r}\\ \vdots & & \vdots\\ C_{s1} & \cdots & C_{sr}\end{pmatrix}$，其中 $C_{ij}=\sum_{k=1}^{t}A_{ik}B_{kj}\,(i=1,2,\cdots,s;\ j=1,2,\cdots,r)$．
+P0| {r|$A_{11}B_{11}+\cdots$}
+P0| {pk|$2\times 3$　$3\times$□}
+# 下方第二张印刷截图（同一红圈内）
+I1| (1) | {udr|将 $A$ 按列分块}，得
+E1| AB=(\alpha_1,\alpha_2,\cdots,\alpha_n)\begin{pmatrix}b_{11} & b_{12} & \cdots & b_{1s}\\ b_{21} & b_{22} & \cdots & b_{2s}\\ \vdots & \vdots & \ddots & \vdots\\ b_{n1} & b_{n2} & \cdots & b_{ns}\end{pmatrix}
+P1| $=${udr|$(b_{11}\alpha_1+b_{21}\alpha_2+\cdots+b_{n1}\alpha_n$}$,\cdots,b_{1s}\alpha_1+b_{2s}\alpha_2+\cdots+b_{ns}\alpha_n)$
+I1| (2) | {udr|将 $B$ 按列分块}，得　{r|(线性组合表示)}
+P1| $AB=A(\beta_1,\beta_2,\cdots,\beta_s)=(${udr|$A\beta_1$}$,A\beta_2,\cdots,A\beta_s)$
+P1| {r|$m\times n$　$n\times 1$}
+E1| \R{\begin{cases}AB=O\Rightarrow A\beta_i=0\ \text{齐次}\\ AB=C\Rightarrow A\beta_i=\gamma_i\ \text{非齐次}\end{cases}}
+# 页面底部：红字标题 + 印刷公式（粉色圈、粉色双下划线为学生所加）
+P0| {r|分块矩阵的伴随}
+E0| \begin{pmatrix}O & A\\ B & O\end{pmatrix}^{*}=\begin{vmatrix}O & A\\ B & O\end{vmatrix}\begin{pmatrix}O & A\\ B & O\end{pmatrix}^{-1}=(-1)^{2\times 2}|A||B|\begin{pmatrix}O & B^{-1}\\ A^{-1} & O\end{pmatrix}
+E0| =\begin{pmatrix}O & |A|\PK{|B|B^{-1}}\\ |B|\PK{|A|A^{-1}} & O\end{pmatrix}=\begin{pmatrix}O & 2B^{*}\\ 3A^{*} & O\end{pmatrix}

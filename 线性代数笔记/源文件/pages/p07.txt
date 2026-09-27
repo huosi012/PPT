@@ -1,0 +1,55 @@
+# 笔记第 7 页：第三章 向量（一、基本运算；二、线性表示）
+T| 第三章　向量
+# 页首粘贴的两条印刷定义（按要求放在标题之后）；右上红色坐标草图只保留文字“距离”
+P0| {b,hy|向量数乘的定义}　设 $\alpha=(a_1,a_2,\cdots,a_n)^{T}$，$k$ 为常数，称 $(ka_1,ka_2,\cdots,ka_n)^{T}$ 为 $k$ 与 $\alpha$ 的数乘，记作 $k\alpha$．
+P0| {b,hy|向量长度的定义}　设 $\alpha=(a_1,a_2,\cdots,a_n)^{T}$，称 $\sqrt{[\alpha,\alpha]}=\sqrt{a_1^{2}+a_2^{2}+\cdots+a_n^{2}}$ 为 $\alpha$ 的长度（模），记作 $\|\alpha\|$．若 $\|\alpha\|=1$，则称 $\alpha$ 为{udr|单位}向量．　{r|长度为1}　{r|距离}
+
+H1| 一、基本运算
+I1| ① | {r|内积}为 0，则两向量正交
+# 红色箭头由①中圈出的“内积”引到标题行右侧的红字
+P1| {r|→ $\alpha^{T}\beta$ 或 $\beta^{T}\alpha$ 是 $\alpha$ 与 $\beta$ 的内积}
+I1| ② | $AA^{T}=E$ 或 $A^{T}A=E$，则称 $A$ 为{r,hy|正交矩阵}$\Leftrightarrow$ {hy|$A^{T}=A^{-1}$}
+P1| $\Leftrightarrow$ {hy|$A$ 的行(列)向量组为单位正交的向量组}
+# 中间矩阵被红框框出（按惯例改为红色）
+P1| 证：$A^{T}A=E$
+E1| \begin{pmatrix}\alpha_1^{T}\\ \vdots\\ \alpha_n^{T}\end{pmatrix}(\alpha_1,\cdots,\alpha_n)=\R{\begin{pmatrix}\alpha_1^{T}\alpha_1 & \cdots & \alpha_1^{T}\alpha_n\\ \vdots & & \vdots\\ \alpha_n^{T}\alpha_1 & \cdots & \alpha_n^{T}\alpha_n\end{pmatrix}}=\begin{pmatrix}1 & & 0\\ & \ddots & \\ 0 & & 1\end{pmatrix}
+# 左侧页边红圈 + 黄色的“正交矩阵”（红箭头连到②的“正交矩阵”和上面的红框）
+P1| {r,hy|正交矩阵}
+I1| ③ | {hei|性质}
+I2| (1) | $|A|=\pm1$
+E2| \R{\begin{cases}AA^{T}=E\\ |AA^{T}|=|A||A^{T}|=|A|^{2}=|E|=1\end{cases}}
+# 学生的编号：(3) 写在 (1) 同一行红字右侧（后补），(2) 在下一行；此处按编号排列
+I2| (2) | 若 $A,B$ 为正交，则 $-A,AB,A^{T},A^{-1},A^{*}$ 均正交
+I2| (3) | 特值为 $\pm1$
+I1| ④ | {hei,hy|斯密特正交}：$\alpha_1,\alpha_2,\cdots,\alpha_n$ 线性无关
+E1| \beta_1=\alpha_1
+E1| \beta_2=\alpha_2-\frac{[\alpha_2,\beta_1]}{[\beta_1,\beta_1]}\beta_1
+# β3 行右端的红字 (α1,α2,α3)；其右侧一对空的大红括号未转写
+E1| \beta_3=\alpha_3-\frac{[\alpha_3,\beta_1]}{[\beta_1,\beta_1]}\beta_1-\frac{[\alpha_3,\beta_2]}{[\beta_2,\beta_2]}\beta_2
+P1| {r|$(\alpha_1,\alpha_2,\alpha_3)$}
+E1| \beta_n=\alpha_n-\frac{[\alpha_n,\beta_1]}{[\beta_1,\beta_1]}\beta_1-\frac{[\alpha_n,\beta_2]}{[\beta_2,\beta_2]}\beta_2-\cdots-\frac{[\alpha_n,\beta_{n-1}]}{[\beta_{n-1},\beta_{n-1}]}\beta_{n-1}
+P1| 再单位化．得到单位正交的向量
+P1| {r|单位化}
+# 右侧红字（与④标题行、β2 行同高），放在④之后、本节末尾
+P1| {r|$\mathrm{tr}(ab^{T})=a^{T}b$}
+P1| {r|若 $a,b$ 正交．$a^{T}b=0$．}
+
+H1| 二、{hy|线性表示}
+# 页底（本子外）粘贴的印刷定义，放到本节标题之后；其下红字（加法，数乘）接在句末；“组”下的红色小弧线未转写
+P0| {b,hy|{ur|线性}组合的定义}　设向量组 $\alpha_1,\alpha_2,\cdots,\alpha_s$，对任意一组数 $k_1,k_2,\cdots,k_s$，称 $k_1\alpha_1+k_2\alpha_2+\cdots+k_s\alpha_s$ 为 $\alpha_1,\alpha_2,\cdots,\alpha_s$ 的线性组合．　{r|(加法，数乘)}
+I1| ① | {hy|向量组等价}$\Leftrightarrow$ 可以相互{uw|线性表示}
+# 黑色箭头由“线性表示”引到右上方的一行字
+P1| → 每个向量都可以由另一个向量组线性表示．
+I1| ② | {hei,hy|线性表示的充要条件}：
+P1| $\beta$ 可由向量 $\alpha$ 线表 $\Leftrightarrow(\alpha_1,\alpha_2,\cdots,\alpha_n)\begin{pmatrix}x_1\\ x_2\\ \vdots\\ x_n\end{pmatrix}=\beta$ 有解
+E1| \Leftrightarrow r\underset{\text{系数矩阵}}{(\alpha_1,\alpha_2,\cdots,\alpha_s)}=r\underset{\text{增广矩阵}}{\left(\alpha_1,\alpha_2,\cdots,\alpha_s\,\middle|\,\beta\right)}
+# 右侧红字（与②同高）
+P1| {r|(Ⅰ)可表示(Ⅱ)}
+P1| {r|则 $r(\text{Ⅱ})\le r(\text{Ⅰ})$}
+I1| ③ | {hei,hy|向量组等价的充要条件}：{r|相互线性表示}
+P1| $\alpha_1,\cdots,\alpha_n$ 与 $\beta_1,\beta_2,\cdots,\beta_n$ 等价 $\Leftrightarrow r(\text{Ⅰ})=r(\text{Ⅰ},\text{Ⅱ})=r(\text{Ⅱ})$
+# 第 8 页右上角粘贴的印刷句（整行黄色；α、β 下的粉色勾线未转写）及其左下方红字“三秩相等”，按要求并入此处，第 8 页不再重复
+P1| {hy|向量组（Ⅰ）$\alpha_1,\alpha_2,\cdots,\alpha_s$ 与向量组（Ⅱ）$\beta_1,\beta_2,\cdots,\beta_t$ 等价 $\Leftrightarrow r(\text{Ⅰ})=r(\text{Ⅰ},\text{Ⅱ})=r(\text{Ⅱ})$}
+P1| {r|三秩相等}
+# ③ 下方页脚处红字
+P1| {r|0 向量可以由任意向量表示}

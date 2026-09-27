@@ -1,0 +1,47 @@
+# 第 14 页（src/p4）——接第 13 页“三、相似对角化 ①”，本页从 ② 开始（不再写 H1）
+I1| ② | {hei,hy|相似对角化充要条件}.
+P1| 可相似对角化 $\Leftrightarrow A$ 有 $n$ 个线性无关的特征向量
+P1| 　　　　　　 $\Leftrightarrow k$ 重特征值有 $k$ 个线性无关的特征向量
+# 右侧红笔旁注（与 ② 同高，放在 ② 之后）
+P1| {r|设 $\lambda_{i}$ 为 $k_{i}$ 重特征值}
+E1| \R{n-r(A-\lambda_{i}E)\begin{cases}{}=k_{i}\Leftrightarrow A\text{可相似对角化}\\{}<k_{i}\Leftrightarrow A\text{不能}\cdots\end{cases}}
+I1| ③ | {hei|相似对角化}{hei,hy|充分条件}.
+I2| (1) | $A$ 有 $n$ 个不同的特征值.
+I2| (2) | $A$ 为实对称矩阵 $(A^{T}=A)\Rightarrow r(A)=$ 非零特征值个数.
+
+# ---------- 四、实对称矩阵 ----------
+H1| 四、{hy|实对称矩阵}.
+I1| ① | {hei|性质}
+I2| (1) | 特征值均为实数.
+I2| (2) | {ur|不同特征值的特征向量正交}
+I2| (3) | $k$ 重特征值有 $k$ 个线性无关的特征向量 $\Leftrightarrow P^{-1}AP=\Lambda$　{r|实对称可相似对角化}
+I2| (4) | $A$ 可正交相似对角化，即存在正交矩阵 $Q$. 使
+E2| \HY{\R{Q^{-1}}AQ=\R{Q^{T}}AQ}=\Lambda=\begin{pmatrix}\lambda_{1} & & & \\ & \lambda_{2} & & \\ & & \ddots & \\ & & & \lambda_{n}\end{pmatrix}
+# 公式下方红笔（红圈圈住 Q^{-1}、Q^{T}，红箭头指向左下的说明）
+P2| {r|正交相似对角化}
+P2| {r|施密特不用求逆　直接转置}
+# 右侧红笔旁注（与 (4) 同高；内容是对 (2) 的说明）
+P2| {r|$A$ 为对称阵. $\lambda_{1},\lambda_{2}$ 为特征值}
+P2| {r|$P_{1},P_{2}$ 为对应向量}
+P2| {r|$\alpha_{1}\neq\lambda_{2}\Rightarrow P_{1}P_{2}$ 正交}
+I1| ② | {hei|正交矩阵 $Q$ 的求法}
+I2| (1) | 求特征值.　{r|或同求 $\Lambda$ 矩阵}
+I2| (2) | 求 $n$ 个线性无关的特征向量.　{r|求可逆矩阵 $P$　使 $P^{-1}AP=\Lambda$}
+I2| (3) | 施密特正交化
+I1| ③ | {hei|分解定理}.
+P1| $A$ 为 $n$ 阶实对称. $\gamma_{1},\gamma_{2},\cdots\gamma_{n}$ 为 $A$ 的特征值，$\lambda_{1},\lambda_{2},\cdots\lambda_{n}$ 为特征向量. {s|[?]}
+P1| 则 $A=\lambda_{1}\gamma_{1}\gamma_{1}^{T}+\lambda_{2}\gamma_{2}\gamma_{2}^{T}+\cdots+\lambda_{n}\gamma_{n}\gamma_{n}^{T}$
+P1| 特别地. 若 $r(A)=1$，则 $A=\mathrm{tr}(A)\gamma_{1}\gamma_{1}^{T}$
+
+# 扫描件下方的红笔手写（外面的大黄圈只是强调，不转写）
+P0| {r|二次型标准形和正交矩阵的关系}{r|（第六章）}
+E1| \R{f(x)=x^{T}Ax\overset{x=Qy}{=}(Qy)^{T}A(Qy)=y^{T}}\UD{Q^{T}AQ}\R{y}
+E1| \R{=y^{T}\Lambda y=(y_{1}\ \cdots\ y_{n})\begin{pmatrix}\lambda_{1} & & \\ & \ddots & \\ & & \lambda_{n}\end{pmatrix}\begin{pmatrix}y_{1}\\ \vdots\\ y_{n}\end{pmatrix}=\lambda_{1}y_{1}^{2}+\cdots\lambda_{n}y_{n}^{2}}
+
+# 右下贴图（印刷，配方法）；红笔双下划线分别标在 (1) 的“含”、(2) 的“不”下
+P0| （1）若二次型{udr|含}有平方项，不妨设含有 $x_{1}^{2}$，先将含有 $x_{1}$ 的项配方，再将含有 $x_{2}$ 的项配方，换元得标准形 $f=d_{1}y_{1}^{2}+d_{2}y_{2}^{2}+\cdots+d_{n}y_{n}^{2}$ 及所用的可逆线性变换 $x=Cy$；
+P0| （2）若二次型{udr|不}含平方项，不妨设含有 $x_{1}x_{2}$，令 $\begin{cases}x_{1}=y_{1}+y_{2}\\ x_{2}=y_{1}-y_{2}\\ x_{3}=y_{3}\end{cases}$，则二次型化为（1）的形式.
+# 贴图下方红笔
+P0| {r|①配方}　$\R{f(x_{1},x_{2},x_{3})=d_{1}\UD{(x_{1}+ax_{2}+bx_{3})}^{2}+d_{2}\UD{(x_{2}+cx_{3})}^{2}+d_{3}x_{3}^{2}}$
+# 两处双下划线下方的红笔小字：下半被截断/被黄圈盖住，右边一处被灰色缩略图遮住
+P0| {r|$x_{1}$ 先配[?][?]}　　{r|$x_{2}$ 再[?]}

@@ -223,7 +223,18 @@ def fix_omml(inner, base_fmt=None, bold_marker=False):
     for r in list(root.iter(m("r"))):
         t = r.find("m:t", NS)
         txt = (t.text or "").strip() if t is not None else ""
-        if (txt == "/" and len(r.getparent()) == 1) or (r in loose and txt in ("=", "\u21d4", "\u21d2")):
+        par = r.getparent()
+        first = None  # first visible child of a row/cell (skip zero-width filler runs)
+        if par is not None and par.tag == m("e"):
+            for c in par:
+                ct = c.find("m:t", NS) if c.tag == m("r") else None
+                if ct is not None and not (ct.text or "").replace(ZWSP, "").strip():
+                    continue
+                first = c
+                break
+        lead = first is r
+        ops = ("=", "<", ">", "\u2264", "\u2265", "\u2260", "\u21d4", "\u21d2", "\u2192")
+        if (txt == "/" and len(par) == 1) or ((r in loose or lead) and txt in ops):
             rpr = r.find("m:rPr", NS)
             if rpr is None:
                 rpr = etree.Element(m("rPr"))
@@ -474,7 +485,7 @@ STYLES = HDR + f"""<w:styles xmlns:w="{W_NS}">
 <w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:qFormat/><w:pPr><w:widowControl w:val="0"/></w:pPr></w:style>
 <w:style w:type="character" w:default="1" w:styleId="DefaultParagraphFont"><w:name w:val="Default Paragraph Font"/><w:uiPriority w:val="1"/><w:semiHidden/><w:unhideWhenUsed/></w:style>
 <w:style w:type="paragraph" w:styleId="Title"><w:name w:val="Title"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:uiPriority w:val="10"/><w:qFormat/>
- <w:pPr><w:keepNext/><w:pBdr><w:bottom w:val="single" w:sz="12" w:space="8" w:color="{NAVY}"/></w:pBdr><w:spacing w:before="120" w:after="240"/><w:jc w:val="center"/></w:pPr>
+ <w:pPr><w:keepNext/><w:pageBreakBefore/><w:pBdr><w:bottom w:val="single" w:sz="12" w:space="8" w:color="{NAVY}"/></w:pBdr><w:spacing w:before="120" w:after="240"/><w:jc w:val="center"/></w:pPr>
  <w:rPr><w:rFonts w:eastAsia="{HEI}"/><w:b/><w:bCs/><w:color w:val="{NAVY}"/><w:spacing w:val="20"/><w:sz w:val="40"/><w:szCs w:val="40"/></w:rPr></w:style>
 <w:style w:type="paragraph" w:styleId="Heading1"><w:name w:val="heading 1"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:uiPriority w:val="9"/><w:qFormat/>
  <w:pPr><w:keepNext/><w:keepLines/><w:spacing w:before="300" w:after="100"/><w:outlineLvl w:val="0"/></w:pPr>

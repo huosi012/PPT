@@ -1,0 +1,33 @@
+# p08 — continues 二、线性表示 from p07 (top-right printed line + red 三秩相等 are on p07)
+I1| ④ | {hei,hy|线性表示的充分条件}
+P1| $\alpha_1,\alpha_2\cdots\alpha_s$ 无关，$\alpha_1,\alpha_2,\cdots,\alpha_s,\beta$ 相关，则 $\beta$ 可由 $\alpha_1,\alpha_2,\cdots,\alpha_s$ {r|唯一线表}．
+I1| ⑤ | {hei,hy|线表求法，}{r|★}
+P1| $\beta$ 由 $\alpha_1,\alpha_2,\cdots\alpha_s$ 线表．对 $\left(\alpha_1,\alpha_2,\cdots,\alpha_s\,\middle|\,\beta\right)$ 初等行变换．
+P1| {hy|化为行最简形矩阵．}
+P1| $\rightarrow$ 每行第一个非零数为1，上下方均为0
+E1| \text{e.g. }(\alpha_1,\alpha_2,\alpha_3,\beta)\Rightarrow\left(\begin{matrix}1&0&0\\0&1&0\\0&0&1\\0&0&0\end{matrix}\,\middle|\,\begin{matrix}1\\2\\3\\0\end{matrix}\right)\Rightarrow\beta=\alpha_1+2\alpha_2+3\alpha_3
+H1| 三、{hy|线性相关与线性无关}　{r|定义　充要 4×2　充分条件 4×2}
+I1| ① | {hei|定义：}存在{r|不全为0}的数 $k_1\cdots k_n$ 使 $k_1\alpha_1+k_2\alpha_2+\cdots+k_n\alpha_n=0$
+P1| 则称 $\alpha_1,\alpha_2\cdots\alpha_n$ 线性相关，否则线性无关，　{r|若线性组合为0，则系数全为0．线性无关}
+P1| 向量 $\alpha$ 线性相关 $\Leftrightarrow\alpha=0$　{r|一个向量就相关，那这个向量是0向量}
+P1| {r|两向量相关}　$\alpha_1,\alpha_2$ 线性相关 $\Leftrightarrow$ 对应成比例　{r|成比例}
+I1| ② | {hei,hy|线性相关的充要条件}
+P1| $\alpha_1,\alpha_2,\cdots,\alpha_s$ 线性相关 $\Leftrightarrow$ 至少一个向量可由其余向量线性表示
+P2| {r|Pr: $\exists k_1,\cdots,k_s$ 不全为0，使 $k_1\alpha_1+\cdots+k_s\alpha_s=0$．}
+P2| {r|不妨设 $k_1\neq 0$，则 $\alpha_1=-\frac{1}{k_1}(k_2\alpha_2+\cdots+k_s\alpha_s)$}
+P2| {r|谁的系数不为0，就能被线性表示}
+P1| $\Leftrightarrow(\alpha_1,\alpha_2,\cdots\alpha_s)\begin{pmatrix}x_1\\x_2\\\vdots\\x_n\end{pmatrix}=0$ 有非零解　$\rightarrow$ 齐次方程　无穷多解．
+P1| $\Leftrightarrow r(\alpha_1,\alpha_2,\cdots,\alpha_s)<s$
+P1| $\Leftrightarrow$（若有行列式）$|\alpha_1,\alpha_2,\cdots\alpha_n|=0$．　{r|n个n维的向量．是方阵有行列式}
+I1| ③ | {hei|线性相关的充分条件}
+I2| (1) | 有零向量的向量组线性相关　{r|0向量的个数可以是任意数}
+I2| (2) | 部分相关．则整体相关．　{r|$\alpha_1,\alpha_2$ 相关　那么 $\alpha_1\alpha_2\alpha_3\alpha_4$ 相关　$\alpha_1=k\alpha_2$　$\alpha_1-k\alpha_2+0\alpha_3+0\alpha_4=0$}
+I2| (3) | 高维相关．则低维相关　{r|$2\begin{pmatrix}1\\1\\1\\1\end{pmatrix}-\begin{pmatrix}2\\2\\2\\2\end{pmatrix}=0$ 相关　那 $\begin{pmatrix}1\\1\end{pmatrix}\begin{pmatrix}2\\2\end{pmatrix}$ 一定相关}
+I2| (4) | {ur|以少表多．多必相关}　{r,sm|多的量有没用的}　{r|无关被表　个数不多}
+P2| {r|$\rightarrow$ }{r,ur|n+1个n维}{r|向量　线性相关}
+P2| {r|向量维数小于向量个数}
+I1| ④ | {hei|线性无关的充要条件}
+P1| $\alpha_1,\alpha_2,\cdots,\alpha_s$ 线性无关 $\Leftrightarrow$ 任意一个向量都不能由其余向量线性表示
+P1| $\Leftrightarrow(\alpha_1,\alpha_2,\cdots,\alpha_s)\begin{pmatrix}x_1\\x_2\\\vdots\\x_s\end{pmatrix}=0$ 只有零解
+P1| $\Leftrightarrow r(A)=n$
+P1| $\Leftrightarrow r(\alpha_1,\alpha_2,\cdots,\alpha_s)=s$

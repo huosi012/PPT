@@ -1,0 +1,83 @@
+# 笔记第 10 页：第四章（续）二、齐次 → 三、非齐次 → 四、公共解 → 五、同解 → 矩阵方程；右栏印刷例题放在页末
+# 页顶右侧两行印刷（“2. 自由变量总数… 3. 所以方程组最多…”）已在 p09 转录，此处略；页顶绿/黄/橙大圈来自 p09，忽略
+H1| {s|三}二、{hg|齐次线性方程组}　{r|定义　求法2个}
+I1| ① | {hg|{hei|基础解系}即 $Ax=0$ 解的极大线性无关组；基础解系中有 $n-r(A)$ 个解.}
+# 红色批注（写在 ① 行上方，箭头分别从“基础解系”和“n-r(A)”指向它）
+P1| {r|极组个数}　　{r|这是个数}
+I1| ② | {hy|{hei|求法}：化为{uwr|行最简形}，自由变量分别取1.}
+# 印刷粘贴条（黄色高亮“A为抽象矩阵：”）；红色大括号写在“定义”下方（黄圈圈住）
+P1| {hy|$A$ 为抽象矩阵：}{r|①}先求 $r(A)$，{r|②}再利用解的{udr|定义}或性质凑 $n-r(A)$ 个线性无关的解.
+P1| {r|$\begin{cases}A\eta=0\\ AB=0\end{cases}$}
+H1| 三、{hy|非齐次线性方程组}　{r,hy|齐次解加上个非齐特解}
+I1| ① | {hy|{hei|特解求法}：行最简，自由变量均取0}
+# 印刷粘贴块（红星；标题橙色高亮）；红字分别写在“定义”“性质”的红双下划线下方
+P1| {r|★}{b,hy|特解的求法}
+I2| (1) | $\bar{A}$ 为数字矩阵：对 $\bar{A}$ 作初等行变换，化为行最简形矩阵，自由变量{udr|均取零}，解得主变量，得到特解；
+I2| (2) | $\bar{A}$ 为抽象矩阵：利用解的{udr|定义}或{udr|性质}凑一个特解.
+P2| {r|$A\eta=b$　　$\sum k_i\eta_i\ (\sum k_i=1)$}
+H1| 四、公共解
+H1| 五、同解
+I1| ① | {hei|同解的充要条件}：设 $A$ 为 $m\times n$ 阶矩阵，$B$ 为 $l\times n$ 阶矩阵，$Ax=0$ 与 $Bx=0$ 同解
+P1| $\Leftrightarrow A$、$B$ 行向量组等价
+P1| $\Leftrightarrow r(A)=r\begin{pmatrix}A\\ B\end{pmatrix}=r(B)$
+
+# 红色标题（“矩阵方程”黄色高亮）
+H1| {r,hy|矩阵方程}{r|：定义　判定　求法三个}
+P0| {b,hy|矩阵方程的定义}　设 $A$ 为 $m\times n$ 阶矩阵，$B$ 为 $m\times s$ 阶矩阵，$X$ 为未知矩阵，称 $AX=B$ 为矩阵方程.　{r|已知 $AB$ 求 $X$}
+P0| {b,hy|矩阵方程解的判定}
+# 红字写在“判定”标题及“无解”行右侧
+P1| {r|$A(\alpha_1,\alpha_2,\alpha\cdots\alpha_n)=(\beta_1\ \ \beta_2\cdots\beta_n)$}
+P1| {r|$A\alpha_1=\beta_1$}
+P0| $AX=B$ 无解 $\Leftrightarrow r(A)<r\left(A\,\middle|\,B\right)$
+P1| {r|$\left(\begin{matrix}1 & 1\\ 0 & 0\end{matrix}\,\middle|\,\begin{matrix}1\\ 1\end{matrix}\right)\rightarrow$ 无解　$0x_1+0x_2=1$ 这个不可能}
+P0| $AX=B$ 有唯一解 $\Leftrightarrow r(A)=r\left(A\,\middle|\,B\right)=n$
+P1| {r|$\left(\begin{matrix}1 & 1\\ 0 & 1\end{matrix}\,\middle|\,\begin{matrix}1\\ 1\end{matrix}\right)\rightarrow$ 唯一解}
+P0| $AX=B$ 有无穷多解 $\Leftrightarrow r(A)=r\left(A\,\middle|\,B\right)<n$
+P1| {r|$\left(\begin{matrix}1 & 1 & 1\\ 0 & 0 & 1\end{matrix}\,\middle|\,\begin{matrix}1\\ 1\end{matrix}\right)\rightarrow$ 无穷解}
+# 印刷“矩阵方程的求法”（红星、黄色高亮），红字写在标题右侧；粉色矩阵写在“得矩阵X.”右侧
+P0| {r|★}{b,hy|矩阵方程的求法}　{r|法一：逆（$A$ 可逆）$X=A^{-1}B$　法二：待定系数（二阶）　法三：分块矩阵}
+P0| 对 {udr|$\left(A\,\middle|\,B\right)$} 作初等行变换，化为行最简形矩阵，得矩阵 $X$.
+P1| {pk|$\begin{pmatrix}1 & 2\\ 2 & 4\end{pmatrix}\begin{pmatrix}x_1 & x_2\\ x_3 & x_4\end{pmatrix}=\begin{pmatrix}2 & 4\\ 3 & 6\end{pmatrix}$}
+P0| {r|法一：求逆　$X=A^{-1}B$}
+P0| {r|法二：二阶矩阵　$\begin{pmatrix}1 & 2\\ 3 & 4\end{pmatrix}\begin{pmatrix}x_1 & x_2\\ x_3 & x_4\end{pmatrix}=\begin{pmatrix}2 & 4\\ 3 & 6\end{pmatrix}$}
+P0| {r|法三：分块矩阵　求每列的 $A\alpha_i=\beta_i$}
+
+# ===== 右栏印刷例题（按要求放在页末） =====
+P0| {b|【例 4.6】}设 $n$ 阶矩阵 $A=(a_{ij})$，且 $r(A)=n-1$.
+P1| (Ⅰ) 若 $A$ 的{udr|各行元素之和}均为零，则线性方程组 $Ax=0$ 的一个基础解系为______；
+# 红字 + 红色列向量写在 (Ⅰ)(Ⅱ) 两行之间（压在 (Ⅱ) 的 A11 上），是 (Ⅰ) 的答案
+P1| {r|右乘 $\begin{pmatrix}1\\ 1\\ \vdots\\ 1\end{pmatrix}$}
+P1| (Ⅱ) 若 $A_{ij}$ 为 $a_{ij}$ 的代数余子式，且 $A_{11}\neq 0$，则线性方程组 $Ax=0$ 的一个基础解系为______.
+# 详解粘贴条左边被裁掉（无“【详解】”字样，第二行行首缺字）
+P1| (Ⅱ) 由 $r(A)=n-1$，知 $|A|=0$，得 $A\UD{A^{*}}=|A|E=O$，故 $A^{*}$ 的列向量均为 $Ax=0$ 的解.
+P1| $A_{11}\neq 0$，故 {pk|$(A_{11},A_{12},\cdots,A_{1n})^{T}$}{pk,sm|$\neq 0$} 为 $Ax=0$ 的解，也为基础解系.
+P0| {b|【例 4.7】}（2019，数一）设 $A=(\alpha_1,\alpha_2,\alpha_3)$ 为 3 阶矩阵，其中 $\alpha_1,\alpha_2$ 线性无关，$\alpha_3=-\alpha_1+2\alpha_2$，则线性方程组 $Ax=0$ 的通解为______.
+P0| {b|【详解】}由题设知 $\alpha_1,\alpha_2$ 为 $\alpha_1,\alpha_2,\alpha_3$ 的{up|极大线性}无关组，得 {up|$r(A)=2$}，故 $Ax=0$ 的基础解系中解的个数为 {up|$3-r(A)=1$}.
+P0| 由 $\alpha_3=-\alpha_1+2\alpha_2$，即 $\alpha_1-${up|$2\alpha_2$}$+\alpha_3=0$，得 $\UD{(\alpha_1,\alpha_2,\alpha_3)}\begin{pmatrix}1\\ -2\\ 1\end{pmatrix}=0$，从而 $\xi=(1,-2,1)^{T}$ 为 $Ax=0$ 的解，也为基础解系，故方程组的通解为 $k\xi$，其中 $k$ 为任意常数.
+# 下一题的【例 …】编号被 app 的“导出课件”按钮遮住
+P0| （2006，数一、二）设线性方程组
+E0| \begin{cases}x_1+x_2+x_3+x_4=-1\\ 4x_1+3x_2+5x_3-x_4=-1\\ ax_1+x_2+3x_3+bx_4=1\end{cases}
+P0| 有三个线性无关的解.
+P1| (Ⅰ) 证明系数矩阵 $A$ 的秩 $r(A)=2$；
+P1| (Ⅱ) 求 $a,b$ 的值及方程组的通解.
+P0| {b|【详解】}(Ⅰ) 设 {up|$\eta_1,\eta_2,\eta_3$} 为非齐次线性方程组的 3 个线性无关的解，则 {up|$\eta_2-\eta_1,\eta_3-\eta_1$} 为对应齐次线性方程组的 2 个线性无关的解，从而 $4-r(A)\ge 2$，故 $r(A)\le 2$.
+P0| 又 $\begin{vmatrix}1 & 1\\ 4 & 3\end{vmatrix}=-1\neq 0$，从而 $r(A)\ge 2$，故 $r(A)=2$.
+# “(Ⅱ) 对 Ā 作”被 SVIP 角标遮住
+P0| (Ⅱ) 对 $\bar{A}$ 作初等行变换，
+E0| \bar{A}=\left(\begin{matrix}1 & 1 & 1 & 1\\ 4 & 3 & 5 & -1\\ a & 1 & 3 & b\end{matrix}\,\middle|\,\begin{matrix}-1\\ -1\\ 1\end{matrix}\right)\rightarrow\left(\begin{matrix}1 & 1 & 1 & 1\\ 0 & -1 & 1 & -5\\ 0 & 0 & 4-2a & b+4a-5\end{matrix}\,\middle|\,\begin{matrix}-1\\ 3\\ 4-2a\end{matrix}\right)
+P0| 由 $r(A)=r(\bar{A})=2$，得 $4-2a=b+4a-5=0$，故 $a=2$，$b=-3$.
+P0| 对 $\bar{A}$ 作行初等行变换，
+E0| \bar{A}\rightarrow\left(\begin{matrix}1 & 1 & 1 & 1\\ 0 & -1 & 1 & -5\\ 0 & 0 & 0 & 0\end{matrix}\,\middle|\,\begin{matrix}-1\\ 3\\ 0\end{matrix}\right)\rightarrow\left(\begin{matrix}1 & 0 & 2 & -4\\ 0 & 1 & -1 & 5\\ 0 & 0 & 0 & 0\end{matrix}\,\middle|\,\begin{matrix}2\\ -3\\ 0\end{matrix}\right)
+# 粘贴条右边被裁掉：“故方程”之后的几个字看不到
+P0| 得基础解系为 $\xi_1=(-2,1,1,0)^{T},\xi_2=(4,-5,0,1)^{T}$，特解为 $\eta=(2,-3,0,0)^{T}$，故方程…
+P0| $k_1\xi_1+k_2\xi_2+\eta$，其中 $k_1,k_2$ 为任意常数.
+P0| {b|【例 4.12】}（2014，数一、二、三）设 $A=\begin{pmatrix}1 & -2 & 3 & -4\\ 0 & 1 & -1 & 1\\ 1 & 2 & 0 & -3\end{pmatrix}$.
+P1| (Ⅰ) 求线性方程组 $Ax=0$ 的一个基础解系；
+# 学生用粉色笔在印刷的 B 上打叉（读作改成 X），下同
+P1| (Ⅱ) 求满足 $A\PK{X}=E$ 的所有矩阵 {s|$B$}{pk|$X$}.
+P0| {b|【详解】}对 $\left(A\,\middle|\,E\right)$ 作初等行变换，
+E0| \UD{\left(A\,\middle|\,E\right)}=\left(\begin{matrix}1 & -2 & 3 & -4\\ 0 & 1 & -1 & 1\\ 1 & 2 & 0 & -3\end{matrix}\,\middle|\,\begin{matrix}1 & 0 & 0\\ 0 & 1 & 0\\ 0 & 0 & 1\end{matrix}\right)\rightarrow\left(\begin{matrix}1 & 0 & 0 & 1\\ 0 & 1 & 0 & -2\\ 0 & 0 & 1 & -3\end{matrix}\,\middle|\,\begin{matrix}2 & 6 & -1\\ -1 & -3 & 1\\ -1 & -4 & 1\end{matrix}\right)
+P0| 得基础解系为 $\xi=(-1,2,3,1)^{T}$.
+P0| 满足 $A\PK{X}=E$ 的所有矩阵
+E0| \PK{X}=\begin{pmatrix}2-k_1 & 6-k_2 & -1-k_3\\ -1+2k_1 & -3+2k_2 & 1+2k_3\\ -1+3k_1 & -4+3k_2 & 1+3k_3\\ k_1 & k_2 & k_3\end{pmatrix}
+P0| 其中 $k_1,k_2,k_3$ 为任意常数.
