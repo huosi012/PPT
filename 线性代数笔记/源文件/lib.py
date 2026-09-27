@@ -241,6 +241,12 @@ def fix_omml(inner, base_fmt=None, bold_marker=False):
                 r.insert(0, rpr)
             if rpr.find("m:nor", NS) is None:
                 rpr.insert(0, etree.Element(m("nor")))
+    for rpr in root.iter(m("rPr")):  # schema: m:nor excludes m:scr/m:sty (pandoc's \\text emits both)
+        if rpr.find("m:nor", NS) is not None:
+            for tag in ("scr", "sty"):
+                el = rpr.find("m:" + tag, NS)
+                if el is not None:
+                    rpr.remove(el)
     for t in root.iter(m("t")):  # ASCII * reads as an operator in LibreOffice; U+2217 looks the same in Word
         if t.text and "*" in t.text:
             t.text = t.text.replace("*", "\u2217")
@@ -367,6 +373,19 @@ LEVEL_STYLE = {"P0": "Body0", "P1": "Body1", "P2": "Body2",
                "E0": "Equation0", "E1": "Equation1", "E2": "Equation2"}
 
 
+def _split_top(rest):
+    """split 'num | text' at the first '|' outside {…} (so the number itself may be styled, e.g. {r|④})"""
+    depth = 0
+    for i, c in enumerate(rest):
+        if c == "{":
+            depth += 1
+        elif c == "}":
+            depth -= 1
+        elif c == "|" and depth == 0:
+            return rest[:i], rest[i + 1:]
+    raise ValueError("item line needs 'number | text': %r" % rest)
+
+
 def parse_page(src):
     blocks = []
     for ln, raw in enumerate(src.splitlines(), 1):
@@ -378,7 +397,7 @@ def parse_page(src):
         tag, rest = line.split("|", 1)
         tag, rest = tag.strip(), rest.strip()
         if tag in ("I1", "I2"):
-            num, text = rest.split("|", 1)
+            num, text = _split_top(rest)
             blocks.append((tag, num.strip(), text.strip()))
         elif tag in ("T", "H1", "H2", "P0", "P1", "P2", "B1", "B2", "E0", "E1", "E2", "PB"):
             blocks.append((tag, None, rest))
@@ -444,7 +463,7 @@ def render_blocks(blocks):
         elif tag == "H2":
             out.append(para(render_inline(text, omml), "Heading2", keep))
         elif tag in ("I1", "I2"):
-            numrun = text_run(num, dict(hei=True))
+            numrun = "".join(text_run(v, dict(f, hei=True)) for k, v, f in parse_inline(num) if k == "text")
             out.append(para(numrun + TAB + render_inline(text, omml),
                             "Item1" if tag == "I1" else "Item2", keep))
         elif tag in ("B1", "B2"):
