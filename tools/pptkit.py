@@ -61,7 +61,7 @@ class Theme:
 # ---------------------------------------------------------------- 配色方案
 # 颜色按“用途”取用：M1–M5 模块序号色；LAYER 四层架构色；OK 正向（目标/回流/已解决）；PH 待填占位；
 # STAGE 四个阶段；ARCH 架构分区标签；KPI 重点数字；BUDGET2 经费“人员”段；LOCO 机车插画。
-# 通过环境变量 PPT_PALETTE 切换：premium（主红·留白，默认）/ formal（稳重蓝）/ muted（低饱和多色）/ vivid（参考页原色）。
+# 通过环境变量 PPT_PALETTE 切换：premium（主红·留白，默认；主红 C00000 与页眉横幅一致）/ formal（稳重蓝）/ muted（低饱和多色）/ vivid（参考页原色）。
 T = Theme
 _VIVID = dict(
     M=[T('0A4CFF', 'F4F7FF', 'EAF0FF', 'D6E1FD', '0A4CFF'), T('7C5CF0', 'F5F2FE', 'ECE6FD', 'DDD4FB', '6A4ADE'),
@@ -97,14 +97,14 @@ _PREMIUM = dict(
     # 中性色为不带黄调的干净灰；红色只做点缀；线条与底色更浅，色条更细
     N=dict(INK='1A1A1A', BODY='3D3D3D', SUB='666666', MUTED='8C8C8C', LINE='E9E9E9', RULE='DEDEDE',
            GRAYBG='F6F6F6', PANEL='F9F9F9', GRAYBAR='C9C9C9', TRI='D2D2D2', RULER='C6C6C6',
-           RED='A61C22', RED_BG='FBF4F4'),
-    M=[T('A61C22', 'FBF4F4', 'F5E9E9', 'E6E6E6', 'A61C22')] * 5,
-    LAYER=(T('C47C80', 'FCF6F6', 'F7ECEC', 'E6E6E6', 'A0525A'), T('AC454B', 'FBF4F4', 'F5E7E7', 'E6E6E6', '9A3B41'),
-           T('8C1D23', 'FAF2F2', 'F3E3E3', 'E6E6E6', '8C1D23'), T('5B1317', 'F8F1F1', 'EFE1E1', 'E6E6E6', '5B1317')),
+           RED='C00000', RED_BG='FCF2F2'),
+    M=[T('C00000', 'FCF2F2', 'F8E3E3', 'E6E6E6', 'C00000')] * 5,
+    LAYER=(T('D46A6A', 'FDF5F5', 'F9E8E8', 'E6E6E6', 'B84848'), T('C83535', 'FCF3F3', 'F8E4E4', 'E6E6E6', 'B02A2A'),
+           T('C00000', 'FCF2F2', 'F8E3E3', 'E6E6E6', 'C00000'), T('8E0000', 'FAF1F1', 'F2DEDE', 'E6E6E6', '8E0000')),
     OK=T('4A4A4A', 'F6F6F6', 'ECECEC', 'E3E3E3', '3A3A3A'),
     PH=T('9E6F28', 'FBF6EC', 'F4E8D2', 'EBDCBF', '875D1C'),
-    STAGE=['D6A7A9', 'B75A5F', 'A61C22', '5B1317'],
-    ARCH='3A3A3A', KPI='A61C22', BUDGET2='B45A5F', LOCO='locomotive_premium',
+    STAGE=['EBA8A8', 'D86060', 'C00000', '8E0000'],
+    ARCH='3A3A3A', KPI='C00000', BUDGET2='D86060', LOCO='locomotive_premium',
     GRAYS=['B8B8B8', 'C8C8C8', 'D8D8D8', 'E6E6E6'], AGENDA_NUM='DCDCDC', ZONE_FILL='FCFCFC', ZONE_LINE='CFCFCF',
     STYLE=dict(top_bar=3, title_bar=(72, 4), rule_w=1, tag_outline=True, kpi_plain=True, table_plain=True,
                problem_fill='FFFFFF', badge_fill='F5F5F5', concl_bar=3, sum_bar=3, card_bar=3,
@@ -649,7 +649,40 @@ def icon_badge(s, name, th, x, y, d=88, isz=None, fill=None, stroke=1.6):
 
 
 # ---------------------------------------------------------------- 页框
+# 页眉样式：banner（单位模板：常规字重大标题 ＋ 红色渐变横幅写结论，页脚只留页码）/ classic（初版：标题即结论 ＋ 灰副标题）
+HEADER_STYLE = os.environ.get('PPT_HEADER', 'banner')
+HEAD_INK = '404040'          # 页眉大标题色（取自模板）
+BANNER_LINE = 'EE3026'       # 横幅细边框色（取自模板）
+PAGE_NO = '959595'           # 页码色（取自模板）
+CONTENT_TOP = 328 if HEADER_STYLE == 'banner' else 212      # 正文区顶边
+CONTENT_BOTTOM = 1000 if HEADER_STYLE == 'banner' else 990  # 正文区底边
+
+
+def grad_rect(s, x, y, w, h, stops, angle=0, line=None, lw=1):
+    """线性渐变矩形。stops: [(位置 0—100, 颜色)]；angle=0 为从左到右。"""
+    shp = shape(s, RECT, x, y, w, h, None, line, lw)
+    shp.fill.gradient()
+    shp.fill.gradient_angle = angle
+    gs = shp._element.spPr.find(qn('a:gradFill')).find(qn('a:gsLst'))
+    for c in list(gs):
+        gs.remove(c)
+    for pos, col in stops:
+        g = _sub(gs, 'a:gs', pos=str(int(pos * 1000)))
+        _sub(g, 'a:srgbClr', val=col)
+    return shp
+
+
 def frame(d, s, title, subtitle, section, title_size=54):
+    """页框。title 形如“主题：结论”——banner 样式下主题作大标题、结论写进横幅；classic 样式下整句作标题。"""
+    if HEADER_STYLE == 'banner':
+        head, sep, concl = title.partition('：')
+        if not sep:
+            head, concl = title, subtitle or ''
+        text(s, 88, 60, 1768, 118, head, size=76, color=HEAD_INK, anchor='m', lh=100, wrap=False)
+        grad_rect(s, 64, 194, 1792, 107, [(0, RED), (46, RED), (100, WHITE)], line=BANNER_LINE, lw=2)
+        text(s, 88, 194, 1744, 107, concl, size=40, bold=True, color=WHITE, anchor='m', lh=52, wrap=False)
+        text(s, 1656, 1014, 200, 36, '%d' % s._no, size=20, color=PAGE_NO, align='r', anchor='m', lh=26, wrap=False)
+        return
     rect(s, 64, 34, 1792, STYLE['rule_w'], fill=RULE)
     text(s, 64, 48, 1792, 84, title, size=title_size, color=INK, bold=True, anchor='m', lh=round(title_size * 1.3),
          wrap=False)
@@ -796,21 +829,23 @@ def dashed_zone(s, x, y, w, h, label=None, label_fill=ARCH, color=ZONE_LINE, fil
              lh=round(label_size * 1.3), shp=shp, wrap=False, check=False)
 
 
-def layer_nav(s, x, y, w, current, bar_h=60, gap=10, off_h=130 / 3.0):
+def layer_nav(s, x, y, w, current, bar_h=60, gap=10, off_h=130 / 3.0, label=True, head=46):
     """四层架构导航条：当前层实心高亮并写层名；其余层只写“③ 执行层”，描边弱化（避免每页重复四个层名）。返回底部 y。
     默认尺寸下（y=214）导航条占 260—480：底边与研究内容页要点卡（y=330，高 150）底边对齐；
     当前层在最上时，其底边 320 与场景条（y=214，高 106）底边对齐。"""
-    text(s, x, y, w, 32, '四层架构 · 当前位置', size=18, bold=True, color=MUTED, anchor='m', lh=32, cs=1)
-    yy = y + 46
+    if label:
+        text(s, x, y, w, 32, '四层架构 · 当前位置', size=18, bold=True, color=MUTED, anchor='m', lh=32, cs=1)
+    yy = y + (head if label else 0)
     for i in (4, 3, 2, 1):
         th = LAYER[i]
         on = (i == current)
         h = bar_h if on else off_h
         rect(s, x, yy, w, h, fill=th.main if on else WHITE, line=None if on else LINE)
         if on:
-            text(s, x + 20, yy + 7, w - 30, 26, LAYER_NO[i] + ' ' + LAYER_KIND[i], size=19, bold=True, color=WHITE,
+            t0 = yy + (h - 49) / 2.0
+            text(s, x + 20, t0, w - 30, 26, LAYER_NO[i] + ' ' + LAYER_KIND[i], size=19, bold=True, color=WHITE,
                  lh=26, wrap=False)
-            text(s, x + 20, yy + 33, w - 30, 24, LAYER_NAME[i], size=16, color=WHITE, lh=24, wrap=False)
+            text(s, x + 20, t0 + 25, w - 30, 24, LAYER_NAME[i], size=16, color=WHITE, lh=24, wrap=False)
         else:
             rect(s, x, yy, STYLE['card_bar'], h, fill=th.main)
             text(s, x + 20, yy, w - 30, h, LAYER_NO[i] + ' ' + LAYER_KIND[i], size=19, bold=True, color=SUB,
@@ -924,6 +959,17 @@ def table(s, x, y, cols, rows, header=None, size=20, lh=None, pad_x=16, pad_y=11
         line(s, x, yy, x + tw, yy, line_color, 1)
     return yy
 
+
+def table_pad(cols, rows, h, header=True, size=20, lh=None, pad_x=16, col_styles=None):
+    """反算 pad_y：让 table() 的总高度正好等于 h（表头固定 44）。"""
+    lh = lh or round(size * 1.5)
+    col_styles = col_styles or {}
+    need = 0
+    for row in rows:
+        need += max(wrap_lines(strip_tags(c), w - 2 * pad_x, col_styles.get(i, {}).get('size', size),
+                               col_styles.get(i, {}).get('bold', False)) * col_styles.get(i, {}).get('lh', lh)
+                    for i, (c, w) in enumerate(zip(row, cols)))
+    return (h - (44 if header else 0) - need) / (2.0 * len(rows))
 
 
 def _font_xml(rPr, size, color, bold):

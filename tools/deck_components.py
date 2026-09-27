@@ -5,12 +5,13 @@
 这些组件在一次课题申报 PPT 中打磨过：投影上只放结论与要点，细节写进备注；附图整组可替换。
 """
 from pptx.enum.shapes import MSO_SHAPE  # noqa: F401  (build 脚本画附图时常用)
+from pptx.oxml.ns import qn
 
 from pptkit import *  # noqa: F401,F403
 
 BAR = STYLE['top_bar']  # 卡片顶线 / 左侧色条粗细（随配色方案变化：现版 6px，主红·留白 3px）
 
-FIG_NOTE = ('说明：“工程场景”可替换为本单位的实际案例；“示意图”为临时附图（形状组合，可直接编辑），'
+FIG_NOTE = ('说明：“现状与问题”可替换为本单位的实际案例；“示意图”为临时附图（形状组合，可直接编辑），'
             '如有实际图片，选中该组合删除后插入即可。')
 
 
@@ -19,7 +20,19 @@ def content_left(s, layer, label=None, body=None, outs=(), outs_bottom=None):
     """研究内容页左栏：四层导航 +（可选）补充说明 + 产出结论条。返回底部 y。
     outs_bottom 给定时产出块贴底，底边与右侧附图对齐（左栏只放导航和产出时用）。"""
     th = LAYER[layer]
-    y = layer_nav(s, 64, 214, 260, layer) + 22
+    if HEADER_STYLE == 'banner':      # 页眉已写明是哪一层：导航只写层级名，四条两两对齐场景条（CT—CT+104）与要点卡（CT+116—CT+212）
+        bars = [(CONTENT_TOP, 48), (CONTENT_TOP + 56, 48), (CONTENT_TOP + 116, 44), (CONTENT_TOP + 168, 44)]
+        for (by, bh), i in zip(bars, (4, 3, 2, 1)):
+            t = LAYER[i]
+            on = (i == layer)
+            rect(s, 64, by, 260, bh, fill=t.main if on else WHITE, line=None if on else LINE)
+            if not on:
+                rect(s, 64, by, STYLE['card_bar'], bh, fill=t.main)
+            text(s, 84, by, 230, bh, LAYER_NO[i] + ' ' + LAYER_KIND[i], size=19, bold=True, color=WHITE if on else SUB,
+                 anchor='m', lh=26, wrap=False)
+        y = CONTENT_TOP + 212 + 22
+    else:
+        y = layer_nav(s, 64, 214, 260, layer) + 22
     if label:
         text(s, 64, y, 260, 34, label, size=22, bold=True, color=INK, lh=32, wrap=False)
         paras = body if isinstance(body, list) else [{'t': body}]
@@ -109,6 +122,32 @@ def fig_area(s, x, y, w, h, title, note='示意图'):
     f = Fig(s, '附图 · ' + strip_tags(title))
     rect(f, x, y + 46, w, h - 46, fill=PANEL)
     return f, y + 46
+
+
+def fig_panel(s, x, y, w, h, title):
+    """附图面板（不画小节标题）：返回组合，面板与图内形状同属一个组合。"""
+    f = Fig(s, '附图 · ' + strip_tags(title))
+    rect(f, x, y, w, h, fill=PANEL)
+    return f
+
+
+def fit_fig(f, y0, h0, y1, h1):
+    """把按旧尺寸（面板顶 y0、高 h0）画好的附图组合整体搬到新位置并按高度压缩（宽度不变）。
+    组合内图片（图标）先反向拉高，压缩后仍保持原比例。"""
+    k = h1 / float(h0)
+    g = f.grp._element
+    xf = g.grpSpPr.find(qn('a:xfrm'))
+    off, ext, choff, chext = (xf.find(qn(t)) for t in ('a:off', 'a:ext', 'a:chOff', 'a:chExt'))
+    for pic in g.iter(qn('p:pic')):
+        px = pic.find(qn('p:spPr')).find(qn('a:xfrm'))
+        o, e = px.find(qn('a:off')), px.find(qn('a:ext'))
+        h = int(e.get('cy'))
+        h2 = int(round(h / k))
+        o.set('y', str(int(o.get('y')) - (h2 - h) // 2))
+        e.set('cy', str(h2))
+    cy0, ch = int(choff.get('y')), int(chext.get('cy'))
+    off.set('y', str(int(round(E(y1) + (cy0 - E(y0)) * k))))
+    ext.set('cy', str(int(round(ch * k))))
 
 
 def fig_placeholder(s, x, y, w, h, title, hint):
