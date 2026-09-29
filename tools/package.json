@@ -1,0 +1,9 @@
+{
+  "name": "ppt-icon-renderer",
+  "private": true,
+  "description": "Rasterize Tabler icons for build_deck.py",
+  "dependencies": {
+    "@tabler/icons": "^3.0.0",
+    "sharp": "^0.34.0"
+  }
+}
