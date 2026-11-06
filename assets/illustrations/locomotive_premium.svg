@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 250" width="1000" height="250">
+  <!-- 扁平风格电力机车侧视图（双司机室，银灰车身＋红色腰线），用于封面/结束页/价值页的“机车 + 标尺”母题 -->
+  <defs>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F4F1ED"/>
+      <stop offset="0.55" stop-color="#E2DDD7"/>
+      <stop offset="1" stop-color="#CBC5BE"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#46423E"/>
+      <stop offset="1" stop-color="#1E1C1A"/>
+    </linearGradient>
+    <linearGradient id="roof" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#E4DFD9"/>
+      <stop offset="1" stop-color="#C9C3BC"/>
+    </linearGradient>
+  </defs>
+  <!-- 受电弓 -->
+  <g stroke="#8A847D" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M250 50 L282 22 L318 50"/>
+    <path d="M262 22 H304"/>
+    <path d="M682 50 L714 22 L750 50"/>
+    <path d="M694 22 H736"/>
+  </g>
+  <!-- 车顶设备 -->
+  <rect x="150" y="46" width="700" height="18" rx="4" fill="url(#roof)"/>
+  <rect x="420" y="36" width="160" height="14" rx="3" fill="#D0CAC3"/>
+  <!-- 车体 -->
+  <path d="M62 60 H938 Q962 60 972 84 L992 150 V206 H8 V150 L28 84 Q38 60 62 60 Z" fill="url(#body)"/>
+  <!-- 腰带：白色 + 金色细线 -->
+  <rect x="8" y="148" width="984" height="12" fill="#A61C22"/>
+  <rect x="8" y="162" width="984" height="3" fill="#5B1317"/>
+  <!-- 前窗（两端） -->
+  <path d="M946 74 L968 74 Q972 74 974 80 L988 134 H958 Z" fill="url(#glass)"/>
+  <path d="M54 74 L32 74 Q28 74 26 80 L12 134 H42 Z" fill="url(#glass)"/>
+  <!-- 侧窗 -->
+  <rect x="868" y="82" width="46" height="32" rx="4" fill="url(#glass)"/>
+  <rect x="86" y="82" width="46" height="32" rx="4" fill="url(#glass)"/>
+  <!-- 车门 -->
+  <rect x="826" y="78" width="30" height="66" rx="3" fill="none" stroke="#B9B2AA" stroke-width="2"/>
+  <rect x="144" y="78" width="30" height="66" rx="3" fill="none" stroke="#B9B2AA" stroke-width="2"/>
+  <!-- 百叶窗 -->
+  <g fill="#9D968E" opacity="0.9">
+    <rect x="236" y="84" width="170" height="44" rx="3"/>
+    <rect x="594" y="84" width="170" height="44" rx="3"/>
+  </g>
+  <g stroke="#D5CFC8" stroke-width="3">
+    <path d="M250 88 V124 M266 88 V124 M282 88 V124 M298 88 V124 M314 88 V124 M330 88 V124 M346 88 V124 M362 88 V124 M378 88 V124 M394 88 V124"/>
+    <path d="M608 88 V124 M624 88 V124 M640 88 V124 M656 88 V124 M672 88 V124 M688 88 V124 M704 88 V124 M720 88 V124 M736 88 V124 M752 88 V124"/>
+  </g>
+  <!-- 车号铭牌 -->
+  <rect x="440" y="90" width="120" height="30" rx="3" fill="#FFFFFF" opacity="0.55"/>
+  <!-- 底架 -->
+  <rect x="20" y="206" width="960" height="14" fill="#3A3633"/>
+  <rect x="0" y="196" width="16" height="12" rx="2" fill="#3A3633"/>
+  <rect x="984" y="196" width="16" height="12" rx="2" fill="#3A3633"/>
+  <!-- 转向架 -->
+  <g>
+    <rect x="120" y="216" width="250" height="16" rx="4" fill="#4A4541"/>
+    <rect x="630" y="216" width="250" height="16" rx="4" fill="#4A4541"/>
+    <g fill="#2A2724">
+      <circle cx="160" cy="230" r="19"/><circle cx="245" cy="230" r="19"/><circle cx="330" cy="230" r="19"/>
+      <circle cx="670" cy="230" r="19"/><circle cx="755" cy="230" r="19"/><circle cx="840" cy="230" r="19"/>
+    </g>
+    <g fill="#A39C94">
+      <circle cx="160" cy="230" r="7"/><circle cx="245" cy="230" r="7"/><circle cx="330" cy="230" r="7"/>
+      <circle cx="670" cy="230" r="7"/><circle cx="755" cy="230" r="7"/><circle cx="840" cy="230" r="7"/>
+    </g>
+  </g>
+</svg>
