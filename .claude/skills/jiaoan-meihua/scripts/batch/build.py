@@ -507,6 +507,10 @@ for p in [p for p in c1 if p.tag == q('p')]:
     drs = [x for x in p.iter(q('drawing'))]
     t = ptext(p).strip()
     if t: seq.append(el(para(rich(t, 21), jc='both', line=320, before=40, after=60)))
+    if drs and CFG.get('flow_img'):             # 用重画的蓝金流程图替换原图
+        if not any(n_.find('.//' + q('drawing')) is not None for n_ in seq):
+            seq += els(fig_xml(CFG['flow_img'], 'fig_liucheng.png', cap_emu(c1, 160)))
+        continue
     if drs:
         cap_ = cap_emu(c1, 160)
         if CFG.get('flow_h'):                   # 流程图限高（为了与上方各行同页）

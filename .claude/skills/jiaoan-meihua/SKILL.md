@@ -44,7 +44,7 @@ description: 教案（教学设计 Word 文档）美化：按“蓝金”风格�
 - `scripts/docx_kit.py`：通用函数库（配色常量、run/para/item/h2/h3/chip、单元格边框与底色、嵌入图片/图标/图示、统一左边框、保存）。新教案优先用它写处理脚本。
 - `scripts/check.py`：自检（结构、文字完整性、图片数、渲染总览）。
 - `scripts/compare_docx.py`：逐行逐格对比两个版本（找用户改动时用）。
-- `scripts/batch/`：**配置驱动的通用流水线**（第五章组合体、第二/三/四章四份教案一次做完时整理）。`build.py` 按行首标签定位、不改主表行列，内容卡片/缩略图/知识框架图由 `cfg_examples/*.py` 配置；`fill2.py <id>` 逐页排满；`finalize.sh <id>` 按排版参数出最终文件；`pdfcheck.py` 查渲染丢字；`celldiff.py` 逐行比对原文；`diagrams.py`+`svg2png.js` 画图示。工作目录用环境变量 `JM_WORK`（内含 `in/<id>/x` 解包原文件、`cfg/<id>.py`、`work/`、`fig/`）。同一模板的新教案：先复制一份 cfg 改卡片文字，再跑 build → 看图 → fill2 → finalize → 自检。
+- `scripts/batch/`：**配置驱动的通用流水线**（第五章组合体、第二/三/四章四份教案一次做完时整理）。`build.py` 按行首标签定位、不改主表行列，内容卡片/缩略图/知识框架图由 `cfg_examples/*.py` 配置；`fill2.py <id>` 逐页排满；`finalize.sh <id>` 按排版参数出最终文件；`pdfcheck.py` 查渲染丢字；`celldiff.py` 逐行比对原文；`diagrams.py`+`svg2png.js` 画图示；`flows.py` 按蓝金配色重画“教学流程”图。工作目录用环境变量 `JM_WORK`（内含 `in/<id>/x` 解包原文件、`cfg/<id>.py`、`work/`、`fig/`）。同一模板的新教案：先复制一份 cfg 改卡片文字，再跑 build → 看图 → fill2 → finalize → 自检。
 - `scripts/reference_jiaoan3/`：教案3 的完整处理脚本（v2.py 页首+第1页、page2_v2.py 第2页、page3.py 第3页起、merge.py 合并图示、polish_v1_to_v2.py 在用户版本上精修教学实施、draw*.py 重画图示、tunelib.py/build.sh 填满页面）。行号与文字是教案3专用的，**只作参考**，照思路改写，不要直接套在别的教案上跑；其中路径指向当时的临时目录，复用时改成本 skill 的 `assets/icons`。
 - `references/style.md`：配色、字号、行距、边框、图标清单。
 - `references/pitfalls.md`：踩过的坑与原因（强烈建议动手前读一遍）。
