@@ -4,7 +4,7 @@
 """
 import sys, re
 OUT = sys.argv[1]
-NAVY, TEAL, GOLD, GOLDD = '#1F3864', '#2E7D7B', '#C9A227', '#A8841A'
+NAVY, TEAL, GOLD, GOLDD = '#1F3864', '#2E7D7B', '#A8841A', '#8A6A12'   # 金色比附图深一档：黑白打印时白字与箭头仍清楚
 VF, WF, HF = '#E8EEF7', '#E3F1EF', '#FBF3DC'
 RED, TXT, SUB = '#9B1C1C', '#333333', '#555555'
 FONT = 'Noto Sans CJK SC, Microsoft YaHei, sans-serif'
@@ -141,7 +141,7 @@ def flow_cards(pre, steps, post, foot):
             st = steps['items'][k]
             x = MX + c * (CW + CG)
             key = st.get('tag')
-            fill, stroke = (HF, GOLDD) if key else ('#FFFFFF', '#9FB1CC')
+            fill, stroke = (HF, GOLDD) if key else ('#FFFFFF', '#6F84A6')
             b += rect(x, y, CW, rh[r], fill, stroke, 2.5 if key else 2, 12)
             s_, h_ = head(x, y, CW, k + 1, st['name'], key); b += s_
             yy = y + h_
@@ -272,7 +272,7 @@ def flow_d2():
     w = (x1 - x0 - gap * 6) / 7
     for k, (nm, t, tag, shi, sheng) in enumerate(steps):
         x = x0 + k * (w + gap)
-        fill, edge = (HF, GOLDD) if tag else ('#FFFFFF', '#9FB1CC')
+        fill, edge = (HF, GOLDD) if tag else ('#FFFFFF', '#6F84A6')
         b += rect(x, y0, w, bh, fill, edge, 2.5 if tag else 2, 12)
         b += num(x + 22, y0 + 24, k + 1, GOLDD if tag else NAVY)
         b += text(x + w / 2, y0 + 72, nm, 25, NAVY, 700, 'middle')
@@ -346,7 +346,7 @@ def flow_d1():
             k = r * 4 + c
             nm, tag, body = steps[k]
             x = x0 + c * (w + gap)
-            fill, edge = (HF, GOLDD) if tag else ('#FFFFFF', '#9FB1CC')
+            fill, edge = (HF, GOLDD) if tag else ('#FFFFFF', '#6F84A6')
             b += rect(x, y, w, rh[r], fill, edge, 2.5 if tag else 2, 12)
             s_, h_ = head(x, y, w, k + 1, nm, tag, 21); b += s_
             yy = y + h_

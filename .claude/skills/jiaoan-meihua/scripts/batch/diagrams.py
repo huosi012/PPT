@@ -6,8 +6,14 @@ import os
 src = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'reference_jiaoan3', 'draw.py'), encoding='utf8').read()
 exec(src.split('# ================= A')[0])          # svg/poly/line/text/iso、配色
 OUT = sys.argv[1]
-GRAY = '#8A99B3'
-FS = 1.0
+GRAY = '#5F7090'
+FS = 1.0; SWK = 1.0
+SWK = 1.0          # 线宽倍数：缩略图放小后线条要够粗（黑白打印）
+_line, _poly = line, poly
+def line(a, b, stroke=NAVY, sw=3, dash=None, marker=None):
+    return _line(a, b, stroke, sw * SWK, dash, marker)
+def poly(pts, fill='none', stroke=NAVY, sw=3, dash=None, op=1):
+    return _poly(pts, fill, stroke, sw * SWK, dash, op)
 _text = text
 def text(p, s_, size=26, *a, **k):
     return _text(p, s_, round(size * FS), *a, **k)
@@ -15,7 +21,8 @@ def text(p, s_, size=26, *a, **k):
 def crop(sv, x0, y0, w, h):
     sv = re.sub(r'width="[\d.]+" height="[\d.]+" viewBox="[^"]+"', f'width="{w}" height="{h}" viewBox="{x0} {y0} {w} {h}"', sv, 1)
     sv = sv.replace('<rect width=', f'<rect x="{x0}" y="{y0}" width=', 1)
-    return sv.replace('fill="#fff"/>', 'fill="#F7F9FC"/>', 1)        # 缩略图底色 = 卡片底色
+    sv = sv.replace('fill="#fff"/>', 'fill="#F7F9FC"/>', 1)        # 缩略图底色 = 卡片底色
+    return sv.replace(GOLD, '#8A6A12').replace(GOLDD, '#7A5C00')   # 缩略图金色加深（黑白打印）
 
 def save(name, s):
     open(f'{OUT}/{name}.svg', 'w', encoding='utf8').write(s)
@@ -109,7 +116,7 @@ def iso_axes(mini=False):
     b += text((W / 2, 590), 'p = q = r = 1' if mini else '简化轴向伸缩系数 p = q = r = 1', 28, TEAL)
     return crop(svg(W, H, b), 40, 80, 560, 540) if mini else svg(W, H, b)
 save('iso_axes', iso_axes())
-FS = 1.45; save('m_iso_axes', iso_axes(True)); FS = 1.0
+FS = 1.45; SWK = 1.7; save('m_iso_axes', iso_axes(True)); FS = 1.0; SWK = 1.0; SWK = 1.0
 
 
 # ---------- 轴测图：平行于坐标面的圆的正等测（d4） ----------
@@ -133,7 +140,7 @@ def iso_circles(mini=False):
     b += text((330, 600), '三个方向的圆均变成形状相同的椭圆', 26, '#555', 400)
     return svg(660, 630, b)
 save('iso_circles', iso_circles())
-save('m_iso_circles', iso_circles(True))
+SWK = 1.7; save('m_iso_circles', iso_circles(True)); SWK = 1.0
 
 
 # ---------- 点、线、面（d1） ----------
@@ -150,7 +157,7 @@ def point_proj(mini=False):
         b += line(P(A), P(p_), GRAY, 2.5, '8 6')
     # 投影连线到轴
     for p_, q_ in ((a, (A[0], 0, 0)), (a1, (A[0], 0, 0)), (a1, (0, 0, A[2])), (a2, (0, 0, A[2])), (a, (0, A[1], 0)), (a2, (0, A[1], 0))):
-        b += line(P(p_), P(q_), '#B4C3DA', 2)
+        b += line(P(p_), P(q_), '#8796B0', 2)
     for p_, lab, col in ((A, 'A', NAVY), (a, 'a', '#C0392B'), (a1, "a′", '#C0392B'), (a2, 'a″', '#C0392B')):
         x, y = P(p_)
         b += f'<circle cx="{x:.1f}" cy="{y:.1f}" r="8" fill="{col}"/>' + text((x + 22, y - 10), lab, 30, col)
@@ -158,7 +165,7 @@ def point_proj(mini=False):
     b += text(P((XM - 0.6, 0, ZM - 0.6)), 'V', 34) + text(P((XM - 0.8, YM - 0.6, 0)), 'H', 34, GOLDD) + text(P((0, YM - 0.5, ZM - 0.7)), 'W', 34, TEAL)
     return crop(svg(600, 690, b), 0, 70, 600, 620) if mini else svg(600, 690, b)
 save('pt_proj', point_proj())
-FS = 1.35; save('m_pt_proj', point_proj(True)); FS = 1.0
+FS = 1.35; SWK = 1.7; save('m_pt_proj', point_proj(True)); FS = 1.0; SWK = 1.0; SWK = 1.0
 
 def three_cases(title, kind, mini=False):
     """直线/平面相对 H 面的三种位置（等轴测示意）"""
@@ -191,7 +198,7 @@ def three_cases(title, kind, mini=False):
     return crop(svg(W, H, b), 0, 80, W, 315) if mini else svg(W, H, b)
 save('line_cases', three_cases('直线的投影特性', 'line'))
 save('plane_cases', three_cases('平面的投影特性', 'plane'))
-FS = 1.7; save('m_line_cases', three_cases('', 'line', True)); save('m_plane_cases', three_cases('', 'plane', True)); FS = 1.0
+FS = 1.7; SWK = 1.7; save('m_line_cases', three_cases('', 'line', True)); save('m_plane_cases', three_cases('', 'plane', True)); FS = 1.0; SWK = 1.0; SWK = 1.0
 
 def convert(mini=False):
     W, H = 780, 440
@@ -224,7 +231,7 @@ def convert(mini=False):
     b += line((430, 255), (310, 255), GOLD, 5, marker='ar') + text((370, 288), '由图想物', 22, GOLDD)
     return svg(W, H, b)
 save('convert', convert())
-save('m_convert', convert(True))
+SWK = 1.7; save('m_convert', convert(True)); SWK = 1.0
 
 
 # ---------- 组合体：表面连接关系（d2） ----------
@@ -279,7 +286,7 @@ print('ok')
 def pl(pts, stroke=NAVY, sw=3, dash=None, fill='none'):
     d = f' stroke-dasharray="{dash}"' if dash else ''
     return (f'<polyline points="{" ".join(f"{x:.1f},{y:.1f}" for x, y in pts)}" fill="{fill}" stroke="{stroke}" '
-            f'stroke-width="{sw}" stroke-linejoin="round"{d}/>')
+            f'stroke-width="{sw * SWK}" stroke-linejoin="round"{d}/>')
 
 def rng(a, b, n=60):
     return [math.radians(a + (b - a) * i / n) for i in range(n + 1)]
@@ -338,4 +345,4 @@ def tee(mini=False):
     return crop(svg(W, H, b), 0, 60 if mini else 0, W, H - (60 if mini else 0))
 
 save('cut_cyl', cut_cylinder()); save('tee', tee())
-FS = 1.3; save('m_cut_cyl', cut_cylinder(True)); save('m_tee', tee(True)); FS = 1.0
+FS = 1.3; SWK = 1.7; save('m_cut_cyl', cut_cylinder(True)); save('m_tee', tee(True)); FS = 1.0; SWK = 1.0; SWK = 1.0

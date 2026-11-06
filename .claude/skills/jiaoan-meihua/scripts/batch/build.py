@@ -224,7 +224,7 @@ def build_cards(c, cards):
         out = ''
         for kind, s in bl:
             if kind == 'lead': out += para([run(s, 19, C.SUB)], after=40, line=300)
-            elif kind == 'b': out += para([run('■\t', 14, '8A99B3', pos=2)] + rich(s, 20, color), jc='both',
+            elif kind == 'b': out += para([run('■\t', 14, '5F7395', pos=2)] + rich(s, 20, color), jc='both',
                                           line=300, after=30, ind_left=240, hanging=240)
             else: out += para(rich(s, 20, color), jc='both', line=300, after=30)
         return out
@@ -246,7 +246,7 @@ def build_cards(c, cards):
     has_img = any(stp.get('img') for stp in steps)
     sx, ix, i0 = '', '', 0
     for k, (stp, sp) in enumerate(zip(steps, spans)):
-        x = para([run(f'{k + 1:02d}', 26, C.GOLD_D, b=True)], after=20) + para(rich(stp['t'], 19), line=290)
+        x = para([chip(f' {k + 1:02d} ', 24, C.NAVY, 'FFFFFF')], after=40) + para(rich(stp['t'], 19), line=290)
         lr = dict(left=N_ if k == 0 else THIN, right=N_ if k == n - 1 else THIN)
         sx += cell(i0, sp, x, bdr_xml=edges(top=N_, bottom=N_ if has_img else THIN, **lr),
                    mar={'top': 40, 'left': 200, 'bottom': 40 if has_img else 140, 'right': 160})
@@ -294,7 +294,7 @@ def split_inline_numbers(t):
     return [x for x in out if x]
 
 def bullets(items):
-    return ''.join(para([run('■\t', 14, '8A99B3', pos=2)] + rich(x, 21), jc='both', ind_left=240, hanging=240,
+    return ''.join(para([run('■\t', 14, '5F7395', pos=2)] + rich(x, 21), jc='both', ind_left=240, hanging=240,
                         line=320, after=40) for x in items)
 
 def numbered(items, hl=()):
@@ -302,7 +302,7 @@ def numbered(items, hl=()):
     for i, x in enumerate(items, 1):
         x = strip_num(x)
         for h in hl: x = x.replace(h, f'[[{h.strip("“”")}]]')
-        out += para([run(f'{i}\t', 21, C.GOLD_D, b=True)] + rich(x, 21), jc='both', ind_left=300, hanging=300,
+        out += para([run(f'{i}\t', 21, C.NAVY, b=True)] + rich(x, 21), jc='both', ind_left=300, hanging=300,
                     line=320, after=40)
     return out
 
@@ -543,14 +543,14 @@ def P_item(num, text, color=C.TEXT):
         body_runs = [run(m.group(1) + m.group(2), BODY_SZ, C.NAVY, b=True)] + rich(tagify(m.group(3)), BODY_SZ, color)
     else:
         body_runs = rich(tagify(text), BODY_SZ, color)
-    return para([run(num + '\t', BODY_SZ, C.GOLD_D, b=True)] + body_runs, jc='left', line=290, after=40,
+    return para([run(num + '\t', BODY_SZ, C.NAVY, b=True)] + body_runs, jc='left', line=290, after=40,
                 ind_left=w, hanging=w)
 
 def P_h2(text):
     return para([run('▍', 20, C.GOLD), run(text, 21, C.NAVY, b=True)], line=260, before=100, after=50)
 
 def P_h3(num, text):
-    return para(([run(num + ' ', 20, C.GOLD_D, b=True)] if num else []) + [run(text, 20, C.NAVY, b=True)],
+    return para(([run(num + ' ', 20, C.NAVY, b=True)] if num else []) + [run(text, 20, C.NAVY, b=True)],
                 line=260, before=60, after=30)
 
 def tagify(s):
@@ -664,7 +664,7 @@ def parse_step_name(c):
 
 def label_step(c, num, name, time, tags):
     set_tcpr(c, fill=C.CARD, bdr_xml=ALL_THIN, valign='center', mar={'top': 80, 'left': 60, 'bottom': 80, 'right': 60})
-    xml = para([run(num, 26, C.GOLD_D, b=True)], jc='center', line=260, after=40) if num else ''
+    xml = para([chip(f' {num} ', 24, C.NAVY, 'FFFFFF')], jc='center', line=300, after=60) if num else ''
     if len(name) > 6 and re.search(r'[·・]', name): parts = re.split(r'(?<=[·・])', name)
     elif len(name) > 6: parts = [name[i:i + 4] for i in range(0, len(name), 4)]
     else: parts = [name]
@@ -692,7 +692,7 @@ for ri in impl_rows:
         stage, name = (m.group(1), m.group(2)) if m else ('', ntext(cs[0]))
         set_tcpr(cs[0], fill='FFFFFF', valign='center', mar={'top': 60, 'left': 200, 'bottom': 60, 'right': 200},
                  bdr_xml=borders('tcBorders', {'top': THIN, 'left': GOLD_BAR, 'bottom': ('single', 8, C.NAVY), 'right': THIN}))
-        set_paras(cs[0], para([run(stage, 22, C.GOLD_D, b=True, spacing=20), run('　|　', 22, 'B4C3DA'),
+        set_paras(cs[0], para([chip(f' {stage} ', 21, C.NAVY, 'FFFFFF'), run('　', 22),
                                run(name, 24, C.NAVY, b=True, spacing=20)], keep=True))
         trh(r, 500)
         continue

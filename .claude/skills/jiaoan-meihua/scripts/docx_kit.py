@@ -26,7 +26,7 @@ NSDECL = (f'xmlns:w="{W}" xmlns:r="{R}" xmlns:wp="{WP}" xmlns:a="{A}" '
 class C:
     """蓝金配色（用户最终选定）。一主一辅一中性：藏蓝=第一级，浅蓝灰=第二级，白=正文；金色只做点缀。"""
     NAVY, GOLD, GOLD_D = '1F3864', 'C9A227', 'A8841A'
-    LABEL, CARD, LINE = 'EEF3F9', 'F7F9FC', 'D5DEEA'
+    LABEL, CARD, LINE = 'EEF3F9', 'F7F9FC', '8C9FBD'   # 线色加深：黑白打印也清楚
     TEXT, SUB, HINT = '333333', '666666', 'AAAAAA'
     CHIP_BG, CHIP_FG = 'F6EDD2', '7A5C00'
     RED, WARM = '9B1C1C', 'FAF6F0'
@@ -35,7 +35,7 @@ class C:
 
 
 NONE = ('nil', 0, 'auto')
-THIN = ('single', 4, C.LINE)
+THIN = ('single', 6, C.LINE)
 GOLD_BAR = ('single', 24, C.GOLD)
 SIDES = ('top', 'left', 'bottom', 'right')
 
@@ -108,7 +108,7 @@ def chip(text, sz=20, bg=C.CHIP_BG, fg=C.CHIP_FG):
 def item(num, text, sz=19, color=C.TEXT):
     """编号条目：金色序号 + 悬挂缩进（换行与文字对齐）"""
     w = 300 if len(num) <= 2 else 420
-    return para([run(num + '\t', sz, C.GOLD_D, b=True), run(text, sz, color)], line=290, after=40,
+    return para([run(num + '\t', sz, C.NAVY, b=True), run(text, sz, color)], line=290, after=40,
                 ind_left=w, hanging=w)
 
 

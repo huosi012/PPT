@@ -44,3 +44,9 @@
 
 `assets/icons/<名称>-<颜色>.png`，已有：白色（分区栏）`info-circle chalkboard presentation message-2 ruler-measure file-analytics users-group target star alert-triangle bulb books`；藏蓝 `1F3864`（标签/表头）`file-analytics users-group target star alert-triangle bulb books clipboard-check route chart-bar sparkles tool list-details book-2 chalkboard users flag-3`；等。
 新图标：`node tools/render_icons.js specs.json`，specs 形如 `[{"name":"target","color":"1F3864","out":"assets/icons/target-1F3864.png","stroke":1.8,"px":160}]`。先确认图标名存在：`ls node_modules/@tabler/icons/icons/outline/<name>.svg`。
+
+
+## 黑白打印友好（第二轮客户反馈后定稿）
+- 表格细线：`8C9FBD`，sz 6（¾ 磅）；原 `D5DEEA`/sz 4 在灰度打印中消失。
+- 编号：步骤/环节编号与“第一阶段”等用藏蓝底白字（`chip(' 01 ', 24, NAVY, 'FFFFFF')`）；条目编号藏蓝加粗。金色只留装饰（分区栏编号、左侧金条、卡片 ▍）。
+- 附图：缩略图里金色改 `8A6A12`/`7A5C00`、线宽 ×1.7；流程图金色整体深一档（`A8841A`/`8A6A12`）。
